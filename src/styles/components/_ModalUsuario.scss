@@ -1,0 +1,60 @@
+.modal__usuarios {
+    width: 70%;
+    height: 60%;
+}
+
+.modal__input-contenedor {
+    width: 60%;
+    display: flex;
+    margin: auto;
+    margin-top: 2%;
+    margin-bottom: 0;
+}
+
+.modal__botones {
+    background-color: rgb(79, 189, 49);
+}
+
+.modal__botones-contenedor {
+    background-color: blueviolet;
+}
+
+.accordion-demo .accordion-custom i,
+.accordion-demo .accordion-custom span {
+    vertical-align: middle;
+}
+
+.accordion-demo .accordion-custom span {
+    margin: 0 .5rem;
+}
+
+.accordion-demo .p-accordion p {
+    line-height: 1.5;
+    margin: 0;
+}
+
+.accordion-header {
+    background-color: bisque;
+}
+
+.modal_texto-titulo-permisos {
+    margin-bottom: -30px;
+    font-size: 26px;
+}
+
+.modal_accordion {
+    width: 100%;
+    margin-top: 2%;
+}
+
+// .p-dialog-header-icons {
+//     display: none!important;
+// }
+.modal__permisosCheck {
+    display: flex;
+    justify-content: space-between;
+}
+
+.p-accordion-header-text {
+    width: 100%;
+}

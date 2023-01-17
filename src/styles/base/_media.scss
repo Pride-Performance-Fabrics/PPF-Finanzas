@@ -1,0 +1,63 @@
+// DESKTOP XXsLARGE
+@media screen and (min-width: 1920px) {
+    html {
+        font-size: 16px;
+    }
+    // .panel_contenedor {
+    //     background-color: green;
+    // }
+}
+
+// DESKTOP XLARGE
+@media screen and (min-width: 1600px) and (max-width: 1919.99px) {
+    html {
+        font-size: 14px;
+    }
+    // .panel_contenedor {
+    //     background-color: purple;
+    // }
+}
+
+// DESKTOP LARGE
+@media screen and (min-width: 1440px) and (max-width: 1599.99px) {
+    html {
+        font-size: 14px;
+    }
+    // .panel_contenedor {
+    //     background-color: yellow;
+    // }
+}
+
+// DESKTOP MEDIUM
+@media screen and (min-width: 1200px) and (max-width: 1439.99px) {
+    html {
+        font-size: 14px;
+    }
+    // .panel_contenedor {
+    //     background-color: blue;
+    // }
+}
+
+// DESKTOP SMALL
+@media screen and (min-width: 1024px) and (max-width: 1199.99px) {
+    html {
+        font-size: 14px;
+    }
+    // .panel_contenedor {
+    //     background-color: red;
+    // }
+}
+
+// TABLET
+@media screen and (min-width: 768px) and (max-width: 1023.99px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+// SMARTPHONE
+@media screen and (max-width: 767.99px) {
+    html {
+        font-size: 12px;
+    }
+}
