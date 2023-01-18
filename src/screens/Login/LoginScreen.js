@@ -81,7 +81,7 @@ export const LoginScreen = () => {
                             logged: true,
                         }
                     });
-                    // console.log(res)
+                    console.log(res)
                     localStorage.setItem('ppfUser', JSON.stringify(res.user))
                     navigate("/home", { replace: true })
                 } else {
@@ -164,7 +164,7 @@ export const LoginScreen = () => {
             <div className="fila">
                 <div className="">
                     {/* <img src="https://were.ppf.com.hn/web/Logo_PPF.png" alt="Imagen" className="login__empresa-logo" /> */}
-                    {/* <img src={logoH} alt="" className="login__empresa-logo" /> */}
+                    <img src={logoH} alt="" className="login__empresa-logo" />
                 </div>
             </div>
             <div className="fila">
@@ -177,7 +177,7 @@ export const LoginScreen = () => {
     );
 
     return (
-        <div style={{ backgroundImage: `url("https://were.ppf.com.hn/web/Fondo.jpg")`, backgroundPosition: 'center' }} className="login__contenedor-imagen">
+        <div style={{ backgroundImage: `url(${process.env.PUBLIC_URL + '/imagenes/PPFLogin.jpg'})`, backgroundPosition: 'center' }} className="login__contenedor-imagen">
             <div className="login__contenedor-formulario" >
                 <div className={classNames("progressSpinner-container spinner-login", { 'isVisible': false })}>
                     <ProgressSpinner />
