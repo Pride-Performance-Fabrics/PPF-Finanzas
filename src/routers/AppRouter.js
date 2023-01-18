@@ -9,12 +9,26 @@ export const AppRouter = () => {
     const ppfToken = localStorage.getItem('ppfToken');
     const expired = isExpired(ppfToken);
 
-    return (
-        <BrowserRouter>
-            <Routes >
-                {/* LOGIN */}
-                <Route path={`${process.env.REACT_APP_ENV}/login`} element={<LoginScreen />} />
-            </Routes>
-        </BrowserRouter>
-    )
+    if(expired){
+        return (
+            <BrowserRouter>
+                <Routes >
+                    {/* LOGIN */}
+                    <Route path={`${process.env.REACT_APP_ENV}/login`} element={<LoginScreen />} />
+                    
+                </Routes>
+            </BrowserRouter>
+        )
+    }
+    else {
+        return (
+            <BrowserRouter>
+                <Routes >
+                     {/* ALL */}
+                    <Route path={"*"} element={<DashboardRoutes />}></Route>
+                </Routes>
+            </BrowserRouter>
+        )
+    }
+    
 }

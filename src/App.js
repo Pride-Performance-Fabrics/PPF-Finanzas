@@ -3,6 +3,7 @@ import { View, StyleSheet } from "react-native-web";
 import { AuthContext } from "./auth/AuthContext";
 import { authReducer } from "./auth/authReducer";
 import { AppRouter } from "./routers/AppRouter";
+// import LoginScreen from "../screens/Login/LoginScreen";
 
 import PrimeReact from 'primereact/api';
 import { MemoProvider } from "./context/Memo/MemoContext";
@@ -20,21 +21,21 @@ function App() {
 
 
   return (
-    <AuthContext.Provider >
-      <View></View>
+    // <AuthContext.Provider >
+      
       <View style={styles.container} className={'animate__animated animate__fadeIn tableAnimate'} >
         <MemoContainer>
           <AppRouter />
         </MemoContainer>
       </View>
-      {/* <Footer/> */}
-    </AuthContext.Provider>
+      // {/* <Footer/> */}
+    // </AuthContext.Provider>
 
   );
 }
 
 const styles = StyleSheet.create({
-  overflow: 'hidden'
+  // overflow: 'hidden'
 })
 
 
