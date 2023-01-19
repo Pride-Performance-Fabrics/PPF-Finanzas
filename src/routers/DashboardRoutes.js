@@ -20,7 +20,10 @@ import ModalDieSession from "../components/Panel/ModalDieSession";
 
 import { getPermisos } from "../utils/Menu/Permisos";
 
+//************** Screens **************/
 import HomeScreen from "../screens/Homes/HomeScreen";
+import ITHomeScreen from "../screens/Homes/ITHomeScreen";
+import RolesScreen from "../screens/IT/RolesScreen";
 
 export const DashboardRoutes = () => {
 
@@ -37,6 +40,7 @@ export const DashboardRoutes = () => {
         const resp = await getPermisos(IdUser);
         const tempo = resp.permisos.split(',').map((item) => parseInt(item))
         setuserPermisions(tempo);
+        console.log(userPermisions)
     }
 
     const setCollapsed = () => {
@@ -50,7 +54,25 @@ export const DashboardRoutes = () => {
         userPermisions, // userPermissions
         [1], // requiredPermissions
         () => {
-            navigate("/Login", { replace: true })
+            navigate("fin/home", { replace: true })
+        }
+    );
+
+    const ITScreenPermision = Permissible(
+        HomeScreen,
+        userPermisions, // userPermissions
+        [2], // requiredPermissions
+        () => {
+            navigate("fin/home", { replace: true })
+        }
+    );
+
+    const RolesScreenPermision = Permissible(
+        RolesScreen,
+        userPermisions, // userPermissions
+        [3], // requiredPermissions
+        () => {
+            navigate("fin/home", { replace: true })
         }
     );
 
@@ -61,7 +83,7 @@ export const DashboardRoutes = () => {
         // alert(typeof token)
         if (token === 'undefined') {
             localStorage.removeItem('ppfToken');
-            handleLogout();
+            // handleLogout();
         }
         const decodedToken = decodeToken(token);
         setUserInfo(decodedToken);
@@ -76,7 +98,7 @@ export const DashboardRoutes = () => {
     }, [])
 
     const setRouter = () => {
-        if (!userPermisions) {
+        if (userPermisions) {
             return (
                 <Routes>
                     {/* <Route path="/PDF" element={<PDFTemplate document={<PurchasePDF/>} name='dsd'/>} /> */}
@@ -84,6 +106,8 @@ export const DashboardRoutes = () => {
 
                     <Route path={`${process.env.REACT_APP_ENV}/Home`} element={<HomeScreen />} />
                     <Route path="*" element={<Navigate from="*" to={`${process.env.REACT_APP_ENV}/Home`} />} />
+                    <Route path={`${process.env.REACT_APP_ENV}/IT`} element={<ITScreenPermision />} />
+                    <Route path={`${process.env.REACT_APP_ENV}/Roles`} element={<RolesScreenPermision />} />
 
                 </Routes>
 
@@ -148,7 +172,7 @@ return (
             </Splitter>
         </div>
         <Footer user={userInfo} />
-        <ModalDieSession />
+        {/* <ModalDieSession /> */}
     </div>
 
 );
