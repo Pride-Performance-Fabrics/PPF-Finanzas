@@ -64,9 +64,9 @@ export const UsuariosScreen = () => {
 
 
 
-    const editUser = (rowData) => {
-        return <ModalEditarUsuario datos={rowData} usuarios={getUsuarios} />
-    }
+    // const editUser = (e) => {
+    //     return <ModalEditarUsuario datos={e} usuarios={getUsuarios} />
+    // }
 
     const [table, setTable] = useState({
         Data: [],
@@ -123,6 +123,8 @@ export const UsuariosScreen = () => {
             {
                 header: 'Permisos',
                 className: 'colum-width-Xsmall',
+                // Format: 'Template',
+                // body: e => editUser(e)
                 
                
             }
