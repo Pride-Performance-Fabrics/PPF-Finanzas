@@ -51,7 +51,8 @@ export const handleLogout = async() => {
     localStorage.removeItem('ppfToken');
     window.localStorage.removeItem('ppfToken');
     localStorage.setItem('ppfToken', null);
-    window.location.href = ``;
+    // window.location.href = ``;
+    window.location.href = `http://localhost:4444/fin/login`;
 }
 
 export const validarRespuesta = (res) => {

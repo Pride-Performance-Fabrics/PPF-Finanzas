@@ -16,21 +16,21 @@ const HomeScreen = () => {
         <Fragment>
             <div style={{ backgroundImage: `url("https://were.ppf.com.hn/web/Fondo.jpg")`, bottom: 0, backgroundSize: 'cover', backgroundPosition: 'center', overflow: 'hiddden' }}
                 className="contenedor-imagen animate__animated animate__fadeIn animate__faster ">
-                <TabView className="col-12 homeTabView" activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)}>
+                {/* <TabView className="col-12 homeTabView" activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)}>
                 
 
                     <TabPanel header="Tareas">
                         <TodoList />
-                    </TabPanel>
+                    </TabPanel> */}
                     {/* <TabPanel header="Calendario">
                         <SchedulerHomeScreen />
                     </TabPanel> */}
-                    <TabPanel header="Extensiones">
-                        <div className="homeTabView_Extenciones">
+                    {/* <TabPanel header="Extensiones"> */}
+                        {/* <div className="homeTabView_Extenciones">
                         <Extensiones />
-                        </div>
-                    </TabPanel>
-                 </TabView>
+                        </div> */}
+                    {/* </TabPanel>
+                 </TabView> */}
 
             </div>
         </Fragment>

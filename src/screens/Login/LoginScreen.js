@@ -72,6 +72,8 @@ export const LoginScreen = () => {
         await promesa.json()
             .then(async (res) => {
                 if (res.auth === true) {
+                console.log("dddd")
+
                     localStorage.setItem('ppfToken', res.token)
                     await dispatch({
                         type: types.login,
@@ -81,7 +83,7 @@ export const LoginScreen = () => {
                             logged: true,
                         }
                     });
-                    console.log(res)
+                    // console.log(res)
                     localStorage.setItem('ppfUser', JSON.stringify(res.user))
                     navigate("/home", { replace: true })
                 } else {

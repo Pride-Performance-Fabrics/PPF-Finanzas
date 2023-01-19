@@ -7,6 +7,16 @@ import { AppRouter } from "./routers/AppRouter";
 
 import PrimeReact from 'primereact/api';
 import { MemoProvider } from "./context/Memo/MemoContext";
+import 'remixicon/fonts/remixicon.css';
+
+PrimeReact.ripple = true;
+PrimeReact.zIndex = {
+  modal: 1100,    // dialog, sidebar
+  overlay: 1000,  // dropdown, overlaypanel
+  menu: 1000,     // overlay menus
+  tooltip: 1100,   // tooltip
+  toast: 1200     // toast
+}
 
 const init = () => {
   return localStorage.getItem('ppfToken') || {
@@ -21,7 +31,7 @@ function App() {
 
 
   return (
-    // <AuthContext.Provider >
+    <AuthContext.Provider value={{ user, dispatch }}>
       
       <View style={styles.container} className={'animate__animated animate__fadeIn tableAnimate'} >
         <MemoContainer>
@@ -29,13 +39,13 @@ function App() {
         </MemoContainer>
       </View>
       // {/* <Footer/> */}
-    // </AuthContext.Provider>
+    </AuthContext.Provider>
 
   );
 }
 
 const styles = StyleSheet.create({
-  // overflow: 'hidden'
+  overflow: 'hidden'
 })
 
 

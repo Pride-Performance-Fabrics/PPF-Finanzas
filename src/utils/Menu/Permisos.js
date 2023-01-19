@@ -23,7 +23,7 @@ export const permisosByUsuarioBotones = async(Usuario) => {
 
 // OBTENER LOS PERMISOS DE UN USUARIO
 export const getPermisos = async(idUser) => {
-    const respuesta = await PrivateInterceptor(`permisos/getPermisos/${idUser}`, 'GET')
+    const respuesta = await PrivateInterceptor(`permisos/${idUser}`, 'GET')
     return respuesta;
 }
 
