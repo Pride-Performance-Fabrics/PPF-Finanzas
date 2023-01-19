@@ -6,6 +6,10 @@ export const getUserByRol = async(IdRol) => {
     return respuesta;
 }
 
+export const getUsuarios = async() => {
+    const respuesta = await PrivateInterceptor(`users/`, 'GET')
+    return respuesta;
+}
 
 // OBTENER TODOS LOS dbo.User con su ID, UserName, Usuario
 export const getUsersBasic = async() => {

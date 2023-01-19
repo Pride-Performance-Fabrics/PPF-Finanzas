@@ -23,7 +23,8 @@ import { getPermisos } from "../utils/Menu/Permisos";
 //************** Screens **************/
 import HomeScreen from "../screens/Homes/HomeScreen";
 import ITHomeScreen from "../screens/Homes/ITHomeScreen";
-import RolesScreen from "../screens/IT/RolesScreen";
+import RolesScreen from "../screens/IT/Roles/RolesScreen";
+import UsuariosScreen from "../screens/IT/Usuarios/UsuariosScreen";
 
 export const DashboardRoutes = () => {
 
@@ -76,6 +77,15 @@ export const DashboardRoutes = () => {
         }
     );
 
+    const UsuariosScreenPermision = Permissible(
+        UsuariosScreen,
+        userPermisions, // userPermissions
+        [4], // requiredPermissions
+        () => {
+            navigate("fin/home", { replace: true })
+        }
+    );
+
 
 
     useEffect(() => {
@@ -108,6 +118,8 @@ export const DashboardRoutes = () => {
                     <Route path="*" element={<Navigate from="*" to={`${process.env.REACT_APP_ENV}/Home`} />} />
                     <Route path={`${process.env.REACT_APP_ENV}/IT`} element={<ITScreenPermision />} />
                     <Route path={`${process.env.REACT_APP_ENV}/Roles`} element={<RolesScreenPermision />} />
+                    <Route path={`${process.env.REACT_APP_ENV}/Usuarios`} element={<UsuariosScreenPermision />} />
+
 
                 </Routes>
 
