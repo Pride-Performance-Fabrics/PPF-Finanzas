@@ -1,0 +1,104 @@
+.panel_contenedor {
+    width: 100%;
+}
+
+.panel_menu {
+    width: 100%;
+}
+
+.p-panelSubMenu {
+    font-size: 0.8rem !important;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.panel_contenedor-menu {
+    // background-color: '#F8F9Fu';
+    width: 100%,
+}
+
+.panel_logo_empresa {
+    display: "flex";
+    overflow: "hidden"
+}
+
+.panel_imagen {
+    width: 250px;
+}
+
+.BotonCierre {
+    position: absolute;
+    width: 100%;
+}
+
+@media only screen and (min-width:360px) and (max-width:480px) {
+    .p-panelmenu .p-panelmenu-header>a {
+        padding: 0;
+    }
+    .p-panelmenu .p-panelmenu-header>a .p-menuitem-icon {
+        margin-right: 0.1rem
+    }
+    .p-panelmenu-icon {
+        font-size: 0.2rem;
+    }
+}
+
+@media (max-width:320px) {
+    .p-panelmenu-icon {
+        font-size: 10px;
+    }
+}
+
+@media only screen and (max-height: 650px) {
+    .BotonCierre {
+        position: relative;
+    }
+}
+
+@media only screen and (min-height: 651px) {
+    .BotonCierre {
+        bottom: 0;
+    }
+}
+
+@media only screen and (min-height:200px) and (max-height:890px) {
+    .p-panelmenu .p-panelmenu-header>a {
+        padding: 8px;
+    }
+    .p-panelmenu .p-panelmenu-header>a .p-menuitem-icon {
+        margin-right: 0.2rem;
+        font-size: 0.8rem;
+    }
+    .p-panelmenu .p-panelmenu-header>a .p-menuitem-icon span {
+        font-size: 0.4rem;
+    }
+    .p-panelmenu-icon {
+        font-size: 0.4rem;
+    }
+}
+
+@media only screen and (min-height:260px) and (max-height:400px) {
+    .p-panelmenu .p-panelmenu-header>a {
+        padding: 6px;
+    }
+    .p-panelmenu .p-panelmenu-header>a .p-menuitem-icon {
+        margin-right: 0.4rem
+    }
+    .p-panelmenu .p-panelmenu-header>a .p-menuitem-icon span {
+        font-size: 0.4rem;
+    }
+    .p-panelmenu-icon {
+        font-size: 0.2rem;
+    }
+    .p-menuitem-text {
+        font-size: 0.8rem;
+    }
+}
+
+.p-panelitem-Redireccion {
+    color: #92278f;
+    &:hover {
+        color: #f287b7;
+    }
+}

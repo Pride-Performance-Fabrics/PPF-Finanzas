@@ -1,0 +1,26 @@
+.dashbordard__contenedor {
+    &-panel {
+        // min-width: 170px;
+        width: 100%;
+        // max-width: 200px;
+        height: 100%;
+        box-shadow: 1px 1px 10px #ccc
+    }
+    &-content {
+        width: 100%;
+        height: calc(100vh - 51px) !important;
+        overflow-y: auto;
+    }
+}
+
+.layout {
+    min-height: 94vh !important;
+    height: calc(100vh - 50px) !important;
+    width: 100vw;
+    display: flex;
+    overflow: hidden;
+}
+
+layout .content {
+    padding: 0;
+}

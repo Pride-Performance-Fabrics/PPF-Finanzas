@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
 import React, { useEffect, useState } from "react";
 
-import instancias from "../../api/backend";
+import instancias from "../../Api/backend";
 
 
 import { useNavigate } from "react-router-dom";
@@ -22,7 +22,7 @@ export const Panel = () => {
 
   // Pantalla de Inicio HomeScreen
   const handleHome = () => {
-    navigate("/web/Home", { replace: true })
+    navigate("/fin/Home", { replace: true })
   }
 
   const userIsAuth = async () => {
@@ -33,6 +33,7 @@ export const Panel = () => {
     await promesa.json()
       .then((res) => {
         getMenu(res.IdRol, res.idUser);
+       
 
       })
       .catch((error) => {
@@ -54,7 +55,7 @@ export const Panel = () => {
           label: 'Inicio',
           icon: 'pi pi-fw pi-home',
           command: (e) => {
-            navigate(`/web/home`, { replace: false })
+            navigate(`/fin/home`, { replace: false })
           },
         }];
         let idNivel = 0;

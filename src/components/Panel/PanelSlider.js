@@ -245,11 +245,12 @@ const PanelSlider = ({ splitterPanel, splitterContent }) => {
             const tempo = menu.filter((element) => element.IdContenedor === nivel);
             contenido[nivel] = tempo;
         }
-        // console.log({contenido});
+        console.log(`contenido`,{contenido});
         panel.push(setItemsMenu(contenido, 0));
 
-        // console.log({panel});
+        console.log(`panel c`,{panel});
         const aux = setItemMenu(panel[0]);
+
         const nav = (
             <nav className="menu open-current-submenu" >
                 {aux}
