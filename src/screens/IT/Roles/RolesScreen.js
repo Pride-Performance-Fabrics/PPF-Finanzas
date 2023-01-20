@@ -64,7 +64,9 @@ export const RolesScreen = () => {
 
     const showRol = (rowData) => {
         return (
-            <ModificarRolModal datos = {rowData} updateRoles = {getRoles}/>
+            // <div style ={{alignContent:"right"}}>
+                <ModificarRolModal datos = {rowData} updateRoles = {getRoles}/>
+            // </div>
         );
     }
 
@@ -76,29 +78,31 @@ export const RolesScreen = () => {
                 
                 field: 'IdRol',
                 header: 'IdRol',
-                className: 'colum-width-Xsmall',
+                className: 'colum-width-small',
                 body: (rowData) => rowData.IdRol,
+                
                 
             },
             {
                 field: 'Rol',
                 header: 'Rol',
-                className: 'colum-width-small',
+                className: 'colum-width-XXlarge',
                 body: (rowData) => rowData.Rol,
             },
             {
                 field: 'Description',
                 header: 'Description',
-                className: 'colum-width-large',
+                className: 'colum-width-XXlarge',
                 body: (rowData) => rowData.Description,
             },
         
             {
                 header: '',
-                className: 'colum-width-Xsmall',
+                className: 'colum-width-small',
                 Format: 'Template',
                 body: e => showRol(e)
-            }
+            },
+            
             
             
         ],

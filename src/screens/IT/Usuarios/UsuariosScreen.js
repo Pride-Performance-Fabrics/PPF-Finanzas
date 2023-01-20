@@ -40,7 +40,7 @@ export const UsuariosScreen = () => {
     const statusBodyTemplate = (e) => {
 
         if (e.StatusName === "Active") {
-            return <Tag style={{ width: 50, height: 20, marginBottom: 20 }} severity="success" className={`product-badge status-${e.StatusName}`}>{e.StatusName}</Tag>;
+            return <Tag style={{ width: 50, height: 20, marginTop:-10  }} severity="success" className={`product-badge status-${e.StatusName}`}>{e.StatusName}</Tag>;
         }
         else {
             return <Tag style={{ width: 60, height: 20 }} severity="danger" className={`product-badge status-${e.StatusName}`}>{e.StatusName}</Tag>;
@@ -51,7 +51,7 @@ export const UsuariosScreen = () => {
     const showUser = (e) => {
 
         return (
-            <div style={{ width: 50, height: 30, marginTop: -5 }}>
+            <div style={{ width: 50, height: 30, marginTop:-10 }}>
                 <ModalEditarUsuario datos={e} usuarios={getListadoUsuarios} />
             </div>
         )
@@ -84,10 +84,10 @@ export const UsuariosScreen = () => {
 
             },
             {
-                field: 'IdPersonal',
+                field: 'idPersonal',
                 header: 'IdPersonal',
                 className: 'colum-width-Xsmall',
-                body: (rowData) => rowData.IdPersonal,
+                body: (rowData) => rowData.idPersonal,
             },
             {
                 field: 'Usuario',
@@ -98,7 +98,7 @@ export const UsuariosScreen = () => {
             {
                 field: 'UserName',
                 header: 'UserName',
-                className: 'colum-width-large',
+                className: 'colum-width-medium',
                 body: (rowData) => rowData.UserName,
             },
             {
