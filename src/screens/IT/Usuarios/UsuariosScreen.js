@@ -83,13 +83,12 @@ export const UsuariosScreen = () => {
                 body: (rowData) => rowData.idUser,
 
             },
-            // {
-
-            //     field: 'idPersonal',
-            //     header: 'IdPersonal',
-            //     className: 'colum-width-Xsmall',
-            //     body: (rowData) => rowData.idPersonal,
-            // },
+            {
+                field: 'IdPersonal',
+                header: 'IdPersonal',
+                className: 'colum-width-Xsmall',
+                body: (rowData) => rowData.IdPersonal,
+            },
             {
                 field: 'Usuario',
                 header: 'Usuario',

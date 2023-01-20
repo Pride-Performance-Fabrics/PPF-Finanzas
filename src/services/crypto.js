@@ -25,7 +25,10 @@ export const decrypt = (text) => {
 
 export const verifyToken = (token) => {
     const old = localStorage.getItem('ppfToken');
-    if (token !== old) {
+    const user = JSON.parse(localStorage.getItem('ppfUser'));
+    const decrypted = decodeToken(token);
+    // console.log(decrypted);
+    if (token !== old && user?.idUser === decrypted.idUser) {
         localStorage.setItem('ppfToken', token);
         // console.log('cambio', typeof token);
         tiempoToken = new Date();

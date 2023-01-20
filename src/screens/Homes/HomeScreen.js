@@ -18,7 +18,7 @@ const HomeScreen = () => {
                 className="contenedor-imagen animate__animated animate__fadeIn animate__faster ">
                 {/* <TabView className="col-12 homeTabView" activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)}>
                 
-
+hola
                     <TabPanel header="Tareas">
                         <TodoList />
                     </TabPanel> */}
