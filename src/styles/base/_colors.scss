@@ -163,7 +163,7 @@
     --primary-800: #561561;
     --primary-900: #3e1046;
     // COLORES BASE
-    --primary-color: rgb(140, 35, 158) !important;
+    --primary-color: rgb(140, 35, 158) !important; // Color primario
     --primary-50: rgb(249, 244, 250) !important;
     --primary-100: rgb(243, 233, 245) !important;
     --primary-200: rgb(232, 211, 236) !important;
@@ -173,7 +173,8 @@
     --primary-600: rgb(186, 123, 197);
     --primary-700: rgb(174, 101, 187) !important;
     --primary-800: rgb(174, 101, 187) !important;
-    --primary-900: rgb(151, 57, 168) !important;
+    --primary-900: rgb(20, 184, 166) !important;
+    // --primary-900: rgb(151, 57, 168) !important; // Color primario del primer tema
     // TEXT COLORS
     --text-color: #000000 !important;
 }

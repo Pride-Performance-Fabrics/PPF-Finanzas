@@ -8,7 +8,9 @@ import reportWebVitals from './reportWebVitals';
 // ESTILOS PRIMEREACT
 // import "primereact/resources/themes/bootstrap4-light-purple/theme.css";  //theme
 // import "primereact/resources/themes/saga-purple/theme.css";
-import "primereact/resources/themes/saga-purple/theme.css";
+// import "primereact/resources/themes/saga-purple/theme.css";
+// import "primereact/resources/themes/lara-light-purple/theme.css";
+import "primereact/resources/themes/lara-light-teal/theme.css";
 import "primereact/resources/primereact.min.css";                  //core css
 import "primeicons/primeicons.css";                                //icons
 import './styles/styles.scss';
