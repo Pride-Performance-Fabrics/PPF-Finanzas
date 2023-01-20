@@ -41,7 +41,7 @@ export const DashboardRoutes = () => {
         const resp = await getPermisos(IdUser);
         const tempo = resp.permisos.split(',').map((item) => parseInt(item))
         setuserPermisions(tempo);
-        console.log(userPermisions)
+        // console.log(userPermisions)
     }
 
     const setCollapsed = () => {
@@ -97,7 +97,7 @@ export const DashboardRoutes = () => {
         }
         const decodedToken = decodeToken(token);
         setUserInfo(decodedToken);
-        console.log(userInfo)
+        // console.log(userInfo)
         const decoded = decodeToken(localStorage.getItem('ppfToken'));
         obtenerPermisos(decoded.idUser);
         setCollapsed();
@@ -125,67 +125,67 @@ export const DashboardRoutes = () => {
 
             )
         }
-    else {
-        return (
-            <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
-                <ProgressSpinner />
-            </div>
-        )
+        else {
+            return (
+                <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+                    <ProgressSpinner />
+                </div>
+            )
         }
-    
-}
 
-const sidebar = useRef();
+    }
 
-const resizable = ({ sizes }) => {
-    const sidebar = document.getElementById('sidebar');
-    const svg = document.getElementById('svgBtnCollapse');
-    if (window.outerWidth <= 1024) {
-        if (sizes[0] <= 15.5) {
-            sidebar.classList.add('collapsed')
-            svg.classList.remove('active');
+    const sidebar = useRef();
+
+    const resizable = ({ sizes }) => {
+        const sidebar = document.getElementById('sidebar');
+        const svg = document.getElementById('svgBtnCollapse');
+        if (window.outerWidth <= 1024) {
+            if (sizes[0] <= 15.5) {
+                sidebar.classList.add('collapsed')
+                svg.classList.remove('active');
+            } else {
+                sidebar.classList.remove('collapsed')
+                svg.classList.add('active')
+            }
         } else {
-            sidebar.classList.remove('collapsed')
-            svg.classList.add('active')
-        }
-    } else {
-        if (sizes[0] <= 11) {
-            sidebar.classList.add('collapsed')
-            svg.classList.remove('active');
-        } else {
-            sidebar.classList.remove('collapsed')
-            svg.classList.add('active')
+            if (sizes[0] <= 11) {
+                sidebar.classList.add('collapsed')
+                svg.classList.remove('active');
+            } else {
+                sidebar.classList.remove('collapsed')
+                svg.classList.add('active')
+            }
         }
     }
-}
 
 
 
-return (
-    <div style={{ height: '100vh' }}>
-        <div className="layout has-sidebar fixed-sidebar fixed-header">
-            {/* <Splitter style={{ width: '100%', height: '100%' }} > */}
-            <Splitter style={{ width: '100%', height: '100%' }} onResizeEnd={resizable} >
-                <SplitterPanel ref={splitterPanel} id='splitterPanel' size={15} minSize={4} className="panel">
-                    <aside id="sidebar" ref={sidebar} className="dashbordard__contenedor dashbordard__contenedor-panel sidebar">
-                        <div className="sidebar-layout ">
-                            <PanelSlider splitterPanel={splitterPanel} splitterContent={splitterContent} />
+    return (
+        <div style={{ height: '100vh' }}>
+            <div className="layout has-sidebar fixed-sidebar fixed-header">
+                {/* <Splitter style={{ width: '100%', height: '100%' }} > */}
+                <Splitter style={{ width: '100%', height: '100%' }} onResizeEnd={resizable} >
+                    <SplitterPanel ref={splitterPanel} id='splitterPanel' size={15} minSize={4} className="panel">
+                        <aside id="sidebar" ref={sidebar} className="dashbordard__contenedor dashbordard__contenedor-panel sidebar">
+                            <div className="sidebar-layout ">
+                                <PanelSlider splitterPanel={splitterPanel} splitterContent={splitterContent} />
+                            </div>
+                        </aside>
+                        <div id="overlay" className="overlay"></div>
+                    </SplitterPanel>
+                    <SplitterPanel ref={splitterContent} id='splitterContent' size={85} minSize={75}>
+                        <div className="">
+                            <main className="content dashbordard__contenedor-content">
+                                {setRouter()}
+                            </main>
                         </div>
-                    </aside>
-                    <div id="overlay" className="overlay"></div>
-                </SplitterPanel>
-                <SplitterPanel ref={splitterContent} id='splitterContent' size={85} minSize={75}>
-                    <div className="">
-                        <main className="content dashbordard__contenedor-content">
-                            {setRouter()}
-                        </main>
-                    </div>
-                </SplitterPanel>
-            </Splitter>
+                    </SplitterPanel>
+                </Splitter>
+            </div>
+            <Footer user={userInfo} />
+            <ModalDieSession />
         </div>
-        <Footer user={userInfo} />
-        {/* <ModalDieSession /> */}
-    </div>
 
-);
+    );
 }

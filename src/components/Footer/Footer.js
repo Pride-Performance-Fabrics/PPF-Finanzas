@@ -68,7 +68,7 @@ const Footer = ({ user }) => {
 
                 <div className="d-flex align-items-center">
                     <span className={`p-menuitem-icon pi pi-fw pi-database footer_column-icon mx-2`} ></span>
-                    <small className="footer_column-info">DB: IPS</small>
+                    <small className="footer_column-info">DB: Finanzas</small>
                 </div>
                 <div className="d-flex align-items-center">
                     <span className={`p-menuitem-icon pi pi-fw pi-desktop footer_column-icon mx-2`} ></span>

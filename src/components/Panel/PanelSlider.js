@@ -236,7 +236,7 @@ const PanelSlider = ({ splitterPanel, splitterContent }) => {
     const obtenerMenuNew = async () => {
         const decoded = decodeToken(localStorage.getItem('ppfToken'));
         const response = await getPermisos(decoded.idUser);
-        console.log(response,decoded.idUser);
+        // console.log(response,decoded.idUser);
         let contenido = [];
         const menu = response.menu.filter((item) => item.MenuWeb);
         // console.log(menu)
@@ -245,10 +245,10 @@ const PanelSlider = ({ splitterPanel, splitterContent }) => {
             const tempo = menu.filter((element) => element.IdContenedor === nivel);
             contenido[nivel] = tempo;
         }
-        console.log(`contenido`,{contenido});
+        // console.log(`contenido`,{contenido});
         panel.push(setItemsMenu(contenido, 0));
 
-        console.log(`panel c`,{panel});
+        // console.log(`panel c`,{panel});
         const aux = setItemMenu(panel[0]);
 
         const nav = (

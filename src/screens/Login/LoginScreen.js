@@ -72,7 +72,7 @@ export const LoginScreen = () => {
         await promesa.json()
             .then(async (res) => {
                 if (res.auth === true) {
-                console.log("dddd")
+                // console.log("dddd")
 
                     localStorage.setItem('ppfToken', res.token)
                     await dispatch({
