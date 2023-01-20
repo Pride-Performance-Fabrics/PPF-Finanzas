@@ -1,42 +1,148 @@
-import React, { useState, Fragment, useEffect } from "react";
-import TodoList from "../../TodoList/TodoList";
-import { TabView, TabPanel } from 'primereact/tabview';
-import Extensiones from "../../Tools/Extensiones";
+import React, { useState, useEffect, useRef } from "react";
+
+import instancias from "../../../Api/backend";
+
+// Librerias de componentes
+import { InputText } from 'primereact/inputtext';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { Toast } from 'primereact/toast';
+import { FilterMatchMode } from 'primereact/api';
+
+import ModificarRolModal from "./ModalRoles/ModificarRolModal";
+import AgregarRolModal from "./ModalRoles/AgregarRolModal";
+import { validarRespuesta } from "../../../services/crypto";
+
+import { getRoles } from "../../../Api/IT/Roles/RolesRequest"
+// import './RolesStyle.css';
 
 
+//************** Componentes generales **************/
 
-const RolesScreen = () => {
+import Card from '../../../components/Card/Card';
+import Icon from '../../../components/icon/Icon';
+import Loader from '../../../components/Loader/Loader';
+import IconApp from '../../../components/icon/IconApp';
+import AgGrid from '../../../components/Tables/AgGrid';
 
-    const [activeIndex, setActiveIndex] = useState(0);
+export const RolesScreen = () => {
+
+    const toast = useRef(null);
+    const [roles, setRoles] = useState("");
+    const [filters, setFilters2] = useState({
+        'IdRol': { value: null, matchMode: FilterMatchMode.CONTAINS },
+        'Rol': { value: null, matchMode: FilterMatchMode.CONTAINS }
+    });
+    const [loading, setLoading] = useState(true)
+
+
+    // const getRoles = async () => {
+    //     const promesa = await fetch(`${instancias.API_URL}/roles?${Date.now()}`, {
+    //         headers: { 'x-access-token': localStorage.getItem('ppfToken') }
+    //     });
+
+    //     await promesa.json()
+
+    //         .then(function (res) {
+    //             validarRespuesta(res);
+    //             setTimeout(() => {
+    //                 setRoles(res.data);
+    //                 setLoading(false)
+    //             }, 400);
+    //         })
+    //         .catch((error) => {
+    //             console.error(error)
+    //         })
+
+    // }
 
     useEffect(() => {
-        window.document.title = 'PPF • Home';
-    }, [])
-    return (
-        <Fragment>
-            <div style={{ backgroundImage: `url("https://were.ppf.com.hn/web/Fondo.jpg")`, bottom: 0, backgroundSize: 'cover', backgroundPosition: 'center', overflow: 'hiddden' }}
-                className="contenedor-imagen animate__animated animate__fadeIn animate__faster ">
-                {/* <TabView className="col-12 homeTabView" activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)}>
+        window.document.title = 'PPF • IT Roles';
+        getRoles();
+
+    }, []);
+
+    const showRol = (rowData) => {
+        return (
+            <ModificarRolModal datos = {rowData} updateRoles = {getRoles}/>
+        );
+    }
+
+    
+    const [table, setTable] = useState({
+        Data: [],
+        Columns: [
+            {
                 
+                field: 'IdRol',
+                header: 'IdRol',
+                className: 'colum-width-Xsmall',
+                body: (rowData) => rowData.IdRol,
+                
+            },
+            {
+                field: 'Rol',
+                header: 'Rol',
+                className: 'colum-width-small',
+                body: (rowData) => rowData.Rol,
+            },
+            {
+                field: 'Description',
+                header: 'Description',
+                className: 'colum-width-large',
+                body: (rowData) => rowData.Description,
+            },
+        
+            {
+                header: '',
+                className: 'colum-width-Xsmall',
+                Format: 'Template',
+                body: e => showRol(e)
+            }
+            
+            
+        ],
+        key: 'IdRol',
+        // scrollHeight: '100%',
+    })
+    
+    const getListadoRoles = async () => {
+        setLoading(true);
+        const result = await getRoles();
+        setTable({
+            ...table,
+            Data: result,
+            key: 'IdRol'
+        })
+        setLoading(false);
+    }
 
-                    <TabPanel header="Tareas">
-                        <TodoList />
-                    </TabPanel> */}
-                    {/* <TabPanel header="Calendario">
-                        <SchedulerHomeScreen />
-                    </TabPanel> */}
-                    {/* <TabPanel header="Extensiones"> */}
-                        {/* <div className="homeTabView_Extenciones">
-                        <Extensiones />
-                        </div> */}
-                    {/* </TabPanel>
-                 </TabView> */}
-                 
+    useEffect(() => {
+        getListadoRoles();
+        window.document.title = 'PPF • IT Roles';
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
-            </div>
-        </Fragment>
 
+
+    return (
+        <div>
+            <Loader loading={loading} />
+            <Card
+
+                titulo={<h3>Roles</h3>}
+                contenido={
+
+                    <div className='p-3' style={{ height: '90vh' }}>
+                        <AgregarRolModal />
+                        <br></br><br></br>
+                        <AgGrid table={table} />
+                    </div>
+                }
+            />
+        </div>
     )
 }
+
 
 export default RolesScreen;

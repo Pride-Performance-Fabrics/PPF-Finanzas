@@ -6,3 +6,8 @@ export const getRoles = async() => {
     const respuesta = await PrivateInterceptor(`Roles`, 'GET')
     return respuesta;
 }
+
+export const modificarRol = async(IdRol) =>{
+    const respuesta = await PrivateInterceptor(`roles/id/${IdRol}`, 'PUT')
+    return respuesta;
+}
