@@ -20,8 +20,8 @@ import { checkBoxTemplate, estadoTemplate, textCenterTemplate, statusBodyTemplat
 //************** Componentes Especificos **************/
 import ModalEditarUsuario from "./ModalScreenUsuario/ModalEditarUsuario";
 import ModalAgregarUsuario from "./ModalScreenUsuario/ModalAgregarUsuario";
-//************** Componentes generales **************/
 
+//************** Componentes generales **************/
 import Card from '../../../components/Card/Card';
 import Icon from '../../../components/icon/Icon';
 import Loader from '../../../components/Loader/Loader';
@@ -35,38 +35,42 @@ export const UsuariosScreen = () => {
 
     const [usuarios, setUsuarios] = useState("");
 
-    // *********    BUSQUEDA  *********
-    const header = (
-        <div className="table-header">
-            <div>
-                <ModalAgregarUsuario usuarios={getUsuarios} />
-            </div>
-            <div className="flex align-items-center flex-column pt-6 px-3">
-                <h3 className="usuarios__titulo">Usuarios</h3>
-            </div>
-            <span className="p-input-icon-left search">
-                <i className="pi pi-search" />
-                {/* <InputText id="globalFilter" className="search" type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." /> */}
-            </span>
-        </div>
-    );
+
 
     const statusBodyTemplate = (e) => {
-        
+
         if (e.StatusName === "Active") {
-            return <Tag style={{ width: 60 }} severity="success" className={`product-badge status-${e.StatusName}`}>{e.StatusName}</Tag>;
+            return <Tag style={{ width: 50, height: 20, marginBottom: 20 }} severity="success" className={`product-badge status-${e.StatusName}`}>{e.StatusName}</Tag>;
         }
         else {
-            return <Tag style={{ width: 60 }} severity="danger" className={`product-badge status-${e.StatusName}`}>{e.StatusName}</Tag>;
+            return <Tag style={{ width: 60, height: 20 }} severity="danger" className={`product-badge status-${e.StatusName}`}>{e.StatusName}</Tag>;
         }
 
     }
 
+    const showUser = (e) => {
 
+        return (
+            <div style={{ width: 50, height: 30, marginTop: -5 }}>
+                <ModalEditarUsuario datos={e} usuarios={getListadoUsuarios} />
+            </div>
+        )
+    }
 
-    // const editUser = (e) => {
-    //     return <ModalEditarUsuario datos={e} usuarios={getUsuarios} />
-    // }
+    const editUser = (e) => {
+        // return (<ModalEditarUsuario datos={e} usuarios={getListadoUsuarios} />)
+        return (
+            <div style={{ marginTop: -5 }}>
+                <Button
+                    className='p-button-rounded p-button-text mx-1'
+                    icon={'pi pi-user-edit'}
+                    tooltip={'Editar Usuario'}
+                    onClick={b => showUser(e)}
+                />
+            </div>
+
+        )
+    }
 
     const [table, setTable] = useState({
         Data: [],
@@ -79,13 +83,13 @@ export const UsuariosScreen = () => {
                 body: (rowData) => rowData.idUser,
 
             },
-            {
+            // {
 
-                field: 'idPersonal',
-                header: 'IdPersonal',
-                className: 'colum-width-Xsmall',
-                body: (rowData) => rowData.idPersonal,
-            },
+            //     field: 'idPersonal',
+            //     header: 'IdPersonal',
+            //     className: 'colum-width-Xsmall',
+            //     body: (rowData) => rowData.idPersonal,
+            // },
             {
                 field: 'Usuario',
                 header: 'Usuario',
@@ -95,8 +99,14 @@ export const UsuariosScreen = () => {
             {
                 field: 'UserName',
                 header: 'UserName',
-                className: 'colum-width-Xsmall',
+                className: 'colum-width-large',
                 body: (rowData) => rowData.UserName,
+            },
+            {
+                field: 'Rol',
+                header: 'Rol',
+                className: 'colum-width-Xsmall',
+                body: (rowData) => rowData.Rol,
             },
             {
                 field: 'Mail',
@@ -111,22 +121,19 @@ export const UsuariosScreen = () => {
                 Format: 'Template',
                 body: e => statusBodyTemplate(e)
 
-                
             },
-            {
-                field: 'PermisosWeb',
-                header: 'Permisos',
-                className: 'colum-width-Xsmall',
-                body: (rowData) => rowData.Permisos,
+            // {
+            //     field: 'PermisosWeb',
+            //     header: 'Permisos',
+            //     className: 'colum-width-Xsmall',
+            //     body: (rowData) => rowData.PermisosWeb,
 
-            },
+            // },
             {
-                header: 'Permisos',
+                header: '',
                 className: 'colum-width-Xsmall',
-                // Format: 'Template',
-                // body: e => editUser(e)
-                
-               
+                Format: 'Template',
+                body: e => showUser(e)
             }
 
 
@@ -164,9 +171,13 @@ export const UsuariosScreen = () => {
         <div>
             <Loader loading={loading} />
             <Card
+
                 titulo={<h3>Usuarios</h3>}
                 contenido={
+
                     <div className='p-3' style={{ height: '90vh' }}>
+                        <ModalAgregarUsuario usuarios={getUsuarios} />
+                        <br></br>
                         <AgGrid table={table} />
                     </div>
                 }

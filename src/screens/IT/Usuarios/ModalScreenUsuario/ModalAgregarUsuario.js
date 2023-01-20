@@ -12,7 +12,10 @@ import { Dialog } from 'primereact/dialog';
 import { Divider } from 'primereact/divider';
 import { classNames } from 'primereact/utils';
 import { Toast } from 'primereact/toast';
-import { validarRespuesta } from "../../../../services/crypto"
+import { validarRespuesta } from "../../../../services/crypto";
+
+import { getRoles } from "../../../../Api/IT/Roles/RolesRequest";
+import { getEstadosSecurity } from "../../../../Api/Global/StatusRequest";
 
 
 export const ModalAgregarUsuario = ({ usuarios }) => {
@@ -26,41 +29,50 @@ export const ModalAgregarUsuario = ({ usuarios }) => {
     const [usuarioDialog, setUsuarioDialog] = useState(false);
     const toast = useRef(null);
 
-    // Consultas a la API (Roles y Estado de Usuarios)
-    const getRoles = async () => {
-        // TODO PETICION -> FUNCION
-        const promesa = await fetch(`${instancias.API_URL}/Roles/`, { 
-            headers: { 'x-access-token': localStorage.getItem('ppfToken') } });
-        await promesa.json()
-            .then(function (res) {
-                // console.log(res);
-                validarRespuesta(res);
-                setRoles(res.data)
-            })
-            .catch((error) => {
-                console.error(error)
-            })
-    }
+    // // Consultas a la API (Roles y Estado de Usuarios)
+    // const getRoles = async () => {
+    //     // TODO PETICION -> FUNCION
+    //     const promesa = await fetch(`${instancias.API_URL}/Roles/`, { 
+    //         headers: { 'x-access-token': localStorage.getItem('ppfToken') } });
+    //     await promesa.json()
+    //         .then(function (res) {
+    //             // console.log(res);
+    //             validarRespuesta(res);
+    //             setRoles(res.data)
+    //         })
+    //         .catch((error) => {
+    //             console.error(error)
+    //         })
+    // }
 
-    const getEstado = async () => {
-        // TODO PETICION -> FUNCION
-        const promesa = await fetch(`${instancias.API_URL}/status/`, { 
-            headers: { 'x-access-token': localStorage.getItem('ppfToken') } });
-        await promesa.json()
-            .then(function (res) {
-                validarRespuesta(res);
-                setEstados(res.data)
-            })
-            .catch((error) => {
-                console.error(error)
-            })
+    // const getEstado = async () => {
+    //     // TODO PETICION -> FUNCION
+    //     const promesa = await fetch(`${instancias.API_URL}/status/`, { 
+    //         headers: { 'x-access-token': localStorage.getItem('ppfToken') } });
+    //     await promesa.json()
+    //         .then(function (res) {
+    //             validarRespuesta(res);
+    //             setEstados(res.data)
+    //         })
+    //         .catch((error) => {
+    //             console.error(error)
+    //         })
+    // }
+
+    const getValoresIniciales = async () => {
+        const rolesTempo = await getRoles();
+        const estadosTempo = await getEstadosSecurity();
+        // console.log(estadosTempo, rolesTempo)
+        setRoles(rolesTempo);
+        setEstados(estadosTempo);
     }
 
     // -- Funcionones para el modal de agregar
     const openNew = () => {
+        getValoresIniciales();
         setUsuarioDialog(true);
-        getRoles();
-        getEstado();
+        // getRoles();
+        // getEstado();
     }
 
     const hideDialog = () => {
