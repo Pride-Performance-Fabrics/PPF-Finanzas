@@ -25,6 +25,8 @@ import HomeScreen from "../screens/Homes/HomeScreen";
 import ITHomeScreen from "../screens/Homes/ITHomeScreen";
 import RolesScreen from "../screens/IT/Roles/RolesScreen";
 import UsuariosScreen from "../screens/IT/Usuarios/UsuariosScreen";
+import Sesiones from "../screens/IT/Sesiones/SesionesScreen";
+import SesionesScreen from "../screens/IT/Sesiones/SesionesScreen";
 
 export const DashboardRoutes = () => {
 
@@ -86,6 +88,15 @@ export const DashboardRoutes = () => {
         }
     );
 
+    const SesionesScreenPermision = Permissible(
+        SesionesScreen,
+        userPermisions, // userPermissions
+        [5], // requiredPermissions
+        () => {
+            navigate("fin/home", { replace: true })
+        }
+    );
+
 
 
     useEffect(() => {
@@ -119,6 +130,7 @@ export const DashboardRoutes = () => {
                     <Route path={`${process.env.REACT_APP_ENV}/IT`} element={<ITScreenPermision />} />
                     <Route path={`${process.env.REACT_APP_ENV}/Roles`} element={<RolesScreenPermision />} />
                     <Route path={`${process.env.REACT_APP_ENV}/Usuarios`} element={<UsuariosScreenPermision />} />
+                    <Route path={`${process.env.REACT_APP_ENV}/Sesiones`} element={<SesionesScreenPermision />} />
 
 
                 </Routes>
