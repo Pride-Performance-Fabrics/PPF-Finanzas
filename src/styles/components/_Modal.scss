@@ -1,0 +1,38 @@
+#editModal_content {
+    overflow: hidden !important;
+}
+
+#editModal {
+    transition-property: all;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in-out;
+}
+
+// DESKTOP XXLARGE GREEN
+@media screen and (min-width: 1920px) {}
+
+// DESKTOP XLARGE PURPLE
+@media screen and (min-width: 1600px) and (max-width: 1919.99px) {}
+
+// DESKTOP LARGE YELLOW
+@media screen and (min-width: 1440px) and (max-width: 1599.99px) {}
+
+// DESKTOP MEDIUM BLUE
+@media screen and (min-width: 1200px) and (max-width: 1439.99px) {}
+
+// DESKTOP SMALL RED
+@media screen and (min-width: 1024px) and (max-width: 1199.99px) {}
+
+// TABLET
+@media screen and (min-width: 768px) and (max-width: 1023.99px) {
+    #editModal {
+        width: 95vw !important;
+    }
+}
+
+// SMARTPHONE
+@media screen and (max-width: 767.99px) {
+    #editModal {
+        width: 100vw !important;
+    }
+}

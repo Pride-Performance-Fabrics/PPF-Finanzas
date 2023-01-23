@@ -542,22 +542,22 @@ function AgGrid({ table }) {
     const EdidMenu = () => {
         if (table?.showEditMenuDefauld) {
             return <div className='d-flex m-1'>
-                <span style={{ fontSize: 24, margin: '5px 2px' }}>
+                <span style={{ fontSize: 24, margin: '6px 2px' }}>
                     <Button icon='pi pi-plus' className='p-button-info' onClick={addRow} >
                         {/* <Icon icon='ri-add-line'/> */}
                     </Button>
                 </span>
-                <span style={{ fontSize: 24, margin: '5px 2px' }}>
+                <span style={{ fontSize: 24, margin: '6px 2px' }}>
                     <Button icon='pi pi-save' className='p-button-success' >
                         {/* <Icon icon='ri-add-line'/> */}
                     </Button>
                 </span>
-                <span style={{ fontSize: 24, margin: '5px 2px' }}>
+                <span style={{ fontSize: 24, margin: '6px 2px' }}>
                     <Button icon='pi pi-pencil' className='p-button-info' >
                         {/* <Icon icon='ri-add-line'/> */}
                     </Button>
                 </span>
-                <span style={{ fontSize: 24, margin: '5px 2px' }}>
+                <span style={{ fontSize: 24, margin: '6px 2px' }}>
                     <Button icon='pi pi-times' className='p-button-danger' >
                         {/* <Icon icon='ri-add-line'/> */}
                     </Button>

@@ -1,0 +1,93 @@
+.tablaListados {
+    table {
+        overflow-x: scroll;
+        // max-height: 100vh;
+        // min-height: 50vh;
+    }
+    tfoot {
+        top: 90%
+    }
+}
+
+.alturaListado60 {
+    table {
+        min-height: 65vh;
+    }
+}
+
+.alturaListado70 {
+    table {
+        min-height: 65vh;
+    }
+}
+
+.alturaListadoConEncabezado {
+    table {
+        min-height: 55vh;
+    }
+}
+
+.alturaListadoAutorizar {
+    table {
+        min-height: 70vh;
+    }
+}
+
+.alturaListadoAprobar {
+    table {
+        min-height: 65vh;
+    }
+}
+
+.p-tabview-panels {
+    padding: 0 !important;
+}
+
+@media only screen and (min-height: 500px) and (max-height: 635px) {
+    .alturaListado60 {
+        table {
+            min-height: 65vh;
+        }
+    }
+    .alturaListado70 {
+        table {
+            min-height: 75vh;
+        }
+    }
+    .alturaListadoConEncabezado {
+        table {
+            min-height: 55vh;
+        }
+    }
+    .alturaListadoAutorizar {
+        table {
+            min-height: 70vh;
+        }
+    }
+    .alturaListadoAprobar {
+        table {
+            min-height: 50vh;
+        }
+    }
+    .text_small {
+        font-size: 0.7rem !important;
+        .p-component,
+        .p-inputtext {
+            font-size: 0.7rem !important;
+        }
+        span {
+            font-size: 0.7rem !important;
+        }
+    }
+}
+
+.tableAnimate {
+    div,
+    table,
+    tr,
+    td {
+        transition-property: all;
+        transition-duration: 0.1s;
+        transition-timing-function: ease-in-out;
+    }
+}

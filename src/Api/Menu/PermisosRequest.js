@@ -29,6 +29,6 @@ export const getPermisos = async(idUser) => {
 
 // CAMBIAR LOS PERMISOS DE UN USUARIO
 export const changePermisos = async(Permisos) => {
-    const respuesta = await PrivateInterceptor(`Permisos/changePermisos`, 'PUT', Permisos)
+    const respuesta = await PrivateInterceptor(`Permisos/cambiarPermisos`, 'PUT', Permisos)
     return respuesta;
 }

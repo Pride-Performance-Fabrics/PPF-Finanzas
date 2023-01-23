@@ -113,6 +113,7 @@ thead {
 .modal__contenedor {
     background-color: #FFF;
     z-index: 100;
+    margin: 5% !important;
 }
 
 .p-column-filter-menu-button,
@@ -548,4 +549,12 @@ thead {
 
 .m-0 {
     margin: 0
+}
+
+.p-button{
+    background-color: #0684b6;
+    border: #0684b6 !important;
+    &:enabled:hover {
+      background-color:#149ec4;
+    }
 }

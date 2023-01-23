@@ -1,0 +1,62 @@
+.rolesData-Table .table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    right: 0;
+}
+
+.search {
+    width: 300px !important;
+}
+
+@media screen and (max-width: 960px) {
+    .rolesData-Table .table-header {
+        align-items: flex-start;
+    }
+}
+
+.rolesData-Table .confirmation-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media screen and (max-width: 800px) {
+    .rolesData-Table .p-toolbar {
+        flex-wrap: wrap;
+    }
+    // p-datatable p-component p-datatable-hoverable-rows p-datatable-auto-layout p-datatable-resizable p-datatable-resizable-fit p-datatable-scrollable p-datatable-scrollable-vertical p-datatable-responsive-scroll p-datatable-striped p-datatable-sm{
+    //     height: 80vh;
+    // }
+    .rolesData-Table .p-toolbar .p-button {
+        margin-bottom: 0.25rem;
+    }
+    .rolesData-Table .table-header {
+        flex-direction: column;
+    }
+    .rolesData-Table .table-header .p-input-icon-left,
+    .rolesData-Table .table-header input {
+        width: 100%;
+    }
+}
+
+.p-progress-spinner {
+    display: block;
+}
+
+@keyframes ui-progress-spinner-color {
+    100%,
+    0% {
+        stroke: #d62d20;
+    }
+    40% {
+        stroke: #0057e7;
+    }
+    66% {
+        stroke: #008744;
+    }
+    80%,
+    90% {
+        stroke: #ffa700;
+    }
+}

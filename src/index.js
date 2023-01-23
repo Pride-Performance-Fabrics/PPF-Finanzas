@@ -10,7 +10,8 @@ import reportWebVitals from './reportWebVitals';
 // import "primereact/resources/themes/saga-purple/theme.css";
 // import "primereact/resources/themes/saga-purple/theme.css";
 // import "primereact/resources/themes/lara-light-purple/theme.css";
-import "primereact/resources/themes/lara-light-teal/theme.css";
+import "primereact/resources/themes/saga-blue/theme.css";
+// import "primereact/resources/themes/fluent-light/theme.css";
 import "primereact/resources/primereact.min.css";                  //core css
 import "primeicons/primeicons.css";                                //icons
 import './styles/styles.scss';
