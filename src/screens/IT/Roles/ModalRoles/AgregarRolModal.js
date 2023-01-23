@@ -13,7 +13,7 @@ import { validarRespuesta } from '../../../../services/crypto';
 
 
 
-export const AgregarRolModal = () => {
+export const AgregarRolModal = ({roles}) => {
     const toast = useRef(null);
     const [formData, setFormData] = useState({});
     const [rolDialog, setRolDialog] = useState(false);
@@ -49,6 +49,7 @@ export const AgregarRolModal = () => {
                    
                 } else {
                     showSuccess()
+                    roles()
                     setFormData({})
                     formik.resetForm(formData)
                     hideDialog()

@@ -13,7 +13,7 @@ import ModificarRolModal from "./ModalRoles/ModificarRolModal";
 import AgregarRolModal from "./ModalRoles/AgregarRolModal";
 import { validarRespuesta } from "../../../services/crypto";
 
-import { getRoles } from "../../../Api/IT/Roles/RolesRequest"
+import { getRoles } from "../../../Api/IT/Roles/RolesRequest";
 // import './RolesStyle.css';
 
 
@@ -36,8 +36,8 @@ export const RolesScreen = () => {
     const [loading, setLoading] = useState(true)
 
 
-    // const getRoles = async () => {
-    //     const promesa = await fetch(`${instancias.API_URL}/roles?${Date.now()}`, {
+    // const getListadoRoles = async () => {
+    //     const promesa = await fetch(`${instancias.API_URL}/Roles?${Date.now()}`, {
     //         headers: { 'x-access-token': localStorage.getItem('ppfToken') }
     //     });
 
@@ -56,6 +56,9 @@ export const RolesScreen = () => {
 
     // }
 
+   
+
+
     useEffect(() => {
         window.document.title = 'PPF • IT Roles';
         getRoles();
@@ -65,7 +68,7 @@ export const RolesScreen = () => {
     const showRol = (rowData) => {
         return (
             // <div style ={{alignContent:"right"}}>
-                <ModificarRolModal datos = {rowData} updateRoles = {getRoles}/>
+                <ModificarRolModal datos = {rowData} updateRoles = {getListadoRoles}/>
             // </div>
         );
     }
@@ -111,6 +114,7 @@ export const RolesScreen = () => {
     })
     
     const getListadoRoles = async () => {
+        console.log("s")
         setLoading(true);
         const result = await getRoles();
         setTable({
@@ -138,7 +142,7 @@ export const RolesScreen = () => {
                 contenido={
 
                     <div className='p-3' style={{ height: '90vh' }}>
-                        <AgregarRolModal />
+                        <AgregarRolModal roles = {getListadoRoles}/>
                         <br></br><br></br>
                         <AgGrid table={table} />
                     </div>

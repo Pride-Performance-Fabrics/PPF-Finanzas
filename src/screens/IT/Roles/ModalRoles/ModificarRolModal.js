@@ -61,13 +61,15 @@ export const ModificarRolModal = ({ datos, updateRoles }) => {
             .then((res) => {
                 validarRespuesta(res);
                 if (res.code === "EREQUEST") {
-                    showError()
+                    toastShow(toast, 'error', 'Error', 'Error al modificar el rol');
+                    console.log("error")
                     setLoading1(false);
                 } else {
-                    // updateRoles()
+                    updateRoles()
+                    console.log(updateRoles())
                     setTimeout(() => {
                         updateRoles()
-                        showSuccess()
+                        toastShow(toast, 'success', 'Modificdo', 'Rol modificado.');
                         hideDialog();
                         setLoading1(false);
                     }, 400);
@@ -206,13 +208,13 @@ export const ModificarRolModal = ({ datos, updateRoles }) => {
         setSelectedPermisos(_selectedPermisos);
     }
 
-    // HOOKS de efecto que retorna la funcion getUsuarios
+    // HOOKS de efecto que retorna la funcion getListadoRoles
     useEffect(() => {
         console.log(datos)
-        updateRoles()
+        // updateRoles()
         // getPermisos(datos.IdRol);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [loading1]);
 
 
 
