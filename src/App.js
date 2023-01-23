@@ -38,7 +38,6 @@ function App() {
           <AppRouter />
         </MemoContainer>
       </View>
-      // {/* <Footer/> */}
     </AuthContext.Provider>
 
   );
