@@ -16,6 +16,7 @@ import { validarRespuesta } from "../../../../services/crypto";
 
 import { getRoles } from "../../../../Api/IT/Roles/RolesRequest";
 import { getEstadosSecurity } from "../../../../Api/Global/StatusRequest";
+import { toastShow } from '../../../../services/ToastService'
 
 
 export const ModalAgregarUsuario = ({ usuarios }) => {
@@ -97,7 +98,7 @@ export const ModalAgregarUsuario = ({ usuarios }) => {
         IdRol = formik.values.IdRol.IdRol
 
         if (Usuario === "" || UserName === "" || Password === "" || Mail === "") {
-            showError()
+            toastShow(toast, 'error', 'Error', 'Error al crear el  usuario ingrese correctamente la informacion');
         }
         else {
             // TODO PETICION -> FUNCION
@@ -119,17 +120,36 @@ export const ModalAgregarUsuario = ({ usuarios }) => {
 
             await promesa.json()
 
-                .then(function (res) {
-                    validarRespuesta(res);
-                    showSuccess()
+            .then(function (res) {
+                validarRespuesta(res);
+                if (res.rowsAffected) {
+                    toastShow(toast, 'error', 'Error', 'Error al crear el usuario');
+                    return true;
+                   
+                } else {
+                    toastShow(toast, 'success', 'Creado', 'Usuario Creado Correctamente.');
+                    usuarios()
                     setFormData({})
                     formik.resetForm(formData)
-                    usuarios()
                     hideDialog()
-                })
-                .catch((error) => {
-                    console.error(error)
-                })
+                    return true;
+                }
+            })
+            // .catch((error) => {
+            //     console.error(error)
+            //     return false;
+            // })
+            //     .then(function (res) {
+            //         validarRespuesta(res);
+            //         toastShow(toast, 'success', 'Creado', 'Usuario Creado Correctamente.');
+            //         usuarios()
+            //         setFormData({})
+            //         formik.resetForm(formData)
+            //         hideDialog()
+            //     })
+            //     .catch((error) => {
+            //         console.error(error)
+            //     })
 
         }
     }
@@ -176,11 +196,11 @@ export const ModalAgregarUsuario = ({ usuarios }) => {
 
         onSubmit: async (data) => {
             setFormData(data);
-            await agregarUsuario(data.Usuario, data.UserName,
-                data.Mail,
-                data.Password,
-                data.Status,
-                data.IdRol);
+            // await agregarUsuario(data.Usuario, data.UserName,
+            //     data.Mail,
+            //     data.Password,
+            //     data.Status,
+            //     data.IdRol);
             setShowMessage(true);
         }
     });
@@ -220,7 +240,7 @@ export const ModalAgregarUsuario = ({ usuarios }) => {
     // UseEffect que obtiene las datos de las funciones para getRoles y getEstados para mostrar
     // la informacion en los Dropdown (Select de opciones)
     useEffect(() => {
-
+        // usuarios()
     }, [])
 
     return (
@@ -238,7 +258,7 @@ export const ModalAgregarUsuario = ({ usuarios }) => {
                 <div className="flex justify-content-center" >
                     <Dialog visible={usuarioDialog} header="Registrar Nuevo Usuario" modal className="modal__contenedor modal__usuarios"
                         footer={userDialogFooter} onHide={hideDialog}>
-                        <form onSubmit={formik.handleSubmit} className="p-fluid" style={{ margin: "Auto", marginBottom: 0 }}>
+                        <form  className="p-fluid" style={{ margin: "Auto", marginBottom: 0 }}>
                             <div className="modal__input-contenedor">
                                 <div className="field col-6 me-2" >
                                     <span className="p-float-label">

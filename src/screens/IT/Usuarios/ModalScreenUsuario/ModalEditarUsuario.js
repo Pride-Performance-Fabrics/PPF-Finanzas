@@ -79,7 +79,7 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
             body: JSON.stringify({
                 to: formik.values.Mail,
                 subject: subject,
-                texto: texto
+                html: texto
             })
         });
 
@@ -330,6 +330,7 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
 
     useEffect(() => {
         getMenu()
+        // console.log(datos)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [permisos])
 
@@ -396,10 +397,10 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
                         <h5 className="colorh5">Registro Creado Existosamente</h5>
                     </div>
                 </Dialog>
-                <div className="flex justify-content-center" >
+                <div className="flex justify-content-center" style = {{marginTop: 5}}>
                     <Dialog id="editModal1" visible={usuarioDialog} breakpoints={{ '960px': '75vw', '640px': '100vw' }} header="Editar Usuario" modal className="modal__contenedor modal__usuarios"
                         onHide={hideDialog}>
-                        <form onSubmit={formik.handleSubmit} className="p-fluid" style={{ margin: "Auto" }}>
+                        <form onSubmit={formik.handleSubmit} className="p-fluid" style={{ margin: "Auto", marginTop: 5}}>
                             <div style={{ display: "none" }}>
                                 <div className="field col-6 me-2">
                                     <span className="p-float-label">
@@ -469,7 +470,7 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
                                 <div className="field col-6 me-2">
                                     <span className="p-float-label">
                                         <Dropdown id="IdStatus" name="IdStatus" value={formik.values.IdStatus} onChange={formik.handleChange}
-                                            options={estados} optionLabel="StatusName" placeholder={formik.values.StatusName} />
+                                            options={estados} optionLabel="StatusName" placeholder={formik.values.StatusName} label ={formik.values.StatusName} />
                                     </span>
                                 </div>
                                 <></>

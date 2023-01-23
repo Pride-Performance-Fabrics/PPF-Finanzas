@@ -40,10 +40,10 @@ export const UsuariosScreen = () => {
     const statusBodyTemplate = (e) => {
 
         if (e.StatusName === "Active") {
-            return <Tag style={{ width: 50, height: 20, marginTop:-10  }} severity="success" className={`product-badge status-${e.StatusName}`}>{e.StatusName}</Tag>;
+            return <Tag style={{ width: 60 }} severity="success" value={e.StatusName}/>
         }
         else {
-            return <Tag style={{ width: 60, height: 20 }} severity="danger" className={`product-badge status-${e.StatusName}`}>{e.StatusName}</Tag>;
+            return <Tag style={{ width: 60 }} severity="danger" value={e.StatusName}/>
         }
 
     }
@@ -92,7 +92,7 @@ export const UsuariosScreen = () => {
             {
                 field: 'Usuario',
                 header: 'Usuario',
-                className: 'colum-width-Xsmall',
+                className: 'colum-width-medium',
                 body: (rowData) => rowData.Usuario,
             },
             {
@@ -104,7 +104,7 @@ export const UsuariosScreen = () => {
             {
                 field: 'Rol',
                 header: 'Rol',
-                className: 'colum-width-Xsmall',
+                className: 'colum-width-medium',
                 body: (rowData) => rowData.Rol,
             },
             {
@@ -163,7 +163,9 @@ export const UsuariosScreen = () => {
     }, [])
 
 
+    const rowHeight = 50;
 
+    
 
 
     return (
@@ -175,9 +177,9 @@ export const UsuariosScreen = () => {
                 contenido={
 
                     <div className='p-3' style={{ height: '90vh' }}>
-                        <ModalAgregarUsuario usuarios={getUsuarios} />
+                        <ModalAgregarUsuario usuarios={getListadoUsuarios} />
                         <br></br>
-                        <AgGrid table={table} />
+                        <AgGrid table={table}  />
                     </div>
                 }
             />
