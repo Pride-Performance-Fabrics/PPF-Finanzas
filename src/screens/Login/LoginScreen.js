@@ -15,6 +15,8 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 
 import logoH from '../../assets/SVG/Primario_H.svg';
 
+import CryptoJS from "crypto-js";
+
 
 
 
@@ -55,6 +57,16 @@ export const LoginScreen = () => {
 
     const ingresoLogin = async () => {
         // TODO PETICION -> FUNCION
+
+        var encrypted = CryptoJS.AES.encrypt(formik.values.password,"finazas2023").toString()
+
+        // console.log(`Encriptacion pass:`,encrypted)
+    
+        var decrypted = CryptoJS.AES.decrypt(encrypted, "finazas2023").toString(CryptoJS.enc.Utf8)
+
+        // console.log(`Desencriptacion`, decrypted)
+        
+
         const promesa = await fetch(`${instancias.API_URL}/users/login?${Date.now()}`, {
             method: 'POST',
             headers: {
@@ -63,7 +75,7 @@ export const LoginScreen = () => {
             },
             body: JSON.stringify({
                 Usuario: formik.values.user,
-                Password: formik.values.password,
+                Password: encrypted,
                 IP: ip,
                 subscription: null,
                 divece: 'web'
