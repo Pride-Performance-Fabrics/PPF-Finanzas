@@ -15,7 +15,7 @@ export const AppRouter = () => {
                 <Routes >
                     {/* LOGIN */}
                     <Route path={`${process.env.REACT_APP_ENV}/login`} element={<LoginScreen />} />
-                    
+                    <Route path="*" element={<Navigate from="*" to={`${process.env.REACT_APP_ENV}/login`} />} />
                 </Routes>
             </BrowserRouter>
         )
