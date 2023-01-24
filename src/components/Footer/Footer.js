@@ -72,7 +72,8 @@ const Footer = ({ user }) => {
                 </div>
                 <div className="d-flex align-items-center">
                     <span className={`p-menuitem-icon pi pi-fw pi-desktop footer_column-icon mx-2`} ></span>
-                    <small className="footer_column-info">API: {(process.env.REACT_APP_API_URL).replace('https://were.ppf.com.hn/', '')}</small>
+                    <small className="footer_column-info">API: {(process.env.REACT_APP_API_URL).replace('https://apoc.ppf.com.hn/', '')}</small>
+                    {/* <small className="footer_column-info">API: API-FIN</small> */}
                 </div>
 
 
