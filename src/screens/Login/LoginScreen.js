@@ -179,7 +179,7 @@ export const LoginScreen = () => {
     );
 
     return (
-        <div style={{ backgroundImage: `url(${process.env.PUBLIC_URL + '/imagenes/PPFLogin.jpg'})`, backgroundPosition: 'center' }} className="login__contenedor-imagen">
+        <div style={{ backgroundImage: `url(${process.env.PUBLIC_URL + '/imagenes/PPFLogin1.jpg'})`, backgroundPosition: 'center' }} className="login__contenedor-imagen">
             <div className="login__contenedor-formulario" >
                 <div className={classNames("progressSpinner-container spinner-login", { 'isVisible': false })}>
                     <ProgressSpinner />
