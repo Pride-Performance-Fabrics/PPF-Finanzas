@@ -14,7 +14,7 @@ const HomeScreen = () => {
     }, [])
     return (
         <Fragment>
-            <div style={{ backgroundImage: `url("https://were.ppf.com.hn/web/Fondo.jpg")`, bottom: 0, backgroundSize: 'cover', backgroundPosition: 'center', overflow: 'hiddden' }}
+            <div style={{ backgroundImage: `url("https://apoc.ppf.com.hn/fin/imagenes/PPFLogin2.jpg")`, bottom: 0, backgroundSize: 'cover', backgroundPosition: 'center', overflow: 'hiddden' }}
                 className="contenedor-imagen animate__animated animate__fadeIn animate__faster ">
                 {/* <TabView className="col-12 homeTabView" activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)}>
                 

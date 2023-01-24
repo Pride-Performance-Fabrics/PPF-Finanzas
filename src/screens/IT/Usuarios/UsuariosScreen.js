@@ -86,7 +86,7 @@ export const UsuariosScreen = () => {
             {
                 field: 'idPersonal',
                 header: 'IdPersonal',
-                className: 'colum-width-Xsmall',
+                className: 'colum-width-medium',
                 body: (rowData) => rowData.idPersonal,
             },
             {
