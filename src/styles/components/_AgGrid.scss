@@ -10,6 +10,7 @@
     --ag-header-foreground-color: #000 !important;
     --ag-grid-size: 10px !important;
     .ag-header {
+        color: #fff !important;
         background-color: var(--primary-900);
     }
     .ag-header-row {
@@ -17,14 +18,18 @@
     }
     input[class^=ag-] {
         // background-color: var(--primary-900);
-        color: #000;
+        color: #fff !important
     }
     .ag-header-row-column-filter {
         background-color: #FFF;
-        color: #000;
+        color: #fff;
     }
     .ag-header-group-cell-label {
         justify-content: center;
+    }
+
+    .ag-header-cell-label{
+        color: #fff !important;
     }
 }
 

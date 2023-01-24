@@ -12,6 +12,15 @@ import { Tag } from "primereact/tag";
 import { validarRespuesta } from "../../../services/crypto";
 import { getDate } from "../../../services/FechasService";
 
+//************** Componentes generales **************/
+
+import Card from '../../../components/Card/Card';
+import Icon from '../../../components/icon/Icon';
+import Loader from '../../../components/Loader/Loader';
+import IconApp from '../../../components/icon/IconApp';
+import AgGrid from '../../../components/Tables/AgGrid';
+
+
 
 const SesionesScreen = () => {
 
@@ -30,6 +39,7 @@ const SesionesScreen = () => {
   });
 
   const getUsuariosActivos = async () => {
+    console.log("entro aqui")
     setLoading(true);
     const promesa = await fetch(`${instancias.API_URL}/sesiones?${Date.now()}`, {
       headers: { 'x-access-token': localStorage.getItem('ppfToken') }
@@ -53,10 +63,10 @@ const SesionesScreen = () => {
       });
   }
 
-  useEffect(() => {
-    window.document.title = 'PPF • IT Sesiones'
-    getUsuariosActivos();
-  }, [])
+  // useEffect(() => {
+  //   window.document.title = 'PPF • IT Sesiones'
+  //   getUsuariosActivos();
+  // }, [])
 
 
   // *********    BUSQUEDA  *********
@@ -79,67 +89,156 @@ const SesionesScreen = () => {
     const Vencimiento = new Date(rowData.Vencimiento)
     const now = new Date()
     if (Vencimiento > now) {
-      return <Tag style={{ width: 60 }} severity="success" className={`product-badge status-active`}>Activo</Tag>;
+      return <Tag style={{ width: 60 }} severity="success" className={`product-badge status-active`} value = {"Activo"}/>;
     }
     else {
-      return <Tag style={{ width: 60 }} severity="danger" className={`product-badge status-inactive`}>Inactivo</Tag>;
+      return <Tag style={{ width: 60 }} severity="danger" className={`product-badge status-inactive`} value = {"Inactivo"}/>;
     }
   }
 
   const typeLabel = (rowData) => {
     if (rowData.Type === 'APP') {
-      return <Tag style={{ width: 60 }} severity="warning" className={`product-badge status-active`}>APP</Tag>;
+      return <Tag style={{ width: 60 }} severity="warning" className={`product-badge status-active`} value = {"APP"}/>;
     }
     else {
-      return <Tag style={{ width: 60 }} severity="insfo" className={`product-badge status-inactive`}>WEB</Tag>;
+      return <Tag style={{ width: 60 }} severity="insfo" className={`product-badge status-inactive`} value = {"WEB"}/>;
     }
   }
 
   const DeviceLabel = (rowData) => {
     if (rowData.Device === 'android') {
-      return <i style={{ color: '#3DDA84', margin: 'auto' }} className='pi pi-android'/>
+      return <i style={{ color: '#3DDA84', margin: 'auto' }} className='pi pi-android' />
     }
     if (rowData.Device === 'ios') {
-      return <i style={{ margin: 'auto' }} className='pi pi-apple'/>
+      return <i style={{ margin: 'auto' }} className='pi pi-apple' />
     }
     if (rowData.Device === null) {
-      return <i style={{ margin: 'auto' }} className='pi pi-desktop'/>
+      return <i style={{ margin: 'auto' }} className='pi pi-desktop' />
     }
   }
 
-  const Creada = rowData => {
-    if(rowData.Creada.getTime() !== 0){
-      return <span>{rowData.Creada.toLocaleString()}</span>
-    }
-   }
-  const Vencimiento = rowData => { 
-    if(rowData.Type !== 'APP'){
+  // const Creada = (e) => {
+  //   console.log(e.Creada)
+  //   if (rowData.Creada.getTime() !== 0) {
+  //     return <span>{rowData.Creada.toLocaleString()}</span>
+  //   }
+  // }
+  const Vencimiento = rowData => {
+    if (rowData.Type !== 'APP') {
       return <span>{rowData.Vencimiento.toLocaleString()}</span>;
     }
-      return '';
+    return '';
   }
+
+
+  const Columns = [
+    {
+
+      field: 'IdSession',
+      header: 'IdSession',
+      className: 'colum-width-small',
+      body: (rowData) => rowData.IdSession,
+    },
+    {
+      field: 'idUser',
+      header: 'idUser',
+      className: 'colum-width-small',
+      body: (rowData) => rowData.idUser,
+    },
+    {
+      field: 'UserName',
+      header: 'UserName',
+      className: 'colum-width-small',
+      body: (rowData) => rowData.UserName,
+    },
+
+    {
+     
+      field: 'Creada',
+      header: 'Creada',
+      Format: 'DateTime',
+      className: 'small'
+    },
+    {
+      field: 'Vencimiento',
+      header: 'Vencimiento',
+      
+      Format: 'DateTime',
+      className: 'small'
+    },
+    {
+      field: 'IP',
+      header: 'IP',
+      className: 'colum-width-medium',
+      body: (rowData) => rowData.IP,
+    },
+    {
+      field: 'Estado',
+      header: 'Estado',
+      className: 'colum-width-medium',
+      Format: 'Template',
+      body: rowData => labelStatus(rowData),
+    },
+    {
+      field: 'Type',
+      header: 'Type',
+      className: 'colum-width-medium',
+      Format: 'Template',
+      body: (rowData) => typeLabel(rowData),
+    },
+    {
+      field: 'Device',
+      header: 'Device',
+      className: 'colum-width-medium',
+      body: (rowData) => DeviceLabel(rowData),
+
+    }
+
+
+
+  ]
+
+  const table = {
+    Columns: Columns,
+    Data: usuariosActivos
+  }
+
+  // const getListadoSesiones = async () => {
+  //   console.log("s")
+  //   setLoading(true);
+  //   const result = await getUsuariosActivos();
+  //   setTable({
+  //     ...table,
+  //     Data: result,
+  //     key: 'IdSession'
+  //   })
+  //   setLoading(false);
+  // }
+
+  useEffect(() => {
+    getUsuariosActivos();
+    window.document.title = 'PPF • IT Sesiones';
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
 
 
 
   return (
-    <div className="px-4">
-      <DataTable value={usuariosActivos} size={'small'} resizableColumns columnResizeMode="fit" dataKey="idUser" emptyMessage="No se han encontrado coincidencias."
-        paginator rows={50} rowsPerPageOptions={[50, 100, 200]} globalFilter={globalFilter} sortOrder={-1} removableSort sortMode="multiple"
-        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-        scrollable scrollHeight="75vh" autoLayout loading={loading} rowHover stripedRows={true} responsiveLayout="scroll" header={header}
-        filters={filters} filterDisplay='row' >
+    <div>
+      <Loader loading={loading} />
+      <Card
 
-        <Column field="idUser" header='idUser' style={{ maxWidth: '10%', paddingLeft: 20 }} filter showFilterMenu={false} sortable></Column>
-        <Column field="Usuario" header='idUser' style={{ maxWidth: '10%', paddingLeft: 20 }} filter showFilterMenu={false} sortable></Column>
-        <Column field="UserName" header='idUser' style={{ width: '10%', paddingLeft: 20 }} filter showFilterMenu={false} sortable></Column>
-        <Column field="Creada" body={Creada} header='Ingreso' style={{ width: '10%', paddingLeft: 20 }} filter showFilterMenu={false} sortable></Column>
-        <Column field="Vencimiento" body={Vencimiento} header='Vencimiento' style={{ width: '10%', paddingLeft: 20 }} filter showFilterMenu={false} sortable></Column>
-        {/* <Column field="TiempoActivo" header="Tiempo Activo" body={tiempoActivo} sortable style={{ maxWidth: '15%' }}></Column> */}
-        <Column field="IP" header="IP" style={{ width: '10%', paddingLeft: 20 }} filter showFilterMenu={false} sortable></Column>
-        <Column field="Estado" header="Status" body={labelStatus} sortable style={{ maxWidth: '15%' }} ></Column>
-        <Column field="Type" header="Type" body={typeLabel} sortable style={{ maxWidth: '15%' }} ></Column>
-        <Column field="Device" header="Device" body={DeviceLabel} sortable  ></Column>
-      </DataTable>
+        titulo={<h3>Usuarios Activos</h3>}
+        contenido={
+
+          <div className='p-3' style={{ height: '90vh' }}>
+            {/* <AgregarRolModal roles = {getListadoRoles}/> */}
+            <br></br>
+            <AgGrid table={table} />
+          </div>
+        }
+      />
     </div>
   )
 }
