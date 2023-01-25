@@ -16,7 +16,9 @@ import { validarRespuesta } from "../../../../services/crypto";
 
 import { getRoles } from "../../../../Api/IT/Roles/RolesRequest";
 import { getEstadosSecurity } from "../../../../Api/Global/StatusRequest";
-import { toastShow } from '../../../../services/ToastService'
+import { toastShow } from '../../../../services/ToastService';
+
+import CryptoJS from "crypto-js";
 
 
 export const ModalAgregarUsuario = ({ usuarios }) => {
@@ -89,18 +91,24 @@ export const ModalAgregarUsuario = ({ usuarios }) => {
     }
 
     // Funcion de para agregar un nuevo usuario
-    const agregarUsuario = async (Usuario, UserName, Mail, Password, Status, IdRol) => {
+    const agregarUsuario = async (Usuario, UserName, Mail, Password, Status, IdRol, idPersonal) => {
+
+        var PasswordEncrypted = CryptoJS.AES.encrypt(formik.values.Password, "finazas2023").toString();
+
+        console.log(PasswordEncrypted)
+
         Usuario = formik.values.Usuario;
         UserName = formik.values.UserName;
         Password = formik.values.Password;
         Mail = formik.values.Mail;
         Status = formik.values.Status.codigo;
         IdRol = formik.values.IdRol.IdRol
+        idPersonal = formik.values.idPersonal
 
-        if (Usuario === "" || UserName === "" || Password === "" || Mail === "") {
-            toastShow(toast, 'error', 'Error', 'Error al crear el  usuario ingrese correctamente la informacion');
-        }
-        else {
+        // if (Usuario === "" || UserName === "" || Password === "" || Mail === "" || idPersonal === "") {
+        //     toastShow(toast, 'error', 'Error', 'Error al crear el  usuario ingrese correctamente la informacion');
+        // }
+        // else {
             // TODO PETICION -> FUNCION
             const promesa = await fetch(`${instancias.API_URL}/users/`, {
                 method: 'POST',
@@ -109,9 +117,11 @@ export const ModalAgregarUsuario = ({ usuarios }) => {
                     'x-access-token': localStorage.getItem('ppfToken')
                 },
                 body: JSON.stringify({
-                    Usuario: Usuario,
+                    idPersonal: formik.values.idPersonal,
+                    Usuario: (Usuario).toLowerCase(),
                     UserName: formik.values.UserName,
-                    Password: formik.values.Password,
+                    PasswordN: PasswordEncrypted,
+                    Password: PasswordEncrypted,
                     Mail: formik.values.Mail,
                     Status: formik.values.Status.IdStatus,
                     IdRol: formik.values.IdRol.IdRol
@@ -120,21 +130,25 @@ export const ModalAgregarUsuario = ({ usuarios }) => {
 
             await promesa.json()
 
-            .then(function (res) {
-                validarRespuesta(res);
-                if (res.rowsAffected) {
-                    toastShow(toast, 'error', 'Error', 'Error al crear el usuario');
-                    return true;
-                   
-                } else {
-                    toastShow(toast, 'success', 'Creado', 'Usuario Creado Correctamente.');
-                    usuarios()
-                    setFormData({})
-                    formik.resetForm(formData)
-                    hideDialog()
-                    return true;
-                }
-            })
+                .then(function (res) {
+                    validarRespuesta(res);
+                    if (res.rowsAffected) {
+                        toastShow(toast, 'error', 'Error', 'Error al crear el usuario');
+                        return true;
+
+                    } else {
+                        toastShow(toast, 'success', 'Creado', 'Usuario Creado Correctamente.');
+                        usuarios()
+                        setFormData({})
+                        formik.resetForm(formData)
+                        hideDialog()
+                        return true;
+                    }
+                })
+
+
+
+            ///************************************************ */
             // .catch((error) => {
             //     console.error(error)
             //     return false;
@@ -151,13 +165,14 @@ export const ModalAgregarUsuario = ({ usuarios }) => {
             //         console.error(error)
             //     })
 
-        }
+        // }
     }
 
 
     // Validaciones del Formik 
     const formik = useFormik({
         initialValues: {
+            idPersonal: '',
             Usuario: '',
             UserName: '',
             Mail: '',
@@ -167,6 +182,13 @@ export const ModalAgregarUsuario = ({ usuarios }) => {
         },
         validate: (data) => {
             let errors = {};
+
+            if (!data.idPersonal) {
+                errors.idPersonal = 'Se requiere el codigo de personal.';
+            }
+            else if (!/^[0-9]{2,10}$/i.test(data.idPersonal)) {
+                errors.idPersonal = 'El codigo no debe contener letras';
+            }
             if (!data.Usuario) {
                 errors.Usuario = 'Se requiere el Usuario.';
             }
@@ -177,12 +199,15 @@ export const ModalAgregarUsuario = ({ usuarios }) => {
             if (!data.Mail) {
                 errors.Mail = 'Se requiere el Correo.';
             }
-            else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(data.email)) {
+            else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(data.Mail)) {
                 errors.Mail = 'Correo Electronico Ivalido. E.g. example@email.com';
             }
 
             if (!data.Password) {
                 errors.Password = 'Se requiere el Password.';
+            }
+            else if (!/^[a-z0-9]{1,100}$/i.test(data.Password)) {
+                errors.Password = 'No se permiten espacios en blanco ni caracteres especiales';
             }
             if (!data.Status) {
                 errors.Status = 'Se requiere el estado del usuario.';
@@ -195,13 +220,19 @@ export const ModalAgregarUsuario = ({ usuarios }) => {
         },
 
         onSubmit: async (data) => {
-            setFormData(data);
-            // await agregarUsuario(data.Usuario, data.UserName,
-            //     data.Mail,
-            //     data.Password,
-            //     data.Status,
-            //     data.IdRol);
-            setShowMessage(true);
+            if (isFormFieldValid) {
+                setFormData(data);
+                await agregarUsuario( data.idPersonal,
+                    data.Usuario, data.UserName,
+                    data.Mail,
+                    data.Password,
+                    data.Status,
+                    data.IdRol);
+                // setShowMessage(true);
+            } else {
+                toastShow(toast, 'error', 'Error', 'Error al ingresar los datos del usuario');
+            }
+
         }
     });
 
@@ -214,18 +245,20 @@ export const ModalAgregarUsuario = ({ usuarios }) => {
 
     };
 
-    // Footer del Modal Editar 
-    const userDialogFooter = (
-        <React.Fragment>
-            <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
-            <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={agregarUsuario} />
-        </React.Fragment>
-    );
+    // // Footer del Modal Editar 
+    // const userDialogFooter = (
+    //     <React.Fragment>
+    //         <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
+    //         <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={agregarUsuario} />
+    //     </React.Fragment>
+    // );
 
     // Funciones para Mostrar Mensajes
     const dialogFooter = <div className="flex justify-content-center">
         <Button label="OK" className="p-button-text" autoFocus onClick={() => setShowMessage(false)} /></div>;
     const passwordHeader = <h6>Elige Tu Contraseña</h6>;
+
+
     const passwordFooter = (
         <React.Fragment>
             <Divider />
@@ -257,8 +290,18 @@ export const ModalAgregarUsuario = ({ usuarios }) => {
                 </Dialog>
                 <div className="flex justify-content-center" >
                     <Dialog visible={usuarioDialog} header="Registrar Nuevo Usuario" modal className="modal__contenedor modal__usuarios"
-                        footer={userDialogFooter} onHide={hideDialog}>
-                        <form  className="p-fluid" style={{ margin: "Auto", marginBottom: 0 }}>
+                        onHide={hideDialog}>
+                        <form onSubmit={formik.handleSubmit} className="p-fluid" style={{ margin: "Auto", marginBottom: 0 }}>
+                            <div className="modal__input-contenedor">
+                                <div className="field col-6 me-2" >
+                                    <span className="p-float-label">
+                                        <InputText id="idPersonal" name="idPersonal" value={formik.values.idPersonal} onChange={formik.handleChange} autoFocus
+                                            className={classNames({ 'p-invalid': isFormFieldValid('idPersonal') })} autoComplete="off" />
+                                        <label htmlFor="idPersonal" className={classNames({ 'p-error': isFormFieldValid('idPersonal') })}>Codigo Personal</label>
+                                    </span>
+                                    {getFormErrorMessage('idPersonal')}
+                                </div>
+                            </div>
                             <div className="modal__input-contenedor">
                                 <div className="field col-6 me-2" >
                                     <span className="p-float-label">
@@ -309,6 +352,10 @@ export const ModalAgregarUsuario = ({ usuarios }) => {
                                         <Dropdown id="IdRol" name="IdRol" value={formik.values.IdRol} onChange={formik.handleChange} options={roles} optionLabel="Rol" placeholder="Roles" />
                                     </span>
                                 </div>
+                            </div>
+                            <div className="p-dialog-footer">
+                                <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
+                                <Button type='submit' label="Save" icon="pi pi-check" className="p-button-text" />
                             </div>
                             {/* <div className ="divContenedor" style={{width: "50%"}}>
                                 <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
