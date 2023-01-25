@@ -117,7 +117,8 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
         setLoading1(true);
         if (typeof formik.values.Password === 'undefined') {
             const user = {
-                Usuario: formik.values.Usuario,
+                idPersonal : formik.values.idPersonal,
+                Usuario: (formik.values.Usuario).toLowerCase(),
                 UserName: formik.values.UserName,
                 Mail: formik.values.Mail,
                 // Password: formik.values.Password === "" ? 
@@ -162,9 +163,20 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
         validate: (data) => {
 
             let errors = {};
+            if (!data.idPersonal) {
+                errors.idPersonal = 'Se requiere el Usuario.';
+            }
+            else if (!/^[0-9]{2,10}$/i.test(data.idPersonal)) {
+                errors.idPersonal = 'El codigo no debe contener letras';
+            }
+
             if (!data.Usuario) {
                 errors.Usuario = 'Se requiere el Usuario.';
             }
+            // else if (!/[^A-Z0-9.%+-]{2,10}$/i.test(data.Usuario)) {
+            //     errors.Usuario = 'No se aceptan letras en mayuscula.';
+            // }
+
             if (!data.UserName) {
                 errors.UserName = 'Se requiere el Nombre.';
             }
@@ -408,6 +420,16 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
                                             className={classNames({ 'p-invalid': isFormFieldValid('Usuario') })} />
                                     </span>
                                     {getFormErrorMessage('Usuario')}
+                                </div>
+                            </div>
+                            <div className="modal__input-contenedor">
+                                <div className="field col-6 me-2" >
+                                    <span className="p-float-label">
+                                        <InputText id="idPersonal" name="idPersonal" value={formik.values.idPersonal} onChange={formik.handleChange} autoFocus
+                                            className={classNames({ 'p-invalid': isFormFieldValid('idPersonal') })} autoComplete="off" />
+                                        <label htmlFor="idPersonal" className={classNames({ 'p-error': isFormFieldValid('idPersonal') })}>Codigo Personal</label>
+                                    </span>
+                                    {getFormErrorMessage('idPersonal')}
                                 </div>
                             </div>
                             <div className="modal__input-contenedor" >
