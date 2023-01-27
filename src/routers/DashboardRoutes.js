@@ -22,11 +22,19 @@ import { getPermisos } from "../utils/Menu/Permisos";
 
 //************** Screens **************/
 import HomeScreen from "../screens/Homes/HomeScreen";
+
+// --------------- IT ------------------
 import ITHomeScreen from "../screens/Homes/ITHomeScreen";
 import RolesScreen from "../screens/IT/Roles/RolesScreen";
 import UsuariosScreen from "../screens/IT/Usuarios/UsuariosScreen";
 import Sesiones from "../screens/IT/Sesiones/SesionesScreen";
 import SesionesScreen from "../screens/IT/Sesiones/SesionesScreen";
+import MenuScreen from "../screens/IT/Menu/MenuScreen";
+
+// --------------- Finanzas ------------------
+import FinanzasHomeScreen from "../screens/Homes/FinanzasHomeScreen";
+import PlanCuentasScreen from "../screens/Finanzas/PlanCuentas/PlanCuentas/PlanCuentasScreen";
+
 
 export const DashboardRoutes = () => {
 
@@ -96,6 +104,33 @@ export const DashboardRoutes = () => {
             navigate("fin/home", { replace: true })
         }
     );
+    const MenuScreenPermision = Permissible(
+        MenuScreen,
+        userPermisions, // userPermissions
+        [6], // requiredPermissions
+        () => {
+            navigate("fin/home", { replace: true })
+        }
+    );
+
+    const FinanzasHomeScreenPermision = Permissible(
+        FinanzasHomeScreen,
+        userPermisions, // userPermissions
+        [7], // requiredPermissions
+        () => {
+            navigate("fin/home", { replace: true })
+        }
+    );
+
+
+    const PlanCuentasScreenPermision = Permissible(
+        PlanCuentasScreen,
+        userPermisions, // userPermissions
+        [8], // requiredPermissions
+        () => {
+            navigate("fin/home", { replace: true })
+        }
+    );
 
 
 
@@ -127,10 +162,19 @@ export const DashboardRoutes = () => {
 
                     <Route path={`${process.env.REACT_APP_ENV}/Home`} element={<HomeScreen />} />
                     <Route path="*" element={<Navigate from="*" to={`${process.env.REACT_APP_ENV}/Home`} />} />
+
+                    {/* -------------------------------------- IT ------------------------------------------ */}
                     <Route path={`${process.env.REACT_APP_ENV}/IT`} element={<ITScreenPermision />} />
                     <Route path={`${process.env.REACT_APP_ENV}/Roles`} element={<RolesScreenPermision />} />
                     <Route path={`${process.env.REACT_APP_ENV}/Usuarios`} element={<UsuariosScreenPermision />} />
                     <Route path={`${process.env.REACT_APP_ENV}/Sesiones`} element={<SesionesScreenPermision />} />
+                    <Route path={`${process.env.REACT_APP_ENV}/Menu`} element={<MenuScreenPermision />} />
+                    <Route path={`${process.env.REACT_APP_ENV}/IT`} element={<ITScreenPermision />} />
+
+                    {/* --------------------------------- Finanzas ----------------------------------- */}
+                    <Route path={`${process.env.REACT_APP_ENV}/Finanzas`} element={<FinanzasHomeScreenPermision />} />
+                    <Route path={`${process.env.REACT_APP_ENV}/PlanCuentas`} element={<PlanCuentasScreenPermision />} />
+
 
 
                 </Routes>
