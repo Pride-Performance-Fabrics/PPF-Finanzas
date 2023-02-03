@@ -2,6 +2,7 @@ import instancias from "../Api/backend";
 import { validarRespuesta } from '../services/crypto';
 
 
+
 export const PrivateInterceptor = async(URL, method, body = undefined) => {
     let respuesta = null;
     const promesa = await fetch(`${instancias.API_URL}/${URL}?${Date.now()}`, { 
@@ -20,7 +21,7 @@ export const PrivateInterceptor = async(URL, method, body = undefined) => {
             if(!res.data.valid){
                 validarRespuesta(res);
             }
-            respuesta =  res.data;
+            respuesta =  res?.data;
         })
         .catch((error) => {
             respuesta =  {error: error};

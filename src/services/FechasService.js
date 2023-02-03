@@ -184,6 +184,11 @@ const days = [
     const d = new Date(date);
     return d.toLocaleString('EN-US').replace(',', '');
  }
+
+ export const setDateTimeSQL1 = (date) => {
+   const d = new Date(date);
+   return d.toLocaleString('EN-US', { hour12: false }).replace(',', '');
+}
  
  export const getDate = (date) => {
     const d = new Date(date.getTime() + 6 * 60 * 60 * 1000);

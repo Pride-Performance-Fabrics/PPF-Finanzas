@@ -40,7 +40,7 @@ const columWidthLarge = 200;
 const columWidthXlarge = 250;
 const columWidthXXlarge = 300;
 const columWidthXXXlarge = 350;
-
+const columWidthXXXXlarge = 450;
 const DevExpress = ({ table }) => {
 
 
@@ -297,6 +297,9 @@ const DevExpress = ({ table }) => {
                                 break;
                             case column.className.includes('colum-width-XXXlarge'):
                                 width = columWidthXXXlarge;
+                                break;
+                            case column.className.includes('colum-width-XXXXlarge'):
+                                width = columWidthXXXXlarge;
                                 break;
                             default:
                                 width = undefined;

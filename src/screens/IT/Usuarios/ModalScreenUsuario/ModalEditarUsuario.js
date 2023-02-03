@@ -32,7 +32,7 @@ import { mdiConsoleLine } from "@mdi/js";
 
 
 export const ModalEditarUsuario = ({ datos, usuarios }) => {
-
+    console.log(datos)
 
     // Variables necesarias 
     const [roles, setRoles] = useState([{}]);
@@ -490,17 +490,17 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
                             </div>
                             <div className="modal__input-contenedor">
                                 <div className="field col-6 me-2">
-                                    <span className="p-float-label">
+                                    {/* <span className="p-float-label"> */}
                                         <Dropdown id="IdStatus" name="IdStatus" value={formik.values.IdStatus} onChange={formik.handleChange}
                                             options={estados} optionLabel="StatusName" placeholder={formik.values.StatusName} label ={formik.values.StatusName} />
-                                    </span>
+                                    {/* </span> */}
                                 </div>
                                 <></>
                                 <div className="field col-6 me-2">
-                                    <span className="p-float-label">
+                                    {/* <span className="p-float-label"> */}
                                         <Dropdown id="IdRol" name="IdRol" value={formik.values.IdRol} onChange={formik.handleChange} options={roles} optionLabel="Rol"
                                             placeholder={formik.values.Rol} />
-                                    </span>
+                                    {/* </span> */}
                                 </div>
                             </div>
                             <div className="modal__input-contenedor">

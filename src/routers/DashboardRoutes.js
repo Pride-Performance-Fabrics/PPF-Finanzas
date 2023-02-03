@@ -34,6 +34,8 @@ import MenuScreen from "../screens/IT/Menu/MenuScreen";
 // --------------- Finanzas ------------------
 import FinanzasHomeScreen from "../screens/Homes/FinanzasHomeScreen";
 import PlanCuentasScreen from "../screens/Finanzas/PlanCuentas/PlanCuentas/PlanCuentasScreen";
+import SubTiposScreen from "../screens/Finanzas/PlanCuentas/SubTipos/SubTiposScreen";
+import TiposScreen from "../screens/Finanzas/PlanCuentas/Tipos/TiposScreen";
 
 
 export const DashboardRoutes = () => {
@@ -132,6 +134,26 @@ export const DashboardRoutes = () => {
         }
     );
 
+    const TiposScreenPermision = Permissible(
+        TiposScreen,
+        userPermisions, // userPermissions
+        [9], // requiredPermissions
+        () => {
+            navigate("fin/home", { replace: true })
+        }
+    );
+
+
+
+    const SubTiposScreenPermision = Permissible(
+        SubTiposScreen,
+        userPermisions, // userPermissions
+        [10], // requiredPermissions
+        () => {
+            navigate("fin/home", { replace: true })
+        }
+    );
+
 
 
     useEffect(() => {
@@ -165,15 +187,17 @@ export const DashboardRoutes = () => {
 
                     {/* -------------------------------------- IT ------------------------------------------ */}
                     <Route path={`${process.env.REACT_APP_ENV}/IT`} element={<ITScreenPermision />} />
-                    <Route path={`${process.env.REACT_APP_ENV}/Roles`} element={<RolesScreenPermision />} />
-                    <Route path={`${process.env.REACT_APP_ENV}/Usuarios`} element={<UsuariosScreenPermision />} />
-                    <Route path={`${process.env.REACT_APP_ENV}/Sesiones`} element={<SesionesScreenPermision />} />
-                    <Route path={`${process.env.REACT_APP_ENV}/Menu`} element={<MenuScreenPermision />} />
+                    <Route path={`${process.env.REACT_APP_ENV}/IT/Roles`} element={<RolesScreenPermision />} />
+                    <Route path={`${process.env.REACT_APP_ENV}/IT/Usuarios`} element={<UsuariosScreenPermision />} />
+                    <Route path={`${process.env.REACT_APP_ENV}/IT/Sesiones`} element={<SesionesScreenPermision />} />
+                    <Route path={`${process.env.REACT_APP_ENV}/IT/Menu`} element={<MenuScreenPermision />} />
                     <Route path={`${process.env.REACT_APP_ENV}/IT`} element={<ITScreenPermision />} />
 
                     {/* --------------------------------- Finanzas ----------------------------------- */}
                     <Route path={`${process.env.REACT_APP_ENV}/Finanzas`} element={<FinanzasHomeScreenPermision />} />
                     <Route path={`${process.env.REACT_APP_ENV}/PlanCuentas`} element={<PlanCuentasScreenPermision />} />
+                    <Route path={`${process.env.REACT_APP_ENV}/SubTipos`} element={<SubTiposScreenPermision />} />
+                    <Route path={`${process.env.REACT_APP_ENV}/TipoCuentas`} element={<TiposScreenPermision />} />
 
 
 
