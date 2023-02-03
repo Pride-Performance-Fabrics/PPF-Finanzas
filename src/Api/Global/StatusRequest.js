@@ -12,7 +12,10 @@ export const getEstadosSecurity = async () => {
     return respuesta
 }
 // OBTENER TODOS LOS ESTADOS Security
-export const getEstadosSalidaTelaCruda = async () => {
-    const respuesta = PrivateInterceptor('status/SalidaTelaCruda', 'GET')
+
+
+export const putEstadosCuenta = async (body) => {
+    const respuesta = PrivateInterceptor(`status/finanzas`, 'PUT', body)
     return respuesta
 }
+

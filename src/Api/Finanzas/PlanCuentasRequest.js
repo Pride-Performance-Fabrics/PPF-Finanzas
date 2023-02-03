@@ -14,4 +14,14 @@ export const getCuentasExistentes = async () => {
 }
 
 
+export const postCrearCuenta = async (data) => {
+    console.log(data)
+    const result = await PrivateInterceptor(`finanzas/planCuentas/`, 'POST', data);
+    return result;
+
+}
+
+
+
+
 
