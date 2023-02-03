@@ -93,7 +93,7 @@ const TiposScreen = () =>{
     useEffect(() => {
         getListadoType();
 
-        window.document.title = 'PPF • IT Cuentas';
+        window.document.title = 'PPF • Finanzas Cuentas';
     
     }, [])
 

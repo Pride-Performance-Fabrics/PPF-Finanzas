@@ -213,7 +213,7 @@ const PlanCuentasScreen = () => {
     }
     useEffect(() => {
         getPlanCuentas();
-        window.document.title = 'PPF • IT Plan Cuentas';
+        window.document.title = 'PPF • Finanzas Plan Cuentas';
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 

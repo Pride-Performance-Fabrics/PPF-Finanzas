@@ -18,12 +18,14 @@ export const getCuentaSubType = async (Id, IdSubType) => {
 
 }
 
+//**************  OBTIENE LA VISTA DE LOS SUBTYPE CON TIPO **************/
 export const getVistaSubType = async () => {
     const result = await PrivateInterceptor(`finanzas/subTypes/tipos`, 'GET');
     return result;
 
 }
 
+//**************  AGREGA NUEVAS SUBTIPOS **************/
 
 export const postSubTypes = async (data) => {
     // console.log(data)
@@ -31,6 +33,7 @@ export const postSubTypes = async (data) => {
     return result;
 }
 
+//**************  ACTUALIZA LOS SUBTIPOS **************/
 
 export const putSubTypes = async (data) => {
     // console.log(data)

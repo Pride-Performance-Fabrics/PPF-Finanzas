@@ -105,7 +105,7 @@ const SubTiposScreen = () =>{
     useEffect(() => {
         getListadoSubType();
 
-        window.document.title = 'PPF • IT SubCuentas';
+        window.document.title = 'PPF • Finanzas SubCuentas';
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
