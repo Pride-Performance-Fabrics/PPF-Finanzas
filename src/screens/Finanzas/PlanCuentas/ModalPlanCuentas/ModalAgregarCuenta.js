@@ -3,6 +3,8 @@ import React, { Fragment, useState, useEffect, useRef } from "react";
 import instancias from "../../../../Api/backend";
 
 import { useFormik } from 'formik';
+
+import { decodeToken } from "react-jwt";
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Dropdown } from "primereact/dropdown";
@@ -11,18 +13,24 @@ import { Calendar } from 'primereact/calendar';
 import { classNames } from 'primereact/utils';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
-import { toastShow } from '../../../../services/ToastService'
-import { Dialog } from 'primereact/dialog';
-import { validarRespuesta } from '../../../../services/crypto';
+import { toastShow } from '../../../../services/ToastService';
 
-import { getCuentasExistentes } from "../../../../Api/Finanzas/PlanCuentasRequest";
-import { getSubTypes } from "../../../../Api/Finanzas/SubTypesRequest";
+import { Dialog } from 'primereact/dialog';
+import Loader from "../../../../components/Loader/Loader";
+import { validarRespuesta } from '../../../../services/crypto';
+import { getDateTimeString, getDate, getDateTimeStringUS, getDateTimeSQL, setDateTimeSQL } from '../../../../services/FechasService';
+
+
+import { getCuentasExistentes, postCrearCuenta } from "../../../../Api/Finanzas/PlanCuentasRequest";
+import { getSubTypes, getCuentaSubType } from "../../../../Api/Finanzas/SubTypesRequest";
 import { getTypes } from "../../../../Api/Finanzas/TypesRequest";
 import { getCurrency } from "../../../../Api/Finanzas/CurrencyRequest";
 
-export const ModalAgregarCuenta = () => {
+export const ModalAgregarCuenta = ({ datos, cuentas }) => {
+    // console.log(datos)
 
     const [cuentaDialog, setCuentaDialog] = useState(false);
+    const [loading, setLoading] = useState(false)
     const [checked, setChecked] = useState(false);
     const [date, setDate] = useState(null);
     const [value, setValue] = useState({})
@@ -36,7 +44,8 @@ export const ModalAgregarCuenta = () => {
 
     const [subTypes, setSubTypes] = useState([]);
     const [valueSubType, setValueSubType] = useState({});
-    const [filterSubType, setFilterSubType] = useState([])
+    const [filterSubType, setFilterSubType] = useState([]);
+    const [subCuenta, setSubCuenta] = useState([])
 
     const [currency, setCurrency] = useState([]);
     const [valueCurrency, setValueCurrency] = useState({})
@@ -45,18 +54,18 @@ export const ModalAgregarCuenta = () => {
     const [valueCuentasExistente, setValueCuentasExistentes] = useState({});
 
     const [habilitado, setHabilitado] = useState(true);
+    const [idCuenta, setIdCuenta] = useState({})
 
 
-    const cambiarType = () =>{
-        
-        
-        const sub = subTypes.filter(e => valueType.IdType === e.IdType);
+    const cambiarType = () => {
+
+        const sub = subTypes.filter(e => valueType.Id === e.IdType);
         // setValueSubType(sub)
         // console.log(sub, subTypes);
         setFilterSubType(sub)
         // setSubTypes(sub)
-        
-        
+
+
         // console.log(typeSubType)
     }
 
@@ -69,17 +78,17 @@ export const ModalAgregarCuenta = () => {
         const tempo1 = await getTypes();
         setTypes(tempo1)
 
-        console.log('Types', tempo1)
+        // console.log('Types', tempo1)
 
         const tempo2 = await getCurrency();
         setCurrency(tempo2)
 
-        console.log('Currency', tempo2)
+        // console.log('Currency', tempo2)
 
         const tempo3 = await getCuentasExistentes()
         setCuentasExistentes(tempo3)
 
-        console.log('Cuentas Existentes', tempo3)
+        // console.log('Cuentas Existentes', tempo3)
     }
 
 
@@ -92,14 +101,73 @@ export const ModalAgregarCuenta = () => {
         setCuentaDialog(false)
     }
 
-    const seleccionarCuentasExistentes = (e) => {
-        console.log(e)
-        setChecked(true)
-        if (checked) {
-            setHabilitado(false)
+    const asignarValor = (tempoId) => {
+        let idTemporal
+        console.log(tempoId)
+
+        if (tempoId[0].IdAccount === undefined) {
+            let numeroTipo = (tempoId[0].IdType).toString();
+            let tipo = numeroTipo.substring(0, 2);
+            // let idTemporal = (valueSubType.IdSubType) + 1
+            idTemporal = tipo + (tempoId[0].IdSubType + 1)
+            console.log(idTemporal)
+            formik.values.IdAccount = idTemporal
+            setIdCuenta(idTemporal);
         } else {
-            setHabilitado(true)
+            const idNumeroCuenta = tempoId[0].IdAccount + 1
+            console.log(idNumeroCuenta)
+            console.log("cuenta")
+            formik.values.IdAccount = idNumeroCuenta
+            setIdCuenta(idNumeroCuenta);
         }
+
+
+    }
+
+
+
+    const agregarCuenta = async (data) => {
+
+        const userInformation = decodeToken(localStorage.getItem(`ppfToken`));
+        let user = userInformation.idUser
+
+        console.log(user)
+
+        let numeroTipo = (valueType.IdType).toString();
+        let tipo = numeroTipo.substring(0, 2);
+
+        let numeroSubTipo = (valueSubType.IdSubType) + 1
+
+        const date = new Date()
+        const numeroCuenta = idCuenta
+        data.Saldo = parseInt(formik.values.Saldo)
+        data.Currency = valueCurrency.IdCurrency === undefined ? 1 : valueCurrency.IdCurrency
+        data.SubType = valueSubType.Id
+        data.Type = valueType.Id
+        data.IdContenedorAccount = checked === false ? 0 : valueCuentasExistente.IdAccount
+        // data.IdAccount = idCuenta
+        data.Fecha = getDateTimeSQL(new Date())
+        data.ActiveStatus = 3
+        // data.Fecha = setDateTimeSQL(new Date())
+        data.idUser = user
+
+        console.log(data.Fecha)
+        const resultado = await postCrearCuenta(data)
+        if (resultado) {
+            toastShow(toast, 'success', 'Creado', 'Cuenta Creada Correctamente.');
+            setFormData({})
+            formik.resetForm(formData)
+            hideDialog()
+            cuentas()
+            console.log(resultado)
+            return true;
+        } else {
+            toastShow(toast, 'error', 'Error', 'Error al crear la cuenta');
+            return true;
+        }
+
+
+
     }
 
     const formik = useFormik({
@@ -109,10 +177,14 @@ export const ModalAgregarCuenta = () => {
             Account: '',
             IdAccount: '',
             Description: '',
-            Currency: '',
+            Currency: 1,
             Saldo: 0,
             Fecha: '',
-            idContenedorAccount: ''
+            IdContenedorAccount: '',
+            ActiveStatus: 3,
+            idUser: 0,
+            id: -1
+
         },
         validate: (data) => {
             let errors = {};
@@ -128,19 +200,20 @@ export const ModalAgregarCuenta = () => {
 
         onSubmit: async (data) => {
             setFormData(data);
-            // await agregarUsuario(data.SubType, data.Type,
-            //     data.Account, data.IdAccount, data.Description,
-            //     data.Currency, data.Saldo, data.Fecha, data. idContenedorAccount);
-            // setShowMessage(true);
+            await agregarCuenta(data);
+
         }
     });
+
 
     // const [value1, setValue1] = useState(null);
     useEffect(() => {
         setValueSubType({ Description: "" })
+        setIdCuenta(0)
+        // setIdCuenta({IdAccount : ""})
         cambiarType()
         // setDescriptionValue(valueSubType.Description)
-        console.log()
+        // console.log()
     }, [valueType]);
 
     useEffect(() => {
@@ -148,9 +221,20 @@ export const ModalAgregarCuenta = () => {
             setHabilitado(false)
         } else {
             setHabilitado(true)
+            setValueCuentasExistentes([])
         }
-    }, [checked])
+    }, [checked]);
 
+    useEffect(async () => {
+
+        const tempoId = await getCuentaSubType(valueSubType.Id, valueSubType.IdSubType)
+        // console.log()
+        if (!tempoId.error) {
+            asignarValor(tempoId)
+        }
+        // console.log(tempoId)
+
+    }, [valueSubType])
 
 
     // Funciones de evaluacion de formik
@@ -161,25 +245,18 @@ export const ModalAgregarCuenta = () => {
 
     };
 
-    const cities = [
-        { name: 'New York', code: 'NY' },
-        { name: 'Rome', code: 'RM' },
-        { name: 'London', code: 'LDN' },
-        { name: 'Istanbul', code: 'IST' },
-        { name: 'Paris', code: 'PRS' }
-    ];
 
     return (
         <Fragment>
-
             <Button label="Nueva Cuenta" icon="pi pi-plus" className="p-button-Primary mr-2" onClick={openNew} />
             <Toast position="bottom-right" ref={toast}></Toast>
+            <Loader loading={loading} />
             <Dialog visible={cuentaDialog} breakpoints={{ '960px': '75vw', '640px': '100vw' }} style={{ width: '30vw', height: '35vw' }}
-            onHide={hideDialog} header={<h2>Cuenta</h2>}>
+                onHide={hideDialog} header={<h2>Cuenta</h2>}>
                 <div style={{ width: '100%', margin: 'auto' }}>
-                    
+
                     <form onSubmit={formik.handleSubmit} className="p-fluid" style={{ margin: "Auto", marginBottom: 0 }}>
-                        <div className="modal__input-contenedor" style={{width: "100%"}}>
+                        <div className="modal__input-contenedor" style={{ width: "100%" }}>
                             <div className="field col-6 me-2" >
                                 <span className="p-float-label">
                                     <Dropdown id="IdType" name="IdType" value={valueType} onChange={(e) => setValueType(e.value)} options={types} optionLabel="Type" />
@@ -195,7 +272,7 @@ export const ModalAgregarCuenta = () => {
                                 {getFormErrorMessage('Account')}
                             </div>
                         </div>
-                        <div className="modal__input-contenedor"  style={{width: "100%"}}>
+                        <div className="modal__input-contenedor" style={{ width: "100%" }}>
                             <div className="field col-6 me-2" >
                                 <span className="p-float-label">
                                     <Dropdown id="IdSubType" name="IdSubType" value={valueSubType} onChange={(e) => setValueSubType(e.value)} options={filterSubType} optionLabel="SubType" />
@@ -203,6 +280,11 @@ export const ModalAgregarCuenta = () => {
                                 </span>
                             </div>
                             <div className="field col-6 me-2"  >
+                                {/* <span className="p-float-label">
+                                    <InputText id="IdAccount" name="IdAccount" value={idCuenta} onChange={(e) => setIdCuenta(e.value)} autoFocus
+                                        className={classNames({ 'p-invalid': isFormFieldValid('IdAccount') })} autoComplete="off" />
+                                    <label htmlFor="IdAccount" className={classNames({ 'p-error': isFormFieldValid('IdAccount') })}>Numero Cuenta</label>
+                                </span> */}
                                 <span className="p-float-label">
                                     <InputText id="IdAccount" name="IdAccount" value={formik.values.IdAccount} onChange={formik.handleChange} autoFocus
                                         className={classNames({ 'p-invalid': isFormFieldValid('IdAccount') })} autoComplete="off" />
@@ -211,7 +293,7 @@ export const ModalAgregarCuenta = () => {
                                 {getFormErrorMessage('IdAccount')}
                             </div>
                         </div>
-                        <div className="modal__input-contenedor"  style={{width: "100%"}}>
+                        <div className="modal__input-contenedor" style={{ width: "100%" }}>
                             <div className="field col-6 me-2">
                                 <span className="p-float-label p-input-icon-right">
                                     <InputTextarea value={valueSubType?.Description} rows={9} cols={30} />
@@ -235,8 +317,8 @@ export const ModalAgregarCuenta = () => {
 
                                 <span className="p-float-label" style={{ marginTop: -70 }} >
                                     <Dropdown id="IdCurrency" name="IdCurrency" value={valueCurrency} onChange={(e) => setValueCurrency(e.value)} options={currency} optionLabel="Currency"
-                                        virtualScrollerOptions={{ itemSize: 38 }} placeholder={formik.values.Currency} />
-                                    <label htmlFor="dropdown">Currency</label>
+                                        virtualScrollerOptions={{ itemSize: 38 }} placeholder={formik.values.Currency} optionValue="IdCurrency" />
+                                    <label htmlFor="dropdown">Divisa</label>
                                 </span>
                             </div>
                         </div>
@@ -252,7 +334,7 @@ export const ModalAgregarCuenta = () => {
                                     <label htmlFor="ingredient1" className="ml-2" style={{ marginLeft: 5 }}>  Es una cuenta secundaria</label>
                                 </span>
                                 <span className="p-float-label" style={{ marginTop: 20 }}>
-                                    <Dropdown id=" idContenedorAccount" name=" idContenedorAccount" value={valueCuentasExistente}
+                                    <Dropdown id="IdContenedorAccount" name="IdContenedorAccount" value={valueCuentasExistente}
                                         onChange={(e) => setValueCuentasExistentes(e.value)} options={cuentasExistentes} optionLabel="Account"
                                         disabled={habilitado} />
                                 </span>
@@ -262,11 +344,11 @@ export const ModalAgregarCuenta = () => {
                             <div className="field col-6 me-2"> </div><></>
                             <div className="modal__input-contenedor" >
                                 <span className="p-float-label" >
-                                    <InputText id="saldo" name="saldo" value={formik.values.Description} onChange={formik.handleChange} autoFocus
-                                        className={classNames({ 'p-disabled': isFormFieldValid('saldo') })} autoComplete="off" />
-                                    <label htmlFor="Saldo" className={classNames({ 'p-error': isFormFieldValid('saldo') })}>Saldo Inicial</label>
+                                    <InputText id="Saldo" name="Saldo" value={formik.values.Saldo} onChange={formik.handleChange} autoFocus
+                                        className={classNames({ 'p-disabled': isFormFieldValid('Saldo') })} autoComplete="off" />
+                                    <label htmlFor="Saldo" className={classNames({ 'p-error': isFormFieldValid('Saldo') })}>Saldo Inicial</label>
                                 </span>
-                               
+
                             </div>
                         </div>
                         <div className="p-dialog-footer">
