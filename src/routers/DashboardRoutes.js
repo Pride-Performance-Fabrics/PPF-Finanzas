@@ -30,6 +30,7 @@ import UsuariosScreen from "../screens/IT/Usuarios/UsuariosScreen";
 import Sesiones from "../screens/IT/Sesiones/SesionesScreen";
 import SesionesScreen from "../screens/IT/Sesiones/SesionesScreen";
 import MenuScreen from "../screens/IT/Menu/MenuScreen";
+import AccesosScreen from "../screens/IT/Accesos/AccesosScreen";
 
 // --------------- Finanzas ------------------
 import FinanzasHomeScreen from "../screens/Homes/FinanzasHomeScreen";
@@ -154,6 +155,16 @@ export const DashboardRoutes = () => {
         }
     );
 
+    const AccesoScreenPermision = Permissible(
+        AccesosScreen,
+        userPermisions,
+        [11],
+        () =>{
+            navigate("fin/home", { replace: true })
+        }
+
+    )
+
 
 
     useEffect(() => {
@@ -191,6 +202,7 @@ export const DashboardRoutes = () => {
                     <Route path={`${process.env.REACT_APP_ENV}/IT/Usuarios`} element={<UsuariosScreenPermision />} />
                     <Route path={`${process.env.REACT_APP_ENV}/IT/Sesiones`} element={<SesionesScreenPermision />} />
                     <Route path={`${process.env.REACT_APP_ENV}/IT/Menu`} element={<MenuScreenPermision />} />
+                    <Route path={`${process.env.REACT_APP_ENV}/IT/Accesos`} element={<AccesoScreenPermision />} />
                     <Route path={`${process.env.REACT_APP_ENV}/IT`} element={<ITScreenPermision />} />
 
                     {/* --------------------------------- Finanzas ----------------------------------- */}
