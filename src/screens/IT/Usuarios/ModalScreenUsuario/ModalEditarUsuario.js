@@ -26,7 +26,7 @@ import { changePermisos, getPermisos } from "../../../../Api/Menu/PermisosReques
 import { getMenuNuevo } from "../../../../Api/Menu/MenuRequest";
 import { mdiConsoleLine } from "@mdi/js";
 
-
+import { getAccesosModulos } from "../../../../Api/IT/Accesos/AccesosRequest";
 
 // import "./ModalStyle.scss"
 
@@ -54,6 +54,8 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
     const [isLoading, setIsLoading] = useState(false);
 
     const [loading1, setLoading1] = useState(false);
+
+    const [modulos, setModulos] = useState([])
 
     const getValoresIniciales = async () => {
         const rolesTempo = await getRoles();
@@ -105,6 +107,7 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
         getPermisosUsuario(datos.idUser);
         formik.setValues(datos)
         getMenu();
+        getModulo()
     }
 
     const hideDialog = () => {
@@ -117,7 +120,7 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
         setLoading1(true);
         if (typeof formik.values.Password === 'undefined') {
             const user = {
-                idPersonal : formik.values.idPersonal,
+                idPersonal: formik.values.idPersonal,
                 Usuario: (formik.values.Usuario).toLowerCase(),
                 UserName: formik.values.UserName,
                 Mail: formik.values.Mail,
@@ -286,7 +289,7 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
                             <span >
                                 <Checkbox value={item.IdMenu} onChange={onPermisosSubNivelChange}
                                     // checked={true} />
-                                checked={permisos.some((IdMenu) => IdMenu === (item.IdMenu + ''))} /> 
+                                    checked={permisos.some((IdMenu) => IdMenu === (item.IdMenu + ''))} />
                             </span>
                         </div>
                     </React.Fragment>
@@ -300,6 +303,48 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
         )
     }
 
+
+    const getModulo = async () => {
+        const d = await getAccesosModulos()
+        console.log(`modulos`, d)
+        let nombre = [];
+        let html = '';
+        for(let m = 0; m <= modulos.length; m++){
+            const tempo = d.filter((e) => e.IdMenuMenu === m)
+            
+            nombre[m] = tempo
+            
+        }
+        console.log(nombre)
+    //    setModulos(d)
+        // return (
+        //     <AccordionTab
+        //         key={item.IdMenu}
+        //         header={
+        //             <React.Fragment>
+        //                 <div className="modal__permisosCheck">
+        //                     <span >
+        //                         <i className={item.Icon}></i>
+        //                         {item.Menu}
+        //                     </span>
+        //                     <span >
+        //                         <Checkbox value={item.IdMenu} onChange={onPermisosSubNivelChange}
+        //                             // checked={true} />
+        //                         checked={permisos.some((IdMenu) => IdMenu === (item.IdMenu + ''))} /> 
+        //                     </span>
+        //                 </div>
+        //             </React.Fragment>
+        //         }
+        //     >
+        //         <div className='gridCheckbox'>
+        //             {subNiveles}
+        //             {/* {NivelesContainer.length > 0 ? <Accordion className={classNames("accordion-custom modal_accordion", { 'isNotVisible': isLoading })} multiple >{NivelesContainer}</Accordion>  : ''} */}
+        //         </div>
+        //     </AccordionTab >
+        // )
+    }
+
+
     const checkbox = (subNivel) => {
         return (
             // <div>
@@ -307,7 +352,7 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
             <div key={subNivel.IdMenu} className="field-checkbox">
                 <Checkbox inputId={subNivel.IdMenu} name="category" value={subNivel.IdMenu} onChange={onPermisosSubNivelChange}
 
-                    checked={permisos.some((item) =>  item === (subNivel.IdMenu + ''))} />
+                    checked={permisos.some((item) => item === (subNivel.IdMenu + ''))} />
                 <label htmlFor={subNivel.IdMenu}>{subNivel.Menu}</label>
             </div>
             // </div>
@@ -343,7 +388,7 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
     useEffect(() => {
         getMenu()
         // console.log(datos)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [permisos])
 
 
@@ -409,10 +454,10 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
                         <h5 className="colorh5">Registro Creado Existosamente</h5>
                     </div>
                 </Dialog>
-                <div className="flex justify-content-center" style = {{marginTop: 5}}>
+                <div className="flex justify-content-center" style={{ marginTop: 5 }}>
                     <Dialog id="editModal1" visible={usuarioDialog} breakpoints={{ '960px': '75vw', '640px': '100vw' }} header="Editar Usuario" modal className="modal__contenedor modal__usuarios"
                         onHide={hideDialog}>
-                        <form onSubmit={formik.handleSubmit} className="p-fluid" style={{ margin: "Auto", marginTop: 5}}>
+                        <form onSubmit={formik.handleSubmit} className="p-fluid" style={{ margin: "Auto", marginTop: 5 }}>
                             <div style={{ display: "none" }}>
                                 <div className="field col-6 me-2">
                                     <span className="p-float-label">
@@ -491,20 +536,34 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
                             <div className="modal__input-contenedor">
                                 <div className="field col-6 me-2">
                                     {/* <span className="p-float-label"> */}
-                                        <Dropdown id="IdStatus" name="IdStatus" value={formik.values.IdStatus} onChange={formik.handleChange}
-                                            options={estados} optionLabel="StatusName" placeholder={formik.values.StatusName} label ={formik.values.StatusName} />
+                                    <Dropdown id="IdStatus" name="IdStatus" value={formik.values.IdStatus} onChange={formik.handleChange}
+                                        options={estados} optionLabel="StatusName" placeholder={formik.values.StatusName} label={formik.values.StatusName} />
                                     {/* </span> */}
                                 </div>
                                 <></>
                                 <div className="field col-6 me-2">
                                     {/* <span className="p-float-label"> */}
-                                        <Dropdown id="IdRol" name="IdRol" value={formik.values.IdRol} onChange={formik.handleChange} options={roles} optionLabel="Rol"
-                                            placeholder={formik.values.Rol} />
+                                    <Dropdown id="IdRol" name="IdRol" value={formik.values.IdRol} onChange={formik.handleChange} options={roles} optionLabel="Rol"
+                                        placeholder={formik.values.Rol} />
                                     {/* </span> */}
                                 </div>
                             </div>
                             <div className="modal__input-contenedor">
-                                <h3 className="modal_texto-titulo-permisos">Permisos por usuario</h3>
+                                <h3 className="modal_texto-titulo-permisos">Permisos </h3>
+                            </div>
+                            <div className="modal__input-contenedor">
+                                <div className={classNames("progressSpinner-container", { 'isVisible': isLoading })}>
+                                    <ProgressSpinner ></ProgressSpinner>
+                                </div>
+                                <Accordion className={classNames("accordion-custom modal_accordion", { 'isNotVisible': isLoading })} multiple >
+                                    {
+                                        menu
+                                    }
+                                </Accordion>
+                            </div>
+                            {/* Seccion para agreagar los permisos de accesos  a los usuarios */}
+                            <div className="modal__input-contenedor">
+                                <h3 className="modal_texto-titulo-permisos">Accesos</h3>
                             </div>
                             <div className="modal__input-contenedor">
                                 <div className={classNames("progressSpinner-container", { 'isVisible': isLoading })}>

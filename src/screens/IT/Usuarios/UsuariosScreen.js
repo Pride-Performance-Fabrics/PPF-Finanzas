@@ -176,7 +176,7 @@ export const UsuariosScreen = () => {
                 titulo={<h3>Usuarios</h3>}
                 contenido={
 
-                    <div className='p-3' style={{ height: '90vh' }}>
+                    <div className='p-3' style={{ height: '85vh' }}>
                         <ModalAgregarUsuario usuarios={getListadoUsuarios} />
                         <br></br>
                         <AgGrid table={table}  />

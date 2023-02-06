@@ -141,7 +141,7 @@ export const RolesScreen = () => {
                 titulo={<h3>Roles</h3>}
                 contenido={
 
-                    <div className='p-3' style={{ height: '90vh' }}>
+                    <div className='p-3' style={{ height: '85vh' }}>
                         <AgregarRolModal roles = {getListadoRoles}/>
                         <br></br><br></br>
                         <AgGrid table={table} />
