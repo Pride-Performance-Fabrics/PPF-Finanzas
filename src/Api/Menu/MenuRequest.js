@@ -13,3 +13,10 @@ export const getMenuNuevo = async () => {
     const result = await PrivateInterceptor(`menu`, 'GET');
     return result;
 }
+
+export const postMenu = async (body) => {
+    console.log(body)
+    const result = await PrivateInterceptor(`menu/IUMenu`, 'POST', body);
+    return result;
+}
+

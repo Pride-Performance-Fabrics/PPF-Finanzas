@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 //************** Funciones de Conexion **************/
 import { getMenuNuevo } from '../../../Api/Menu/MenuRequest';
@@ -11,100 +11,153 @@ import IconApp from '../../../components/icon/IconApp';
 import AgGrid from '../../../components/Tables/AgGrid';
 
 //************** Importacion de Modal **************/
-import ModalAgregarMenu from './ModalMenuScreeen.js/ModalAgregarMenu';
+import ModalMenu from './ModalMenuScreeen.js/ModalMenu';
 import AgregarRolModal from '../Roles/ModalRoles/AgregarRolModal';
+
+//************** Importacion de Componentes de PrimeReacts **************/
+import { Toast } from 'primereact/toast';
+import { Checkbox } from 'primereact/checkbox';
+
 
 
 const MenuScreen = () => {
 
   const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const toast = useRef(null);
+  const [checked, setChecked] = useState(false)
 
-  const [table, setTable] = useState({
-    Data: [],
+  let aspectoBoton = [
+    {
+      Id: 1,
+      Nombre: "Nuevo",
+      Icono: "pi pi-plus",
+      className: "p-button-Primary mr-2"
+    },
+
+    {
+      Id: 2,
+      Nombre: "",
+      Icono: "pi pi-pencil",
+      className: "p-button-rounded p-button-info p-button-text"
+    }
+  ]
+
+
+  const botones = (rowData) => {
+    // console.log(rowData)
+    return (
+      <div className='col-12 d-flex' style={{ textAlign: 'center', height: 28, marginTop: -6 }}>
+        <ModalMenu
+          datos={rowData}
+          toast={toast}
+          icono={aspectoBoton[1].Icono}
+          nombre={aspectoBoton[1].Nombre}
+          className={aspectoBoton[1].className}
+          getListadoMenu={getListadoMenu}
+        />
+      </div>
+
+    )
+  }
+
+  const check = (rowData) => {
+    return <Checkbox onChange={(e) => setChecked(e.value)} checked={rowData.ActivoAPP} style={{ marginTop: -1 }} ></Checkbox>
+  }
+  
+
+  const table = {
+    Data: data,
     Columns: [
       {
-          // IdMenu: 1,
-          field: 'IdMenu',
-          header: 'IdMenu',
-          className: 'colum-width-Xsmall',
-          body: (rowData) => rowData.IdMenu,
+        // IdMenu: 1,
+        field: 'IdMenu',
+        header: 'IdMenu',
+        className: 'colum-width-Xsmall',
+        body: (rowData) => rowData.IdMenu,
       },
       {
-          // Menu: 'Menu',
-          field: 'Menu',
-          header: 'Menu',
-          className: 'colum-width-',
-          body: (rowData) => rowData.Menu,
+        // Menu: 'Menu',
+        field: 'Menu',
+        header: 'Menu',
+        className: 'colum-width-',
+        body: (rowData) => rowData.Menu,
       },
       {
-          // Icon
-          field: 'Icon',
-          header: 'Icon Webs',
-          className: 'colum-width-',
-          body: (rowData) => <Icon icon={rowData.Icon? rowData.Icon : 'a'} />,
-          align: 'center',
-          Format: 'Icon'
-        },
-        {
-          // IconApp
-          field: 'IconApp',
-          header: 'IconApp',
-          className: 'colum-width-',
-          body: (rowData) => <IconApp icon={rowData.IconApp ? rowData.IconApp : 'a'} /> ,
-          align: 'center',
-          Format: 'IconApp'
-        },
-        {
-          // URL
-          field: 'URL',
-          header: 'URL',
-          className: 'colum-width-XXlarge',
-          body: (rowData) => rowData.URL,
-        },
-      {
-          // Contenedor
-          field: 'Contenedor',
-          header: 'Contenedor',
-          className: 'colum-width-',
-          body: (rowData) => rowData.Contenedor,
-          
+        // Icon
+        field: 'Icon',
+        header: 'Icon Webs',
+        className: 'colum-width-small',
+        body: (rowData) => <Icon icon={rowData.Icon ? rowData.Icon : 'a'} />,
+        align: 'center',
+        Format: 'Icon'
       },
       {
-          // ActivoApp
-          field: 'ActivoApp',
-          header: 'Activo App',
-          className: 'colum-width-',
-          body: (rowData) => rowData.ActivoApp,
-          Format: 'Checkbox',
+        // IconApp
+        field: 'IconApp',
+        header: 'IconApp',
+        className: 'colum-width-small',
+        body: (rowData) => <Icon icon={rowData.IconApp ? rowData.IconApp : 'a'} />,
+        align: 'center',
+        Format: 'Icon'
       },
       {
-          // MenuWeb
-          field: 'MenuWeb',
-          header: 'Activo Web',
-          className: 'colum-width-',
-          body: (rowData) => rowData.MenuWeb,
-          Format: 'Checkbox',
+        // URL
+        field: 'URL',
+        header: 'URL',
+        className: 'colum-width-XXlarge',
+        body: (rowData) => rowData.URL,
       },
+      {
+        // Contenedor
+        field: 'Contenedor',
+        header: 'Contenedor',
+        className: 'colum-width-',
+        body: (rowData) => rowData.Contenedor,
+
+      },
+      {
+        // ActivoApp
+        field: 'ActivoAPP',
+        header: 'Activo App',
+        className: 'colum-width-medium',
+        align: 'center',
+        body: (rowData) => rowData.ActivoAPP,
+        Format: 'Checkbox',
+      },
+      {
+        // MenuWeb
+        field: 'MenuWeb',
+        header: 'Activo Web',
+        className: 'colum-width-medium',
+        body: (rowData) => rowData.MenuWeb,
+        Format: 'Checkbox',
+      },
+      {
+        header: 'Acciones',
+        className: 'colum-width-small',
+        body: (rowData) => botones(rowData),
+        Format: "Template"
+      }
     ],
     key: 'IdMenu',
     // scrollHeight: '100%',
-  })
+
+  }
 
 
-  const getMenu = async () => {
+
+  const getListadoMenu = async () => {
     setLoading(true);
     const result = await getMenuNuevo();
-    setTable({
-      ...table,
-      Data: result,
-      key: 'IdMenu'
-    })
+    setData(result)
     setLoading(false);
   }
+
   useEffect(() => {
-    getMenu();
+    getListadoMenu();
     window.document.title = 'PPF • IT Menu';
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -113,11 +166,18 @@ const MenuScreen = () => {
       <Card
         titulo={<h3>Menu</h3>}
         contenido={
-          <div className='p-3' style={{ height: '90vh' }}>
-            <ModalAgregarMenu/>
-            <br></br>
+          <div className='p-3' style={{ height: '85vh' }}>
+            <Toast position="bottom-right" ref={toast} />
+            <ModalMenu
+              toast={toast}
+              icono={aspectoBoton[0].Icono}
+              nombre={aspectoBoton[0].Nombre}
+              className={aspectoBoton[0].className}
+              getListadoMenu={getListadoMenu}
+            />
+          
             <AgGrid table={table} />
-            </div>
+          </div>
         }
       />
     </div>
