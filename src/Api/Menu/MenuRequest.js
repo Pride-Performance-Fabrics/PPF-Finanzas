@@ -20,3 +20,10 @@ export const postMenu = async (body) => {
     return result;
 }
 
+
+
+export const putActividadMenu = async (body) =>{
+    console.log(body)
+    const result = await PrivateInterceptor(`menu/actividadMenu`, 'PUT', body);
+    return result;
+}

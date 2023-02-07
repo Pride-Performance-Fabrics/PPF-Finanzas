@@ -18,7 +18,7 @@ import AgregarRolModal from '../Roles/ModalRoles/AgregarRolModal';
 import { Toast } from 'primereact/toast';
 import { Checkbox } from 'primereact/checkbox';
 
-
+import { putActividadMenu} from "../../../Api/Menu/MenuRequest"
 
 const MenuScreen = () => {
 
@@ -42,6 +42,31 @@ const MenuScreen = () => {
       className: "p-button-rounded p-button-info p-button-text"
     }
   ]
+
+  const onChangeCheck = async (activo, IdMenu, e) => {
+    console.log(activo, IdMenu, e)
+    let  activosMenu = {
+        Menu: activo,
+        Activo: e,
+        IdMenu: IdMenu
+    }
+
+
+    const result = await putActividadMenu(activosMenu)
+    const temporal = result.map((item) => {
+      console.log(item)
+        if (item.id === IdMenu) {
+            item.ActivoAPP = true
+        }
+        return item
+    })
+    setData(temporal)
+
+    // setData(result)
+
+
+}
+
 
 
   const botones = (rowData) => {
@@ -116,22 +141,26 @@ const MenuScreen = () => {
         body: (rowData) => rowData.Contenedor,
 
       },
+      
+      {
+        // MenuWeb
+        field: 'MenuWeb',
+        header: 'Activo Web',
+        className: 'colum-width-medium',
+        align: 'center',
+        Format: "Template",
+        body: (rowData) => <Checkbox onChange={(e) => onChangeCheck(1, rowData.IdMenu, e.checked)} style={{ marginBottom: 5 }} checked={rowData.MenuWeb} />,
+        
+      },
       {
         // ActivoApp
         field: 'ActivoAPP',
         header: 'Activo App',
         className: 'colum-width-medium',
         align: 'center',
-        body: (rowData) => rowData.ActivoAPP,
-        Format: 'Checkbox',
-      },
-      {
-        // MenuWeb
-        field: 'MenuWeb',
-        header: 'Activo Web',
-        className: 'colum-width-medium',
-        body: (rowData) => rowData.MenuWeb,
-        Format: 'Checkbox',
+        Format: "Template",
+        body: (rowData) => <Checkbox onChange={(e) => onChangeCheck(2, rowData.IdMenu, e.checked)} style={{ marginBottom: 5 }} checked={rowData.ActivoAPP} />,
+       
       },
       {
         header: 'Acciones',
