@@ -12,13 +12,15 @@ import { Checkbox } from 'primereact/checkbox';
 import { toastShow } from '../../../../services/ToastService'
 import { validarRespuesta } from '../../../../services/crypto'
 import { Dialog } from 'primereact/dialog';
+import { Accordion, AccordionTab } from 'primereact/accordion';
+import { ProgressSpinner } from 'primereact/progressspinner';
 // import { modificarRol } from '../../../../Api/IT/Roles/RolesRequest';
 
-
+import { getAccesosModulos, getAccesos, cambiarAccesosRoles, getAccesosRoles } from "../../../../Api/IT/Accesos/AccesosRequest";
 
 export const ModificarRolModal = ({ datos, updateRoles }) => {
 
-    
+
     const toast = useRef(null);
 
     const [rolDialog, setRolDialog] = useState(false);
@@ -28,8 +30,11 @@ export const ModificarRolModal = ({ datos, updateRoles }) => {
     const [selectedPermisos, setSelectedPermisos] = useState([]);
 
     const [loading1, setLoading1] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-    
+    const [modulos, setModulos] = useState([]);
+    const [accesos, setAccesos] = useState([])
+
 
     const showSuccess = () => {
         toast.current.show({ severity: 'success', summary: 'Rol Modificado Existosamente', detail: 'Se Modifico un rol', life: 3000 });
@@ -152,6 +157,7 @@ export const ModificarRolModal = ({ datos, updateRoles }) => {
 
         setRolDialog(true);
         getNiveles()
+        getAccesosByRoles(datos.IdRol);
     }
 
     const hideDialog = () => {
@@ -208,12 +214,100 @@ export const ModificarRolModal = ({ datos, updateRoles }) => {
         setSelectedPermisos(_selectedPermisos);
     }
 
+
+    //**************  Funcion de generar el listado de Accesos **************/
+
+    const getAccesosByRoles = async (IdRol) => {
+
+        const modulosTempo = await getAccesosModulos()
+        setModulos(modulosTempo)
+
+        setIsLoading(true)
+        const result = await getAccesosRoles(IdRol);
+        console.log(result)
+        if (result?.code === "EREQUEST") {
+            toastShow(toast, 'error', 'Error', 'Error al obtener los accesos');
+            setIsLoading(false);
+        } else {
+            setIsLoading(false);
+            const ordenado = result.accesos.split(',').sort();
+            setAccesos(ordenado)
+            console.log(result)
+        }
+
+    }
+
+    const getModulos = () => {
+
+        // console.log(`modulos`, modulosTempo);
+        return <Accordion className={classNames("accordion-custom modal_accordion", { 'isNotVisible': isLoading })} multiple >
+            {modulos.map(menu => <AccordionTab
+                header={
+                    <React.Fragment>
+                        <i className={menu.Icon}> </i>
+                        <span style={{ marginLeft: 3 }}> {menu.Menu}</span>
+
+                    </React.Fragment>}
+            >
+                <div className='gridCheckbox'>
+
+                    {menu.Accesos.map(acceso => checkboxAccesos(acceso))}
+                </div>
+            </AccordionTab>)}
+        </Accordion>
+
+
+    }
+
+
+    const checkboxAccesos = (acceso) => {
+        // console.log(accesos.some((item) => item === (acceso.IdAcceso)))
+        return (
+
+            <div key={acceso.IdAcceso} className="field-checkbox">
+                <Checkbox inputId={acceso.IdAcceso} name="category" value={acceso.IdAcceso} onChange={onAccesossChange}
+
+                    checked={accesos.some((item) => item === (acceso.IdAcceso + ''))} />
+
+                <label htmlFor={acceso.IdAcceso}>{acceso.Acceso}</label>
+            </div>
+
+        )
+    }
+
+
+    const onAccesossChange = async (e) => {
+
+        const someAccess = accesos.some((item) => item === (e.value + ''))
+        console.log(someAccess)
+
+        let newAccesos = 0;
+
+        if (someAccess) {
+            console.log("entro aqui")
+            newAccesos = accesos.filter((item) => item !== (e.value + ''))
+        } else {
+            console.log("entro aqui 2")
+            if (accesos[0] === '') {
+                console.log("entro aqui 3")
+                newAccesos = [(e.value + '')]
+            } else {
+                console.log("entro aqui 4")
+                newAccesos = [...accesos, (e.value + '')]
+            }
+        }
+        const result = await cambiarAccesosRoles({ accesos: newAccesos.sort().toString(), IdRol: datos.IdRol });
+        console.log(result)
+        setAccesos(result[0].Accesos.split(','));
+    }
+
+
     // HOOKS de efecto que retorna la funcion getListadoRoles
     useEffect(() => {
         console.log(datos)
         // updateRoles()
         // getPermisos(datos.IdRol);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loading1]);
 
 
@@ -256,6 +350,17 @@ export const ModificarRolModal = ({ datos, updateRoles }) => {
                                     })
                                 }
                             </div>
+                        </div>
+                        <div className="mt-3">
+                            <h3>Accesos</h3>
+                        </div>
+                        <div className="mt-3">
+                            <div className={classNames("progressSpinner-container", { 'isVisible': isLoading })}>
+                                <ProgressSpinner ></ProgressSpinner>
+                            </div>
+                            {
+                                getModulos()
+                            }
                         </div>
                         <div className="p-dialog-footer">
                             <Button label="Cancelar" type='button' icon="pi pi-times" className="p-button-text" onClick={hideDialog} />

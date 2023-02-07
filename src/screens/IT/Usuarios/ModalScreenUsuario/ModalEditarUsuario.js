@@ -26,13 +26,17 @@ import { changePermisos, getPermisos } from "../../../../Api/Menu/PermisosReques
 import { getMenuNuevo } from "../../../../Api/Menu/MenuRequest";
 import { mdiConsoleLine } from "@mdi/js";
 
-import { getAccesosModulos } from "../../../../Api/IT/Accesos/AccesosRequest";
+
+
+import { getAccesosModulos, getAccesos, cambiarAccesos, getAccesosUsuario } from "../../../../Api/IT/Accesos/AccesosRequest";
+import { a } from "react-spring";
+
 
 // import "./ModalStyle.scss"
 
 
 export const ModalEditarUsuario = ({ datos, usuarios }) => {
-    console.log(datos)
+    // console.log(datos)
 
     // Variables necesarias 
     const [roles, setRoles] = useState([{}]);
@@ -55,12 +59,13 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
 
     const [loading1, setLoading1] = useState(false);
 
-    const [modulos, setModulos] = useState([])
+    const [modulos, setModulos] = useState([]);
+    const [accesos, setAccesos] = useState([])
 
     const getValoresIniciales = async () => {
         const rolesTempo = await getRoles();
         const estadosTempo = await getEstadosSecurity();
-        console.log(estadosTempo, rolesTempo)
+        // console.log(estadosTempo, rolesTempo)
         setRoles(rolesTempo);
         setEstados(estadosTempo);
     }
@@ -107,7 +112,9 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
         getPermisosUsuario(datos.idUser);
         formik.setValues(datos)
         getMenu();
-        getModulo()
+        // getModulo();
+        getAccesosByUsuario(datos.idUser)
+
     }
 
     const hideDialog = () => {
@@ -303,45 +310,93 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
         )
     }
 
+    const getAccesosByUsuario = async (idUser) => {
 
-    const getModulo = async () => {
-        const d = await getAccesosModulos()
-        console.log(`modulos`, d)
-        let nombre = [];
-        let html = '';
-        for(let m = 0; m <= modulos.length; m++){
-            const tempo = d.filter((e) => e.IdMenuMenu === m)
-            
-            nombre[m] = tempo
-            
+        const modulosTempo = await getAccesosModulos()
+        setModulos(modulosTempo)
+
+        setIsLoading(true)
+        const result = await getAccesosUsuario(idUser);
+        console.log(result)
+        if (result?.code === "EREQUEST") {
+            toastShow(toast, 'error', 'Error', 'Error al obtener los accesos');
+            setIsLoading(false);
+        } else {
+            setIsLoading(false);
+            const ordenado = result.accesos.split(',').sort();
+            setAccesos(ordenado)
+            console.log(ordenado)
         }
-        console.log(nombre)
-    //    setModulos(d)
-        // return (
-        //     <AccordionTab
-        //         key={item.IdMenu}
-        //         header={
-        //             <React.Fragment>
-        //                 <div className="modal__permisosCheck">
-        //                     <span >
-        //                         <i className={item.Icon}></i>
-        //                         {item.Menu}
-        //                     </span>
-        //                     <span >
-        //                         <Checkbox value={item.IdMenu} onChange={onPermisosSubNivelChange}
-        //                             // checked={true} />
-        //                         checked={permisos.some((IdMenu) => IdMenu === (item.IdMenu + ''))} /> 
-        //                     </span>
-        //                 </div>
-        //             </React.Fragment>
-        //         }
-        //     >
-        //         <div className='gridCheckbox'>
-        //             {subNiveles}
-        //             {/* {NivelesContainer.length > 0 ? <Accordion className={classNames("accordion-custom modal_accordion", { 'isNotVisible': isLoading })} multiple >{NivelesContainer}</Accordion>  : ''} */}
-        //         </div>
-        //     </AccordionTab >
-        // )
+
+    }
+
+   
+
+
+
+    const getModulos = () => {
+     
+        // console.log(`modulos`, modulosTempo);
+        return <Accordion className={classNames("accordion-custom modal_accordion", { 'isNotVisible': isLoading })} multiple >
+            {modulos.map(menu => <AccordionTab
+                header={
+                    <React.Fragment>
+                        <i className={menu.Icon}> </i>
+                        <span style={{ marginLeft: 3 }}> {menu.Menu}</span>
+                       
+                    </React.Fragment>}
+            >
+                <div className='gridCheckbox'>
+
+                    {menu.Accesos.map(acceso => checkboxAccesos(acceso))}
+                </div>
+            </AccordionTab>)}
+        </Accordion>
+
+       
+    }
+
+    
+
+    const checkboxAccesos = (acceso) => {
+        console.log(accesos.some((item) => item === (acceso.IdAcceso)))
+        return (
+
+            <div key={acceso.IdAcceso} className="field-checkbox">
+                <Checkbox inputId={acceso.IdAcceso} name="category" value={acceso.IdAcceso} onChange={onAccesossChange}
+
+                    checked={accesos.some((item) => item === (acceso.IdAcceso + ''))} />
+
+                <label htmlFor={acceso.IdAcceso}>{acceso.Acceso}</label>
+            </div>
+
+        )
+    }
+
+
+    const onAccesossChange = async (e) => {
+       
+        const someAccess = accesos.some((item) => item === (e.value + ''))
+        console.log(someAccess)
+
+        let newAccesos = 0;
+
+        if (someAccess) {
+            console.log("entro aqui")
+            newAccesos = accesos.filter((item) => item !== (e.value + ''))
+        } else {
+            console.log("entro aqui 2")
+            if (accesos[0] === '') {
+                console.log("entro aqui 3")
+                newAccesos = [(e.value + '')]
+            } else {
+                console.log("entro aqui 4")
+                newAccesos = [...accesos, (e.value + '')]
+            }
+        }
+        const result = await cambiarAccesos({ accesos: newAccesos.sort().toString(), idUser: datos.idUser });
+        console.log(result)
+        setAccesos(result[0].Accesos.split(','));
     }
 
 
@@ -364,7 +419,7 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
 
 
     const onPermisosSubNivelChange = async (e) => {
-
+        console.log(e)
         const aquiEstoy = permisos.some((item) => item === (e.value + ''))
 
         let newPermisos = undefined;
@@ -378,6 +433,7 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
             }
         }
         const result = await changePermisos({ permisos: newPermisos.sort().toString(), idUser: datos.idUser });
+        console.log(result)
         setPermisos(result[0].PermisosWeb.split(','));
     }
 
@@ -390,6 +446,8 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
         // console.log(datos)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [permisos])
+
+
 
 
     // Funciones para Mostrar Mensajes
@@ -407,38 +465,6 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
             </ul>
         </React.Fragment>
     );
-
-
-
-
-
-
-    // const nivelesPermisos = (subNiveles) => {
-    //     // Variable para obtener los permisos
-    //     let _subNivelesPermisos = []
-    //     let niveles = 0;
-
-    //     for (let i = 0; i < subNiveles.length; i++) {
-    //         if (subNiveles[i].IdNivelWeb !== niveles) {
-    //             niveles = subNiveles[i].IdNivelWeb
-    //             let _subniveles = []
-    //             for (let m = 0; m < subNiveles.length; m++) {
-    //                 if (subNiveles[m].IdNivelWeb === niveles) {
-    //                     _subniveles.push(subNiveles[m])
-    //                 }
-
-    //             }
-    //             _subNivelesPermisos.push(_subniveles)
-    //         }
-
-    //     }
-    //     _setNiveles(_subNivelesPermisos)
-    //     // console.log("subnivelsjbh",_subNivelesPermisos)
-    //     // subNiveles.map((subNivel) => {
-
-    //     // })
-
-    // }
 
 
 
@@ -569,11 +595,14 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
                                 <div className={classNames("progressSpinner-container", { 'isVisible': isLoading })}>
                                     <ProgressSpinner ></ProgressSpinner>
                                 </div>
-                                <Accordion className={classNames("accordion-custom modal_accordion", { 'isNotVisible': isLoading })} multiple >
-                                    {
-                                        menu
-                                    }
-                                </Accordion>
+                                {/* <Accordion className={classNames("accordion-custom modal_accordion", { 'isNotVisible': isLoading })} multiple > */}
+
+                                
+                                  {  getModulos()}
+
+                                
+
+                                {/* </Accordion> */}
                             </div>
                             <div className="p-dialog-footer">
                                 <Button label="Cancelar" type="button" icon="pi pi-times" className="p-button-text red" onClick={hideDialog} />
