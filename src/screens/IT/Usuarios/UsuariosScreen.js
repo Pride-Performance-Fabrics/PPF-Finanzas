@@ -173,12 +173,13 @@ export const UsuariosScreen = () => {
             <Loader loading={loading} />
             <Card
 
-                titulo={<h3>Usuarios</h3>}
+                titulo={<div className="d-flex"
+                > <h3 className="mx-3">Usuarios</h3>
+                 <ModalAgregarUsuario usuarios={getListadoUsuarios} />
+                </div>}
                 contenido={
 
                     <div className='p-3' style={{ height: '85vh' }}>
-                        <ModalAgregarUsuario usuarios={getListadoUsuarios} />
-                        <br></br>
                         <AgGrid table={table}  />
                     </div>
                 }

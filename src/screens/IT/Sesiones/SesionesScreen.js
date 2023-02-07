@@ -229,12 +229,12 @@ const SesionesScreen = () => {
       <Loader loading={loading} />
       <Card
 
-        titulo={<h3>Usuarios Activos</h3>}
+        titulo={<div className="d-flex"
+                ><h3>Usuarios Activos</h3>
+                </div>}
         contenido={
 
-          <div className='p-3' style={{ height: '90vh' }}>
-            {/* <AgregarRolModal roles = {getListadoRoles}/> */}
-            <br></br>
+          <div className='pt-4' style={{ height: '90vh' }}>
             <AgGrid table={table} />
           </div>
         }

@@ -104,10 +104,13 @@ const TiposScreen = () =>{
         <div>
             <Loader loading={loading} />
             <Card
-                titulo={<h3>Tipos de Cuentas</h3>}
+                titulo={<div className="d-flex">
+                    <h3 className="mx-3">Tipos de Cuentas</h3> 
+                    <ModalTipo tipos = {getListadoType} />
+                </div>}
                 contenido={
                     <div className='p-3' style={{ height: '90vh' }}>
-                        <ModalTipo tipos = {getListadoType} />
+                        
                         <AgGrid table={table} />
                     </div>
                 }

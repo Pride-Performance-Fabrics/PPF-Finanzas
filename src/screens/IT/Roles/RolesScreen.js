@@ -138,12 +138,14 @@ export const RolesScreen = () => {
             <Loader loading={loading} />
             <Card
 
-                titulo={<h3>Roles</h3>}
+                titulo={
+                <div className="d-flex" >
+                    <h3 className="mx-3">Roles</h3>
+                    <AgregarRolModal roles = {getListadoRoles}/>
+                </div>}
                 contenido={
 
-                    <div className='p-3' style={{ height: '85vh' }}>
-                        <AgregarRolModal roles = {getListadoRoles}/>
-                        <br></br><br></br>
+                    <div className='pt-4' style={{ height: '90vh' }}>
                         <AgGrid table={table} />
                     </div>
                 }

@@ -164,10 +164,9 @@ const MenuScreen = () => {
     <div>
       <Loader loading={loading} />
       <Card
-        titulo={<h3>Menu</h3>}
-        contenido={
-          <div className='p-3' style={{ height: '85vh' }}>
-            <Toast position="bottom-right" ref={toast} />
+        titulo={
+        <div className="d-flex">
+            <h3 className="mx-3">Menu</h3>
             <ModalMenu
               toast={toast}
               icono={aspectoBoton[0].Icono}
@@ -175,7 +174,11 @@ const MenuScreen = () => {
               className={aspectoBoton[0].className}
               getListadoMenu={getListadoMenu}
             />
-          
+        </div>}
+        contenido={
+          <div className='pt-4' style={{ height: '85vh' }}>
+            <Toast position="bottom-right" ref={toast} />
+
             <AgGrid table={table} />
           </div>
         }

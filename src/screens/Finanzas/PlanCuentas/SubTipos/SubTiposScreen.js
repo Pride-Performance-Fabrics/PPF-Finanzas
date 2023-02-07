@@ -16,19 +16,19 @@ import { getSubTypes, getCuentaSubType, getVistaSubType } from "../../../../Api/
 import ModalSubTipos from "./ModalSubTipos/ModalSubTipos";
 import ModalEditarSubTipos from "./ModalSubTipos/ModalEditarSubTipos";
 
-const SubTiposScreen = () =>{
+const SubTiposScreen = () => {
 
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false)
 
-    const botones = (rowData) =>{
+    const botones = (rowData) => {
         // console.log(rowData)
-        return(
-            <div className='col-12 d-flex' style={{ textAlign: 'center', height: 28, marginTop:-6}}>
-               
-                <ModalEditarSubTipos datos ={rowData} subTipos= {getListadoSubType}/>
+        return (
+            <div className='col-12 d-flex' style={{ textAlign: 'center', height: 28, marginTop: -6 }}>
+
+                <ModalEditarSubTipos datos={rowData} subTipos={getListadoSubType} />
             </div>
-           
+
         )
     }
 
@@ -73,7 +73,7 @@ const SubTiposScreen = () =>{
                 className: 'colum-width-XXlarge',
                 body: (rowData) => rowData.IdType,
             },
-           
+
             {
                 header: 'Acciones',
                 className: 'colum-width-small',
@@ -109,9 +109,9 @@ const SubTiposScreen = () =>{
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const abrirModal = () =>{
+    const abrirModal = () => {
         setOpen(true)
-       return <ModalSubTipos subTipos={getListadoSubType} />
+        return <ModalSubTipos subTipos={getListadoSubType} />
     }
 
 
@@ -121,11 +121,14 @@ const SubTiposScreen = () =>{
         <div>
             <Loader loading={loading} />
             <Card
-                titulo={<h3>Sub Tipos de Cuentas</h3>}
+                titulo={<div className="d-flex">
+                    <h3 className="mx-3">Subtipos de Cuentas</h3>
+                    <ModalSubTipos subTipos={getListadoSubType} />
+                </div>}
                 contenido={
                     <div className='p-3' style={{ height: '90vh' }}>
                         {/* <Button label="Nuevo" icon="pi pi-plus" className="p-button-Primary mr-2" onClick={abrirModal} /> */}
-                        <ModalSubTipos subTipos={getListadoSubType}/>
+                        
                         {/* <br></br><br></br> */}
                         <AgGrid table={table} />
                     </div>
