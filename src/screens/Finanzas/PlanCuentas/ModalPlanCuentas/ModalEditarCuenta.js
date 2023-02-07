@@ -25,7 +25,7 @@ import { getSubTypes, getCuentaSubType } from "../../../../Api/Finanzas/SubTypes
 import { getTypes } from "../../../../Api/Finanzas/TypesRequest";
 import { getCurrency } from "../../../../Api/Finanzas/CurrencyRequest";
 
-export const ModalAgregarCuenta = ({ datos, cuentas, toast }) => {
+export const ModalAgregarCuenta = ({ datos, cuentas, toast, habilitarEditar }) => {
     // console.log("datos", datos)
 
     const [cuentaDialog, setCuentaDialog] = useState(false);
@@ -123,7 +123,7 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast }) => {
 
     const asignar = (tempoId) => {
         let idTemporal
-        console.log(formik.values)
+        // console.log(formik.values)
         let ty = types.filter(e => formik.values.IdType === e.Id)
         // console.log(ty)
         // if (ty[0] != undefined) {
@@ -149,20 +149,20 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast }) => {
 
     const asignarValor = (tempoId) => {
         let idTemporal
-        console.log(tempoId)
+        // console.log(tempoId)
 
         if (tempoId[0].IdAccount === undefined) {
             let numeroTipo = (tempoId[0].IdType).toString();
             let tipo = numeroTipo.substring(0, 2);
             // let idTemporal = (valueSubType.IdSubType) + 1
             idTemporal = tipo + (tempoId[0].IdSubType + 1)
-            console.log(idTemporal)
+            // console.log(idTemporal)
             formik.values.IdAccount = idTemporal
             setIdCuenta(idTemporal);
         } else {
             const idNumeroCuenta = tempoId[0].IdAccount + 1
-            console.log(idNumeroCuenta)
-            console.log("cuenta")
+            // console.log(idNumeroCuenta)
+            // console.log("cuenta")
             formik.values.IdAccount = idNumeroCuenta
             setIdCuenta(idNumeroCuenta);
         }
@@ -342,13 +342,13 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast }) => {
         // console.log(sub)
         formik.values.SubTypeDescription = "";
 
-        console.log(formik.values)
+        // console.log(formik.values)
 
         // setValueSubType({Description: "" })
         setIdCuenta(0)
 
         cambiarType()
-        console.log(formik.values.IdSub)
+        // console.log(formik.values.IdSub)
         // if(datos.IdType === formik.values.IdType){
         //     const tempoId = await getCuentaSubType(formik.values.IdSub, formik.values.IdSubType)
         //     console.log("entro aqui")
@@ -360,13 +360,13 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast }) => {
     }, [formik.values.IdType]);
 
     useEffect(async () => {
-        console.log(formik.values)
+        // console.log(formik.values)
         const sub = subTypes.filter(e => formik.values.IdSubType === e.IdSubType);
         formik.values.SubTypeDescription = sub[0].Description
 
         const tempoId = await getCuentaSubType(sub[0].Id, formik.values.IdSubType)
         if(datos.IdSub === formik.values.IdSub){
-            console.log("entro aqui")
+            // console.log("entro aqui")
             asignarValor(tempoId)
         }
      
@@ -407,7 +407,7 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast }) => {
 
     return (
         <Fragment>
-            <Button icon="pi pi-pencil" className="p-button-rounded p-button-info p-button-text" aria-label="User"
+            <Button icon="pi pi-pencil" className="p-button-rounded p-button-info p-button-text" aria-label="User" disabled= {habilitarEditar}
                 tooltip="Editar" tooltipOptions={{ position: 'top', mouseTrack: true, mouseTrackTop: 15 }} onClick={openNew} />
 
             {/* <Toast  ref={toast}/> */}

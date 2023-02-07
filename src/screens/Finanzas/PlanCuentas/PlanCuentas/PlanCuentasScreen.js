@@ -19,19 +19,38 @@ import { setNestedObjectValues } from "formik";
 import { toastShow } from '../../../../services/ToastService';
 
 import { Toast } from 'primereact/toast';
+
+import { decodeToken } from "react-jwt";
 import { putEstadosCuenta } from "../../../../Api/Global/StatusRequest";
+
+import { getAccesosUsuario } from "../../../../Api/IT/Accesos/AccesosRequest"
 
 const PlanCuentasScreen = () => {
     const [loading, setLoading] = useState(false);
     const [checked, setChecked] = useState(false);
     const toast = useRef(null);
     const [data, setData] = useState([]);
+    const [accesos, setAccesos] = useState([]);
+    const [habilitarEditar, setHabilitarEditar] = useState(true);
+    const [habilitar, setHabilitar] = useState(true)
 
-    // const abrirModal = (rowData) => {
+    const getAccesosByUsuario = async() =>{
+        const userInformation = decodeToken(localStorage.getItem(`ppfToken`));
+        let user = userInformation.idUser
 
-    //     return <ModalAgregarCuenta datos={rowData} />
-    // }
+        const result = await getAccesosUsuario(user)
+        const ordenado = result.accesos.split(',').sort();
+        setAccesos(ordenado)
 
+        const accesoEditar = ordenado.some((item) => item ==="1")
+        setHabilitarEditar(!accesoEditar)
+
+        const accesoHabilitar = ordenado.some((item) => item ==="2")
+        setHabilitar(!accesoHabilitar)
+        // console.log(accesoEditar)
+    }
+
+   
     const onChangeCheck = async (id, estado) => {
         // console.log(id, estado)
         let activo = 3
@@ -72,21 +91,19 @@ const PlanCuentasScreen = () => {
         }
 
 
-
-
-
-
     }
 
     const botones = (rowData) => {
-        // console.log(rowData)
+        
+
+
         return (
             <div className='col-12 d-flex' style={{ textAlign: 'center', height: 28, marginTop: -6 }}>
-                <ModalEditarCuenta datos={rowData} cuentas={getPlanCuentas} toast={toast} />
+                <ModalEditarCuenta datos={rowData} cuentas={getPlanCuentas} toast={toast} habilitarEditar = {habilitarEditar}/>
                 {/* <Checkbox onChange={onChangeCheck} checked={checked} style={{ marginTop: 10 }}
                     tooltip={rowData.ActiveStatus === true ? "Inhabilitar" : "Habilitar"} tooltipOptions={{ position: 'top', mouseTrack: true, mouseTrackTop: 15 }}
                 /> */}
-                <Checkbox onChange={(e) => onChangeCheck(rowData.id, e.checked)} checked={rowData.ActiveStatus === 3 ? !checked : checked} style={{ marginTop: 10 }} ></Checkbox>
+                <Checkbox onChange={(e) => onChangeCheck(rowData.id, e.checked)} checked={rowData.ActiveStatus === 3 ? !checked : checked} style={{ marginTop: 10 }} disabled ={habilitar} ></Checkbox>
                 <Button icon="pi pi-file-export" className="p-button-rounded p-button-info p-button-text" aria-label="User"/>
             </div>
 
@@ -208,24 +225,32 @@ const PlanCuentasScreen = () => {
         const result = await getCuentas();
         setData(result)
         setLoading(false);
-        // console.log(result)
+        console.log(result)
         setChecked(result.ActiveStatus)
     }
     useEffect(() => {
         getPlanCuentas();
+        getAccesosByUsuario();
         window.document.title = 'PPF • Finanzas Plan Cuentas';
+
+     
+        
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
         <div>
             <Loader loading={loading} />
-            <Card
-                titulo={<h3>Plan de Cuentas</h3>}
+            <Card 
+          
+                titulo={<div className="d-flex"
+                > 
+                <h3 className="mx-3">Plan de Cuentas</h3>
+                <ModalAgregarCuenta cuentas={getPlanCuentas} /></div>}
                 contenido={
-                    <div className='p-3' style={{ height: '85vh' }}>
+                    <div className='pt-4' style={{ height: '90vh' }}>
                         <Toast position="bottom-right" ref={toast} />
-                        <ModalAgregarCuenta cuentas={getPlanCuentas} />
+                        
                         <AgGrid table={table} />
                     </div>
                 }
