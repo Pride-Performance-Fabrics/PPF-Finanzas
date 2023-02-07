@@ -64,7 +64,7 @@ const AccesosScreen = () => {
                     icono={aspectoBoton[1].Icono}
                     nombre={aspectoBoton[1].Nombre}
                     className={aspectoBoton[1].className}
-                    getListadoAccesos ={getListadoAccesos}
+                    getListadoAccesos={getListadoAccesos}
                 />
             </div>
 
@@ -145,17 +145,20 @@ const AccesosScreen = () => {
         <div>
             <Loader loading={loading} />
             <Card
-                titulo={<h3>Accesos</h3>}
+                titulo={<div className="d-flex">
+                    <h3 className="mx-3">Accesos</h3>
+                    <ModalAccesos
+                        toast={toast}
+                        icono={aspectoBoton[0].Icono}
+                        nombre={aspectoBoton[0].Nombre}
+                        className={aspectoBoton[0].className}
+                        getListadoAccesos={getListadoAccesos}
+                    />
+                </div>}
                 contenido={
-                    <div className='p-3' style={{ height: '85vh' }}>
+                    <div className='pt-4' style={{ height: '90vh' }}>
                         <Toast position="bottom-right" ref={toast} />
-                        <ModalAccesos
-                            toast={toast}
-                            icono={aspectoBoton[0].Icono}
-                            nombre={aspectoBoton[0].Nombre}
-                            className={aspectoBoton[0].className}
-                            getListadoAccesos = {getListadoAccesos}
-                        />
+
 
                         <AgGrid table={table} />
                     </div>

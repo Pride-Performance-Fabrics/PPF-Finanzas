@@ -21,3 +21,35 @@ export const getAccesosModulos = async () => {
     const result = await PrivateInterceptor(`accesos/AccessGroup`, 'GET');
     return result;
 }
+
+//**************  OBTIENE LOS ACCESOS DE UN USUARIO **************/
+
+export const getAccesosUsuario = async(idUser) => {
+    const respuesta = await PrivateInterceptor(`accesos/${idUser}`, 'GET')
+    return respuesta;
+}
+
+
+//**************  CAMBIAR ACCESOS **************/
+
+export const cambiarAccesos = async(accesos) => {
+    // console.log(accesos)
+    const respuesta = await PrivateInterceptor(`accesos/cambiarAccesos`, 'PUT', accesos)
+    return respuesta;
+}
+
+
+//**************  OBTIENE LOS ACCESOS DE LOS ROLES **************/
+
+export const getAccesosRoles = async(IdRol) => {
+    const respuesta = await PrivateInterceptor(`accesos/roles/${IdRol}`, 'GET')
+    return respuesta;
+}
+
+//**************  CAMBIAR ACCESOS DE LOS ROLES**************/
+
+export const cambiarAccesosRoles = async(accesos) => {
+    // console.log(accesos)
+    const respuesta = await PrivateInterceptor(`accesos/cambiarAccesosRoles`, 'PUT', accesos)
+    return respuesta;
+}
