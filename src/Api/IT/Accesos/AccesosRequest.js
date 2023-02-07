@@ -53,3 +53,11 @@ export const cambiarAccesosRoles = async(accesos) => {
     const respuesta = await PrivateInterceptor(`accesos/cambiarAccesosRoles`, 'PUT', accesos)
     return respuesta;
 }
+
+
+
+export const putActividadAcceso = async (body) =>{
+    console.log(body)
+    const result = await PrivateInterceptor(`accesos/actividadAcceso`, 'PUT', body);
+    return result;
+}

@@ -12,7 +12,7 @@ import IconApp from "../../../components/icon/IconApp";
 import AgGrid from "../../../components/Tables/AgGrid";
 
 //************** Funciones  **************/
-import { getAccesos } from "../../../Api/IT/Accesos/AccesosRequest";
+import { getAccesos, putActividadAcceso } from "../../../Api/IT/Accesos/AccesosRequest";
 
 import { setNestedObjectValues } from "formik";
 import { toastShow } from '../../../services/ToastService';
@@ -45,10 +45,33 @@ const AccesosScreen = () => {
     ]
 
 
+    const onChangeCheck = async (activo, IdAcceso, e) => {
 
-    const onChangeCheck = () => {
+        let  activosAccesos = {
+            Acceso: activo,
+            Activo: e,
+            IdAcceso: IdAcceso
+        }
+
+        const result = await putActividadAcceso(activosAccesos)
+        const temporal = result.map((item) => {
+            console.log(item)
+            if (item.id === IdAcceso) {
+                console.log(item)
+                item.ActivoAPP = true
+               
+            }
+
+            return item
+        })
+
+        setData(temporal)
+
+        // setData(result)
+
 
     }
+
 
     const ActivoCheck = (rowData) => {
         return <Checkbox onChange={(e) => onChangeCheck(rowData.IdAcceso, e.checked)} style={{ marginBottom: 5 }} checked={rowData.ActivoWeb} ></Checkbox>
@@ -90,13 +113,21 @@ const AccesosScreen = () => {
                 className: 'colum-width-small',
                 Format: "Template",
                 align: "center",
-                body: (rowData) => ActivoCheck(rowData),
+                body: (rowData) => <Checkbox onChange={(e) => onChangeCheck(1, rowData.IdAcceso, e.checked)} style={{ marginBottom: 5 }} checked={rowData.ActivoWeb} />,
+            },
+            {
+                field: 'ActivoAPP',
+                header: 'ActivoAPP',
+                className: 'colum-width-small',
+                Format: "Template",
+                align: "center",
+                body: (rowData) => <Checkbox onChange={(e) => onChangeCheck(2, rowData.IdAcceso, e.checked)} style={{ marginBottom: 5 }} checked={rowData.ActivoAPP} />,
             },
             {
                 // Menu: 'Menu',
                 field: 'IdMenu',
                 header: 'IdMenu',
-                className: 'colum-width-large',
+                className: 'colum-width-small',
             },
             {
                 field: 'Menu',
