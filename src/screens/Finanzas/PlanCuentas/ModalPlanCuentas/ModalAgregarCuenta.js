@@ -54,7 +54,8 @@ export const ModalAgregarCuenta = ({ datos, cuentas }) => {
     const [valueCuentasExistente, setValueCuentasExistentes] = useState({});
 
     const [habilitado, setHabilitado] = useState(true);
-    const [idCuenta, setIdCuenta] = useState({})
+    const [idCuenta, setIdCuenta] = useState({});
+    const [habilitarBoton, setHabilitarBoton] = useState(false);
 
 
     const cambiarType = () => {
@@ -83,7 +84,7 @@ export const ModalAgregarCuenta = ({ datos, cuentas }) => {
         const tempo2 = await getCurrency();
         setCurrency(tempo2)
 
-        // console.log('Currency', tempo2)
+        console.log('Currency', tempo2)
 
         const tempo3 = await getCuentasExistentes()
         setCuentasExistentes(tempo3)
@@ -95,6 +96,12 @@ export const ModalAgregarCuenta = ({ datos, cuentas }) => {
     const openNew = () => {
         setCuentaDialog(true)
         getListadoDropdown()
+        setFilterSubType([])
+        // console.log(idCuenta)
+        // setIdCuenta(0)
+        setValueSubType({description :""})
+        setChecked(false)
+        setHabilitarBoton(false)
     }
 
     const hideDialog = () => {
@@ -127,7 +134,7 @@ export const ModalAgregarCuenta = ({ datos, cuentas }) => {
 
 
     const agregarCuenta = async (data) => {
-
+        setHabilitarBoton(true)
         const userInformation = decodeToken(localStorage.getItem(`ppfToken`));
         let user = userInformation.idUser
 
@@ -155,10 +162,22 @@ export const ModalAgregarCuenta = ({ datos, cuentas }) => {
         const resultado = await postCrearCuenta(data)
         if (resultado) {
             toastShow(toast, 'success', 'Creado', 'Cuenta Creada Correctamente.');
+            cuentas()
             setFormData({})
             formik.resetForm(formData)
+          
             hideDialog()
-            cuentas()
+            valueType.IdType = ""
+            valueType.Type = ""
+
+            valueCuentasExistente.IdAccount = ""
+            idCuenta=""
+            valueCurrency.IdCurrency = ""
+            setFilterSubType({})
+            setIdCuenta(0)
+            valueCurrency.Currency= ""
+            valueSubType.Description = ""
+            setChecked(false)
             console.log(resultado)
             return true;
         } else {
@@ -353,7 +372,7 @@ export const ModalAgregarCuenta = ({ datos, cuentas }) => {
                         </div>
                         <div className="p-dialog-footer">
                             <Button label="Cancelar" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
-                            <Button type='submit' label="Guardar" icon="pi pi-check" className="p-button-text" />
+                            <Button type='submit' label="Guardar" icon="pi pi-check" className="p-button-text" disabled= {habilitarBoton} />
                         </div>
                     </form>
 
