@@ -185,6 +185,7 @@ const AccesosScreen = () => {
                         className={aspectoBoton[0].className}
                         getListadoAccesos={getListadoAccesos}
                     />
+                     <Button className="p-button-text p-button-rounded mx-2" icon="ri-restart-line"  loading={loading} onClick={getListadoAccesos} />
                 </div>}
                 contenido={
                     <div className='pt-4' style={{ height: '90vh' }}>

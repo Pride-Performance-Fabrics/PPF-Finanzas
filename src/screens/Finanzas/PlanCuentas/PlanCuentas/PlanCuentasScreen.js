@@ -32,7 +32,8 @@ const PlanCuentasScreen = () => {
     const [data, setData] = useState([]);
     const [accesos, setAccesos] = useState([]);
     const [habilitarEditar, setHabilitarEditar] = useState(true);
-    const [habilitar, setHabilitar] = useState(true)
+    const [habilitar, setHabilitar] = useState(true);
+   
 
     const getAccesosByUsuario = async() =>{
         const userInformation = decodeToken(localStorage.getItem(`ppfToken`));
@@ -246,7 +247,10 @@ const PlanCuentasScreen = () => {
                 titulo={<div className="d-flex"
                 > 
                 <h3 className="mx-3">Plan de Cuentas</h3>
-                <ModalAgregarCuenta cuentas={getPlanCuentas} /></div>}
+                <ModalAgregarCuenta cuentas={getPlanCuentas} />
+                 <Button className="p-button-text p-button-rounded mx-2" icon="ri-restart-line"  loading={loading} onClick={getPlanCuentas} />
+                </div>}
+                
                 contenido={
                     <div className='pt-4' style={{ height: '90vh' }}>
                         <Toast position="bottom-right" ref={toast} />

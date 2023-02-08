@@ -17,6 +17,7 @@ import AgregarRolModal from '../Roles/ModalRoles/AgregarRolModal';
 //************** Importacion de Componentes de PrimeReacts **************/
 import { Toast } from 'primereact/toast';
 import { Checkbox } from 'primereact/checkbox';
+import { Button } from 'primereact/button';
 
 import { putActividadMenu} from "../../../Api/Menu/MenuRequest"
 
@@ -203,6 +204,7 @@ const MenuScreen = () => {
               className={aspectoBoton[0].className}
               getListadoMenu={getListadoMenu}
             />
+             <Button className="p-button-text p-button-rounded mx-2" icon="ri-restart-line"  loading={loading} onClick={getListadoMenu} />
         </div>}
         contenido={
           <div className='pt-4' style={{ height: '85vh' }}>

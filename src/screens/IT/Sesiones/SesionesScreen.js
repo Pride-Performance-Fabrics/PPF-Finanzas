@@ -231,6 +231,7 @@ const SesionesScreen = () => {
 
         titulo={<div className="d-flex"
                 ><h3>Usuarios Activos</h3>
+                 <Button className="p-button-text p-button-rounded mx-2" icon="ri-restart-line"  loading={loading} onClick={getUsuariosActivos} />
                 </div>}
         contenido={
 

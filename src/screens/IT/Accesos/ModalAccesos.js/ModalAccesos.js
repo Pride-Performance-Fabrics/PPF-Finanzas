@@ -25,7 +25,7 @@ import {postAccesos} from "../../../../Api/IT/Accesos/AccesosRequest";
 
 const ModalAccesos = ({ toast, datos, icono, nombre,className, getListadoAccesos }) => {
 
-    console.log(datos)
+    // console.log(datos)
 
     const [accesosDialog, setAccesosDialog] = useState(false);
     const [formData, setFormData] = useState({});
@@ -60,7 +60,7 @@ const ModalAccesos = ({ toast, datos, icono, nombre,className, getListadoAccesos
     }
 
     const agregarAcceso = async (data) =>{
-        console.log(data)
+        // console.log(data)
 
         const resultado = await postAccesos(data)
         if (resultado) {
@@ -77,7 +77,7 @@ const ModalAccesos = ({ toast, datos, icono, nombre,className, getListadoAccesos
             return true;
         }
 
-        console.log(data)
+        // console.log(data)
     }
 
     const inicioValores = {

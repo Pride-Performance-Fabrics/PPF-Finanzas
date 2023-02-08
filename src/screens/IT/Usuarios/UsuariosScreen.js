@@ -176,6 +176,7 @@ export const UsuariosScreen = () => {
                 titulo={<div className="d-flex"
                 > <h3 className="mx-3">Usuarios</h3>
                  <ModalAgregarUsuario usuarios={getListadoUsuarios} />
+                 <Button className="p-button-text p-button-rounded mx-2" icon="ri-restart-line"  loading={loading} onClick={getListadoUsuarios} />
                 </div>}
                 contenido={
 

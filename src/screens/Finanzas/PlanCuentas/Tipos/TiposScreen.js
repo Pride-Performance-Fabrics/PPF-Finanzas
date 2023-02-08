@@ -107,9 +107,10 @@ const TiposScreen = () =>{
                 titulo={<div className="d-flex">
                     <h3 className="mx-3">Tipos de Cuentas</h3> 
                     <ModalTipo tipos = {getListadoType} />
+                    <Button className="p-button-text p-button-rounded mx-2" icon="ri-restart-line" loading={loading} onClick={getListadoType} />
                 </div>}
                 contenido={
-                    <div className='p-3' style={{ height: '90vh' }}>
+                    <div className='pt-4' style={{ height: '90vh' }}>
                         
                         <AgGrid table={table} />
                     </div>

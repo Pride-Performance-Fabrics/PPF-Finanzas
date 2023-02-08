@@ -124,11 +124,12 @@ const SubTiposScreen = () => {
                 titulo={<div className="d-flex">
                     <h3 className="mx-3">Subtipos de Cuentas</h3>
                     <ModalSubTipos subTipos={getListadoSubType} />
+                    <Button className="p-button-text p-button-rounded mx-2" icon="ri-restart-line"  loading={loading} onClick={getListadoSubType} />
                 </div>}
                 contenido={
-                    <div className='p-3' style={{ height: '90vh' }}>
+                    <div className='pt-4' style={{ height: '90vh' }}>
                         {/* <Button label="Nuevo" icon="pi pi-plus" className="p-button-Primary mr-2" onClick={abrirModal} /> */}
-                        
+
                         {/* <br></br><br></br> */}
                         <AgGrid table={table} />
                     </div>

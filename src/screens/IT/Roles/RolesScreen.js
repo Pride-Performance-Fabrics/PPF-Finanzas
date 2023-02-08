@@ -7,6 +7,7 @@ import { InputText } from 'primereact/inputtext';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
+import {Button} from "primereact/button";
 import { FilterMatchMode } from 'primereact/api';
 
 import ModificarRolModal from "./ModalRoles/ModificarRolModal";
@@ -142,6 +143,7 @@ export const RolesScreen = () => {
                 <div className="d-flex" >
                     <h3 className="mx-3">Roles</h3>
                     <AgregarRolModal roles = {getListadoRoles}/>
+                    <Button className="p-button-text p-button-rounded mx-2" icon="ri-restart-line"  loading={loading} onClick={getListadoRoles} />
                 </div>}
                 contenido={
 
