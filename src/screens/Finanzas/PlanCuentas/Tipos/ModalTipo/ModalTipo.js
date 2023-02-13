@@ -20,8 +20,11 @@ import { validarRespuesta } from '../../../../../services/crypto';
 import { getTypes, postTypes } from "../../../../../Api/Finanzas/TypesRequest";
 import TiposScreen from "../TiposScreen";
 
+//**************  PETICIONES A LA API **************/
+import { getClasses } from "../../../../../Api/Finanzas/classesRequest";
 
-const ModalTipo = ({datos, tipos}) => {
+
+const ModalTipo = ({ datos, tipos }) => {
 
 
     const [subTipoDialog, setSubTipoDialog] = useState(false);
@@ -31,6 +34,8 @@ const ModalTipo = ({datos, tipos}) => {
 
     const [types, setTypes] = useState([]);
     const [valueType, setValueType] = useState({});
+
+    const [clases, setClases] = useState([])
 
     const openNew = () => {
         setSubTipoDialog(true)
@@ -43,18 +48,14 @@ const ModalTipo = ({datos, tipos}) => {
 
 
     const getListadoDropdown = async () => {
-        const tempo = await getTypes();
-        setTypes(tempo)
+        const tempo = await getClasses();
+        setClases(tempo)
         // console.log(tempo)
 
     }
 
-    const getTipoCuentas = async() =>{
-        const result = await getTypes();
-        // console.log(result)
-    }
 
-    const agregarTipo = async(data) =>{
+    const agregarTipo = async (data) => {
         console.log(data)
 
         const resultado = await postTypes(data)
@@ -67,7 +68,7 @@ const ModalTipo = ({datos, tipos}) => {
             // console.log(resultado)
             tipos()
             return true;
-        }else{
+        } else {
             toastShow(toast, 'error', 'Error', 'Error al crear la cuenta');
             return true;
         }
@@ -77,24 +78,29 @@ const ModalTipo = ({datos, tipos}) => {
 
     const formik = useFormik({
         initialValues: {
-            Id: -1998,
-            IdType: 0,
+            IdType: -1998,
+            CodigoType: 0,
             Type: '',
-            Description: ''
+            Description: '',
+            IdClase: 0,
+            Clase: ""
         },
         validate: (data) => {
             let errors = {};
-            if(!data.IdType){
-                errors.IdType = 'Se requiere el numero de la cuenta'
+            if (!data.CodigoType) {
+                errors.CodigoType = 'Se requiere el numero de la cuenta'
             }
-            else if (!/^[0-9]{1,10}$/i.test(data.IdType)) {
-                errors.IdType = 'El numero de cuenta no debe contener letras';
+            else if (!/^[0-9]{1,2}$/i.test(data.CodigoType)) {
+                errors.CodigoType = 'El numero de cuenta no debe contener letras';
             }
             if (!data.Type) {
                 errors.Type = 'Se requiere el nombre del tipo de cuenta.';
             }
             if (!data.Description) {
                 errors.Description = 'Se requiere una descripcion';
+            }
+            if (!data.IdClase) {
+                errors.IdClase = 'Se requiere la clase a la que pertenece el tipo de cuenta';
             }
 
             return errors;
@@ -130,11 +136,11 @@ const ModalTipo = ({datos, tipos}) => {
                         <div className="modal__input-contenedor" style={{ width: "100%" }}>
                             <div className="field col-6 me-2" >
                                 <span className="p-float-label">
-                                    <InputText id="IdType" name="IdType" value={formik.values.IdType} onChange={formik.handleChange} autoFocus
-                                        className={classNames({ 'p-invalid': isFormFieldValid('IdType') })} autoComplete="off" />
-                                    <label htmlFor="IdType" className={classNames({ 'p-error': isFormFieldValid('IdType') })}>Numero de Cuenta</label>
+                                    <InputText id="CodigoType" name="CodigoType" value={formik.values.CodigoType} onChange={formik.handleChange} autoFocus
+                                        className={classNames({ 'p-invalid': isFormFieldValid('CodigoType') })} autoComplete="off" />
+                                    <label htmlFor="CodigoType" className={classNames({ 'p-error': isFormFieldValid('CodigoType') })}>Numero de Cuenta</label>
                                 </span>
-                                {getFormErrorMessage('IdType')}
+                                {getFormErrorMessage('CodigoType')}
                             </div>
                             <div className="field col-6 me-2" >
                                 <span className="p-float-label">
@@ -146,11 +152,17 @@ const ModalTipo = ({datos, tipos}) => {
                             </div>
                         </div>
                         <div className="modal__input-contenedor" style={{ width: "100%" }}>
-                            <div style={{width: "100%"}}  >
+                            <div className="field col-6 me-2" >
+                                <label htmlFor="dropdown">Tipo Clase</label>
+                                <Dropdown id="IdClase" name="IdClase" value={formik.values.IdClase} onChange={formik.handleChange} options={clases} optionLabel="Clase"
+                                    optionValue="IdClase"
+                                />
+                            </div>
+                            <div style={{ width: "100%" }}  >
                                 {/* <span className="p-float-label"> */}
                                 <label htmlFor="Decripcion" className={classNames({ 'p-error': isFormFieldValid('Decripcion') })}>Decripcion</label>
-                                    <InputText id="Description" name="Description" value={formik.values.Description} onChange={formik.handleChange} autoFocus
-                                        className={classNames({ 'p-invalid': isFormFieldValid('Description') })} autoComplete="off"  />
+                                <InputText id="Description" name="Description" value={formik.values.Description} onChange={formik.handleChange} autoFocus
+                                    className={classNames({ 'p-invalid': isFormFieldValid('Description') })} autoComplete="off" />
                                 {/* </span> */}
                                 {getFormErrorMessage('Description')}
                             </div>

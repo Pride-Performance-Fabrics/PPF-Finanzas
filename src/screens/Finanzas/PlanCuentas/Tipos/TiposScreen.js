@@ -36,22 +36,28 @@ const TiposScreen = () =>{
         Data: [],
         Columns: [
             {
-                field: 'Id',
-                header: 'Id',
-                className: 'colum-width-small',
-                body: (rowData) => rowData.Id,
-            },
-            {
                 field: 'IdType',
                 header: 'IdType',
-                className: 'colum-width-XXlarge',
+                className: 'colum-width-small',
                 body: (rowData) => rowData.IdType,
+            },
+            {
+                field: 'CodigoType',
+                header: 'CodigoType',
+                className: 'colum-width-XXlarge',
+                body: (rowData) => rowData.CodigoType,
             },
             {
                 field: 'Type',
                 header: 'Type',
                 className: 'colum-width-XXlarge',
                 body: (rowData) => rowData.IdType,
+            },
+            {
+                field: 'Clase',
+                header: 'Clase',
+                className: 'colum-width-XXlarge',
+                body: (rowData) => rowData.Clase,
             },
             {
                 // Menu: 'Menu',
@@ -73,7 +79,7 @@ const TiposScreen = () =>{
 
 
         ],
-        key: 'IdSubType',
+        key: 'IdType',
         // scrollHeight: '100%',
     })
 
