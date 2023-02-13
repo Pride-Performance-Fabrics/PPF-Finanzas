@@ -37,6 +37,8 @@ import FinanzasHomeScreen from "../screens/Homes/FinanzasHomeScreen";
 import PlanCuentasScreen from "../screens/Finanzas/PlanCuentas/PlanCuentas/PlanCuentasScreen";
 import SubTiposScreen from "../screens/Finanzas/PlanCuentas/SubTipos/SubTiposScreen";
 import TiposScreen from "../screens/Finanzas/PlanCuentas/Tipos/TiposScreen";
+import CategoriaScreen from "../screens/Finanzas/PlanCuentas/Categoria/CategoriaScreen";
+import SubCategoriasScreen from "../screens/Finanzas/PlanCuentas/SubCategorias/SubCategoriasScreen";
 
 
 export const DashboardRoutes = () => {
@@ -143,17 +145,26 @@ export const DashboardRoutes = () => {
             navigate("fin/home", { replace: true })
         }
     );
-
-
-
-    const SubTiposScreenPermision = Permissible(
-        SubTiposScreen,
-        userPermisions, // userPermissions
-        [10], // requiredPermissions
-        () => {
+    const CategoriaScreenPermision = Permissible(
+        CategoriaScreen,
+        userPermisions,
+        [10],
+        () =>{
             navigate("fin/home", { replace: true })
         }
-    );
+
+    )
+
+
+
+    // const SubTiposScreenPermision = Permissible(
+    //     SubTiposScreen,
+    //     userPermisions, // userPermissions
+    //     [10], // requiredPermissions
+    //     () => {
+    //         navigate("fin/home", { replace: true })
+    //     }
+    // );
 
     const AccesoScreenPermision = Permissible(
         AccesosScreen,
@@ -164,6 +175,17 @@ export const DashboardRoutes = () => {
         }
 
     )
+
+ 
+    const SubCategoriasScreenPermision = Permissible(
+        SubCategoriasScreen,
+        userPermisions, // userPermissions
+        [12], // requiredPermissions
+        () => {
+            navigate("fin/home", { replace: true })
+        }
+    );
+
 
 
 
@@ -208,8 +230,10 @@ export const DashboardRoutes = () => {
                     {/* --------------------------------- Finanzas ----------------------------------- */}
                     <Route path={`${process.env.REACT_APP_ENV}/Finanzas`} element={<FinanzasHomeScreenPermision />} />
                     <Route path={`${process.env.REACT_APP_ENV}/PlanCuentas`} element={<PlanCuentasScreenPermision />} />
-                    <Route path={`${process.env.REACT_APP_ENV}/SubTipos`} element={<SubTiposScreenPermision />} />
+                    {/* <Route path={`${process.env.REACT_APP_ENV}/SubTipos`} element={<SubTiposScreenPermision />} /> */}
                     <Route path={`${process.env.REACT_APP_ENV}/TipoCuentas`} element={<TiposScreenPermision />} />
+                    <Route path={`${process.env.REACT_APP_ENV}/RegistroContable/Categoria`} element={<CategoriaScreenPermision />} />
+                    <Route path={`${process.env.REACT_APP_ENV}/RegistroContable/SubCategoria`} element={<SubCategoriasScreenPermision />} />
 
 
 
