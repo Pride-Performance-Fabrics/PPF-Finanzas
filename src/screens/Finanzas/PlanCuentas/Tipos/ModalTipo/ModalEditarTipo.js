@@ -135,6 +135,7 @@ const ModalEditarTipo = ({datos, tipos}) => {
                             </div>
                         </div>
                         <div className="modal__input-contenedor" style={{ width: "100%" }}>
+                            
                             <div style={{width: "100%"}}  >
                                 {/* <span className="p-float-label"> */}
                                 <label htmlFor="Decripcion" className={classNames({ 'p-error': isFormFieldValid('Decripcion') })}>Decripcion</label>

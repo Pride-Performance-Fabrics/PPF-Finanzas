@@ -75,18 +75,22 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast, icono, nombre, class
 
         let c = categorias.filter((e) => formik.values.IdCategoria === e.IdCategoria)
         // console.log(c)
+        // const sub = subCategorias.filter(e => formik.values.IdType === e.IdCategoria)
+        // setFilterSubCategoria(sub)
+        // console.log(sub)
 
 
         let s = filterSubCategoria.filter((e) => formik.values.IdSubCategoria === e.IdSubCategoria)
         // console.log(t, c, s)
 
-        let idTemporal = t[0].CodigoType.toString() + c[0].IdCategoria.toString() + s[0].CodigoSubCategoria.toString()
+        let idTemporal = t[0].CodigoType.toString() + (t[0].CodigoType >=6 ? c[0].CodigoCategoria.toString() : "")  + s[0].CodigoSubCategoria.toString()
         // let idTemporal = t[0].CodigoType.toString() + c[0].CodigoCategoria.toString()+ s[0].CodigoSubCategoria.toString()
         // console.log(idTemporal)
         formik.values.IdTipoCuenta = idTemporal
         formik.values.SubCategoriaDescription = s[0].Description
 
         setIdCuenta(idTemporal)
+        
         // console.log(cuentasExistentes)
         let filCuentas = cuentasExistentes.filter((e) => formik.values.IdSubCategoria === e.SubCategoria)
         // console.log(formik.values.IdSubCategoria)
@@ -104,7 +108,7 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast, icono, nombre, class
 
         const tempo = await getSubCategorias();
         setSubCategorias(tempo)
-        // console.log('subCategorias', tempo)
+        console.log('subCategorias', tempo)
 
         const tempo1 = await getTypes();
         setTypes(tempo1)
@@ -286,7 +290,7 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast, icono, nombre, class
         IdCategoria: 0,
         IdSubCategoria: 0,
         SubCategoriaDescription: '',
-        Description: '',
+        DescriptionCharAccount: '',
         IdCurrency: 1,
         Saldo: 0,
         Fecha: '',
@@ -316,8 +320,8 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast, icono, nombre, class
             if (!data.IdSubCategoria) {
                 errors.IdSubCategoria = 'Se requiere la SubCategoria de la cuenta.';
             }
-            if (!data.Description) {
-                errors.Description = 'Se requiere una description';
+            if (!data.DescriptionCharAccount) {
+                errors.DescriptionCharAccount = 'Se requiere una description';
             }
 
             return errors;
@@ -338,10 +342,13 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast, icono, nombre, class
         const cate = categorias.filter(e => formik.values.IdType === e.IdType);
         setFilterCategoria(cate)
 
+        // console.log(filterSubCategoria)
+
         let idTemporal
 
         if (formik.values.IdType !== 6) {
             formik.values.IdCategoria = formik.values.IdType
+           
         }
 
         formik.values.SubCategoriaDescription = ""
@@ -357,7 +364,7 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast, icono, nombre, class
         setIdCuenta(0)
         // console.log(subCategorias)
         const sub = subCategorias.filter(e => formik.values.IdCategoria === e.IdCategoria);
-        // console.log(sub)
+        console.log(sub, "categoria")
 
         setFilterSubCategoria(sub)
 
@@ -475,11 +482,11 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast, icono, nombre, class
 
                             <div className="field col-6 me-2">
                                 <span className="p-float-label">
-                                    <InputText id="Description" name="Description" value={formik.values.Description} onChange={formik.handleChange} autoFocus
-                                        className={classNames({ 'p-invalid': isFormFieldValid('Description') })} autoComplete="off" />
-                                    <label htmlFor="Description" className={classNames({ 'p-error': isFormFieldValid('Description') })}>Descripcion</label>
+                                    <InputText id="DescriptionCharAccount" name="DescriptionCharAccount" value={formik.values.DescriptionCharAccount} onChange={formik.handleChange} autoFocus
+                                        className={classNames({ 'p-invalid': isFormFieldValid('DescriptionCharAccount') })} autoComplete="off" />
+                                    <label htmlFor="DescriptionCharAccount" className={classNames({ 'p-error': isFormFieldValid('DescriptionCharAccount') })}>Descripcion</label>
                                 </span>
-                                {getFormErrorMessage('Description')}
+                                {getFormErrorMessage('DescriptionCharAccount')}
                             </div>
                         </div>
 

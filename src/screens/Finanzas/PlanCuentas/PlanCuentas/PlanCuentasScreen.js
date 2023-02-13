@@ -226,10 +226,10 @@ const PlanCuentasScreen = () => {
                 body: (rowData) => rowData.Currency,
             },
             {
-                field: 'Description',
+                field: 'DescriptionCharAccount',
                 header: 'Description',
                 className: 'colum-width-medium',
-                body: (rowData) => rowData.Description,
+                body: (rowData) => rowData.DescriptionCharAccount,
             },
 
             // {
@@ -338,7 +338,7 @@ const PlanCuentasScreen = () => {
                                         IdType: n.IdCategoria,
                                         NumberAccount:  n.CodigoType + "" +  "" + n.CodigoCategoria + setCeros(5),
                                         Account: n.Categoria,
-                                        Description: n.Description,
+                                        Description: n.DescriptionCategoria,
 
                                     },
                                     children: subCategorias
@@ -352,10 +352,13 @@ const PlanCuentasScreen = () => {
                                 IdType: e[0].IdType,
                                 Account: e[0].Type,
                                 NumberAccount:  e[0].CodigoType + setCeros(6),
-                                Description: e[0].Description,
+                                Description: e[0].DescriptionType,
 
                             },
-                            children: categorias
+                            children: categorias,
+                            style: {
+                                backgroudColor: "#ccc"
+                            }
 
                         }
                         tipos.push(tipo)
@@ -367,7 +370,7 @@ const PlanCuentasScreen = () => {
                                 IdType: e[0].IdType,
                                 Account: e[0].Type,
                                 NumberAccount: e[0].CodigoType + setCeros(6),
-                                Description: e[0].Description,
+                                Description: e[0].DescriptionType,
 
                             },
                             children: subCategorias
@@ -429,7 +432,7 @@ const PlanCuentasScreen = () => {
                         IdType: e.IdSubCategoria,
                         Account: e.SubCategoria,
                         NumberAccount: e.CodigoType + "" +  e.CodigoCategoria +  "" + e.CodigoSubCategoria + setCeros(3) ,
-                        Description: e.Description
+                        Description: e.DescriptionSubCategoria
                     },
                     children: cuentas
                 }
@@ -454,7 +457,7 @@ const PlanCuentasScreen = () => {
                         IdType: e.IdSubCategoria,
                         Account: e.SubCategoria,
                         NumberAccount: e.CodigoType +   "" + e.CodigoSubCategoria + setCeros(3),
-                        Description: e.Description
+                        Description: e.DescriptionSubCategoria
                     },
                     children: cuentas
                 }
@@ -488,7 +491,7 @@ const PlanCuentasScreen = () => {
                     IdType: e.IdAccount,
                     Account: e.Account,
                     NumberAccount: e.CodigoType +   "" +( e.IdType === 6 ? e.CodigoCategoria : '' )+ "" + e.CodigoSubCategoria + "" +  e.CodigoAccount,
-                    Description: e.Description
+                    Description: e.DescriptionCharAccount
                 },
                 children : cuentaH
             }
@@ -508,7 +511,7 @@ const PlanCuentasScreen = () => {
                         IdType: i.IdAccount,
                         Account: i.Account,
                         NumberAccount: i.CodigoType +   "" +( i.IdType === 6 ? i.CodigoCategoria : '' )+ "" + i.CodigoSubCategoria + "" +  i.CodigoAccount,
-                        Description: i.Description
+                        Description: i.DescriptionCharAccount
                     },
                     children : cuHijos(i.IdAccount, subCate)
                 })
