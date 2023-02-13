@@ -24,6 +24,8 @@ import { getCuentasExistentes, postCrearCuenta } from "../../../../Api/Finanzas/
 import { getSubTypes, getCuentaSubType } from "../../../../Api/Finanzas/SubTypesRequest";
 import { getTypes } from "../../../../Api/Finanzas/TypesRequest";
 import { getCurrency } from "../../../../Api/Finanzas/CurrencyRequest";
+import { getSubCategorias } from "../../../../Api/Finanzas/SubCategoriasRequest";
+import { getCategorias } from "../../../../Api/Finanzas/CategoriasRequest"
 
 export const ModalAgregarCuenta = ({ datos, cuentas, toast, habilitarEditar }) => {
     // console.log("datos", datos)
@@ -40,9 +42,15 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast, habilitarEditar }) =
     const [types, setTypes] = useState([]);
     const [valueType, setValueType] = useState({});
 
-    const [subTypes, setSubTypes] = useState([]);
-    const [valueSubType, setValueSubType] = useState();
-    const [filterSubType, setFilterSubType] = useState([]);
+    const [categorias, setCategorias] = useState([])
+    const [valueCategoria, setValueCategoria] = useState({});
+
+    const [habilitarSubCategoria, setHabilitarSubCategoria] = useState(true)
+    const [subCategorias, setSubCategorias] = useState([]);
+    const [valueSubCategoria, setValueSubCategoria] = useState({});
+    const [filterCategoria, setFilterCategoria] = useState({})
+
+    const [filterSubCategoria, setFilterSubCategoria] = useState({});
     const [subCuenta, setSubCuenta] = useState([])
 
     const [currency, setCurrency] = useState([]);
@@ -51,19 +59,20 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast, habilitarEditar }) =
     const [cuentasExistentes, setCuentasExistentes] = useState([]);
     const [valueCuentasExistente, setValueCuentasExistentes] = useState({});
     const [cuentaContenedor, setValueCuentaContenedor] = useState({})
+    const [habilitarBoton, setHabilitarBoton] = useState(false);
 
     const [habilitado, setHabilitado] = useState(true);
     const [idCuenta, setIdCuenta] = useState({});
 
     const getListadoDropdown = async () => {
 
+        const tempo4 = await getCategorias()
+        setCategorias(tempo4)
+        console.log('subtypes', tempo4)
 
-        const tempo = await getSubTypes();
-        setSubTypes(tempo)
-
-        const sub = tempo.filter(e => datos.IdType === e.IdType);
-        setFilterSubType(sub)
-        // console.log('subtypes', tempo)
+        const tempo = await getSubCategorias();
+        setSubCategorias(tempo)
+        console.log('subCategorias', tempo)
 
         const tempo1 = await getTypes();
         setTypes(tempo1)
@@ -73,9 +82,11 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast, habilitarEditar }) =
         const tempo2 = await getCurrency();
         setCurrency(tempo2)
 
-        // console.log('Currency', tempo2)
+        console.log('Currency', tempo2)
+
         const tempo3 = await getCuentasExistentes()
         setCuentasExistentes(tempo3)
+
         // console.log('Cuentas Existentes', tempo3)
 
         const subDescription = tempo.filter(e => formik.values.IdSubType === e.IdSubType);
@@ -100,13 +111,37 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast, habilitarEditar }) =
 
     }
 
+    // const cambiarType = () => {
+    //     const sub = subTypes.filter(e => formik.values.IdType === e.IdType);
+    //     // setValueSubType(sub)
+    //     // console.log(sub, subTypes);
+    //     setFilterSubType(sub)
+    //     // setSubTypes(sub)
+    //     // console.log("entro aqui", sub)
+    // }
+
     const cambiarType = () => {
-        const sub = subTypes.filter(e => formik.values.IdType === e.IdType);
-        // setValueSubType(sub)
-        // console.log(sub, subTypes);
-        setFilterSubType(sub)
-        // setSubTypes(sub)
-        // console.log("entro aqui", sub)
+
+        let t = types.filter((e) => formik.values.IdType === e.IdType)
+        console.log(t)
+ 
+        let c = categorias.filter((e) => formik.values.IdCategoria === e.IdCategoria)
+        console.log(c)
+ 
+        
+        let s = filterSubCategoria.filter((e) => formik.values.IdSubCategoria === e.IdSubCategoria)
+        console.log(t,c,s)
+
+        let idTemporal = t[0].CodigoType.toString() + c[0].IdCategoria.toString()+ s[0].CodigoSubCategoria.toString()
+        // let idTemporal = t[0].CodigoType.toString() + c[0].CodigoCategoria.toString()+ s[0].CodigoSubCategoria.toString()
+        console.log(idTemporal)
+        formik.values.IdTipoCuenta = idTemporal
+        formik.values.SubCategoriaDescription= s[0].Description
+        
+        setIdCuenta(idTemporal)
+
+        
+
     }
 
 
@@ -273,10 +308,10 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast, habilitarEditar }) =
         const cu = currency.filter(e => data.IdCurrency === e.IdCurrency)
         data.CuCurrency = cu[0].Currency
 
-        const su = subTypes.filter(e => data.IdSubType === e.IdSubType)
+        // const su = subTypes.filter(e => data.IdSubType === e.IdSubType)
         // data.SubType = su[0].SubType
 
-        data.SubType = su[0].Id
+        // data.SubType = su[0].Id
         // console.log("fecha", setDateTimeSQL1(formik.values.Fecha))
         data.Fecha = setDateTimeSQL1(formik.values.Fecha)
 
@@ -356,20 +391,20 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast, habilitarEditar }) =
         // }
         // console.log(datos)
         // console.log(formik.values)
- 
+
     }, [formik.values.IdType]);
 
     useEffect(async () => {
         // console.log(formik.values)
-        const sub = subTypes.filter(e => formik.values.IdSubType === e.IdSubType);
-        formik.values.SubTypeDescription = sub[0].Description
+        // const sub = subTypes.filter(e => formik.values.IdSubType === e.IdSubType);
+        // formik.values.SubTypeDescription = sub[0].Description
 
-        const tempoId = await getCuentaSubType(sub[0].Id, formik.values.IdSubType)
-        if(datos.IdSub === formik.values.IdSub){
-            // console.log("entro aqui")
-            asignarValor(tempoId)
-        }
-     
+        // const tempoId = await getCuentaSubType(sub[0].Id, formik.values.IdSubType)
+        // if (datos.IdSub === formik.values.IdSub) {
+        //     // console.log("entro aqui")
+        //     asignarValor(tempoId)
+        // }
+
     }, [formik.values.IdSubType])
 
 
@@ -407,7 +442,7 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast, habilitarEditar }) =
 
     return (
         <Fragment>
-            <Button icon="pi pi-pencil" className="p-button-rounded p-button-info p-button-text" aria-label="User" disabled= {habilitarEditar}
+            <Button icon="pi pi-pencil" className="p-button-rounded p-button-info p-button-text" aria-label="User" disabled={habilitarEditar}
                 tooltip="Editar" tooltipOptions={{ position: 'top', mouseTrack: true, mouseTrackTop: 15 }} onClick={openNew} />
 
             {/* <Toast  ref={toast}/> */}
@@ -417,17 +452,6 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast, habilitarEditar }) =
 
                     <form onSubmit={formik.handleSubmit} className="p-fluid" style={{ margin: "Auto", marginBottom: 0 }}>
                         <div className="modal__input-contenedor" style={{ width: "100%" }}>
-                            {/* <div className="modal__input-contenedor" style={{ width: "100%" }}>
-                                <div className="field col-6 me-2" >
-                                    <span className="p-float-label">
-                                        <InputText id="Id" name="Id" value={formik.values.idUser} onChange={formik.handleChange} autoFocus
-                                            className={classNames({ 'p-invalid': isFormFieldValid('Id') })} autoComplete="off" />
-                                        <label htmlFor="Id" className={classNames({ 'p-error': isFormFieldValid('Id') })}>Id</label>
-                                    </span>
-                                    {getFormErrorMessage('Id')}
-                                </div>
-                            </div> */}
-
                             <div className="field col-6 me-2" style={{ marginTop: -20 }} >
                                 <label htmlFor="IdType" className={classNames({ 'p-error': isFormFieldValid('IdType') })}>Tipo Cuenta</label>
                                 <Dropdown id="IdType" name="IdType" value={formik.values.IdType} onChange={formik.handleChange} options={types} optionLabel="Type"
@@ -444,10 +468,37 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast, habilitarEditar }) =
                             </div>
                         </div>
                         <div className="modal__input-contenedor" style={{ width: "100%" }}>
+                            {
+                                formik.values.IdType === 6 ?
+                                    <div className="field col-6 me-2" >
+                                        <span className="p-float-label">
+                                            <Dropdown id="IdCategoria" name="IdCategoria" value={formik.values.IdCategoria} onChange={formik.handleChange} options={filterCategoria}
+                                                optionLabel="Categoria" optionValue="IdCategoria" />
+                                            <label htmlFor="dropdown">Categoria</label>
+                                        </span>
+                                    </div>
+                                    : <div className="field col-6 me-2"><span>
+                                    </span></div>
+                            }
+
+                            <div className="modal__input-contenedor" style={{ marginTop: 1 }} >
+                                <span className="p-float-label">
+                                    <InputText id="IdTipoCuenta" name="IdTipoCuenta" value={formik.values.IdTipoCuenta} onChange={formik.handleChange} autoFocus disabled
+                                        className={classNames({ 'p-invalid': isFormFieldValid('IdTipoCuenta') })} autoComplete="off" style={{ width: "40%" }} />
+
+                                    <label htmlFor="IdAccount" className={classNames({ 'p-error': isFormFieldValid('IdAccount') })}>No. Cuenta</label>
+
+                                    <InputText id="Codigo" name="Codigo" value={formik.values.Codigo} onChange={formik.handleChange} autoFocus
+                                        className={classNames({ 'p-invalid': isFormFieldValid('Codigo') })} autoComplete="off" style={{ width: "50%", marginLeft: 4 }} />
+                                </span>
+                                {getFormErrorMessage('CodigoAccount')}
+                            </div>
+                        </div>
+                        <div className="modal__input-contenedor" style={{ width: "100%" }}>
                             <div className="field col-6 me-2" >
                                 <label htmlFor="dropdown">Tipo detalle</label>
-                                <Dropdown id="IdSubType" name="IdSubType" value={formik.values.IdSubType} onChange={formik.handleChange}
-                                    options={filterSubType} optionLabel="SubType" optionValue="IdSubType" />
+                                <Dropdown id="IdSubCategoria" name="IdSubCategoria" value={formik.values.IdSubCategoria} onChange={formik.handleChange}
+                                    options={filterSubCategoria} optionLabel="SubCategoria" optionValue="IdSubCategoria" />
 
                             </div>
                             <div className="field col-6 me-2"  >
