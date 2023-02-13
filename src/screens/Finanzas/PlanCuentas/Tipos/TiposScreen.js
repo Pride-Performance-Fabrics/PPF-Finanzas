@@ -44,7 +44,7 @@ const TiposScreen = () =>{
             {
                 field: 'CodigoType',
                 header: 'CodigoType',
-                className: 'colum-width-XXlarge',
+                className: 'colum-width-small',
                 body: (rowData) => rowData.CodigoType,
             },
             {
@@ -54,10 +54,10 @@ const TiposScreen = () =>{
                 body: (rowData) => rowData.IdType,
             },
             {
-                field: 'Clase',
+                field: 'ClaseNombre',
                 header: 'Clase',
                 className: 'colum-width-XXlarge',
-                body: (rowData) => rowData.Clase,
+                body: (rowData) => rowData.ClaseNombre,
             },
             {
                 // Menu: 'Menu',

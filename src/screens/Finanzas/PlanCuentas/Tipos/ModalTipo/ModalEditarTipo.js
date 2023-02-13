@@ -19,8 +19,11 @@ import { Dialog } from 'primereact/dialog';
 import { validarRespuesta } from '../../../../../services/crypto';
 import { getTypes, postTypes, putTypes } from "../../../../../Api/Finanzas/TypesRequest";
 
+//**************  PETICIONES A LA API **************/
+import { getClasses } from "../../../../../Api/Finanzas/classesRequest";
 
-const ModalEditarTipo = ({datos, tipos}) => {
+
+const ModalEditarTipo = ({ datos, tipos }) => {
 
     // console.log(datos)
     const [subTipoDialog, setSubTipoDialog] = useState(false);
@@ -30,6 +33,8 @@ const ModalEditarTipo = ({datos, tipos}) => {
 
     const [types, setTypes] = useState([]);
     const [valueType, setValueType] = useState({});
+
+    const [clases, setClases] = useState([])
 
     const openNew = () => {
         setSubTipoDialog(true)
@@ -41,19 +46,27 @@ const ModalEditarTipo = ({datos, tipos}) => {
     }
 
 
+    // const getListadoDropdown = async () => {
+    //     const tempo = await getTypes();
+    //     setTypes(tempo)
+    //     // console.log(tempo)
+
+    // }
+
+    
     const getListadoDropdown = async () => {
-        const tempo = await getTypes();
-        setTypes(tempo)
+        const tempo = await getClasses();
+        setClases(tempo)
         // console.log(tempo)
 
     }
 
-    const getTipoCuentas = async() =>{
+    const getTipoCuentas = async () => {
         const result = await getTypes();
         // console.log(result)
     }
 
-    const agregarTipo = async(data) =>{
+    const agregarTipo = async (data) => {
         // console.log(data)
 
         const resultado = await putTypes(data)
@@ -66,7 +79,7 @@ const ModalEditarTipo = ({datos, tipos}) => {
             // console.log(resultado)
             tipos()
             return true;
-        }else{
+        } else {
             toastShow(toast, 'error', 'Error', 'Error al crear la cuenta');
             return true;
         }
@@ -108,7 +121,7 @@ const ModalEditarTipo = ({datos, tipos}) => {
 
     return (
         <Fragment>
-           <Button icon="pi pi-pencil" className="p-button-rounded p-button-info p-button-text" aria-label="User"
+            <Button icon="pi pi-pencil" className="p-button-rounded p-button-info p-button-text" aria-label="User"
                 tooltip="Editar" tooltipOptions={{ position: 'top', mouseTrack: true, mouseTrackTop: 15 }} onClick={openNew} />
             <Toast position="bottom-right" ref={toast}></Toast>
             <Dialog visible={subTipoDialog} breakpoints={{ '960px': '75vw', '640px': '100vw' }} style={{ width: '30vw', height: '25vw' }}
@@ -135,12 +148,17 @@ const ModalEditarTipo = ({datos, tipos}) => {
                             </div>
                         </div>
                         <div className="modal__input-contenedor" style={{ width: "100%" }}>
-                            
-                            <div style={{width: "100%"}}  >
+                            <div className="field col-6 me-2" >
+                                <label htmlFor="dropdown">Tipo Clase</label>
+                                <Dropdown id="IdClase" name="IdClase" value={formik.values.IdClase} onChange={formik.handleChange} options={clases} optionLabel="Clase"
+                                    optionValue="IdClase"
+                                />
+                            </div>
+                            <div style={{ width: "100%" }}  >
                                 {/* <span className="p-float-label"> */}
                                 <label htmlFor="Decripcion" className={classNames({ 'p-error': isFormFieldValid('Decripcion') })}>Decripcion</label>
-                                    <InputText id="Description" name="Description" value={formik.values.Description} onChange={formik.handleChange} autoFocus
-                                        className={classNames({ 'p-invalid': isFormFieldValid('Description') })} autoComplete="off"  />
+                                <InputText id="Description" name="Description" value={formik.values.Description} onChange={formik.handleChange} autoFocus
+                                    className={classNames({ 'p-invalid': isFormFieldValid('Description') })} autoComplete="off" />
                                 {/* </span> */}
                                 {getFormErrorMessage('Description')}
                             </div>
