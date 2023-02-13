@@ -49,7 +49,11 @@ const ModalSubTipos = ({ subTipos}) => {
 
     const agregarSubTipo = async(data) =>{
         // console.log(data)
-        
+        let numeroIdSubtype = (data.IdSubType.toString()).length
+        console.log(numeroIdSubtype)
+        if(numeroIdSubtype < 3){
+            console.log(data.IdSubType.toString()+"00")
+        }
         data.IdType = typeof formik.values.IdType === 'object' ? formik.values.IdType.IdType : formik.values.IdType
         // console.log(data)
 
@@ -86,7 +90,7 @@ const ModalSubTipos = ({ subTipos}) => {
             if (!data.IdSubType) {
                 errors.IdSubType = 'Se requiere el numero del tipo de cuenta.';
             }
-            else if (!/^[0-9]{2,5}$/i.test(data.IdSubType)) {
+            else if (!/^[0-9]{1,5}$/i.test(data.IdSubType)) {
                 errors.IdSubType = 'El numero de cuenta no debe contener letras, ni mas de 5 digitos';
             }
             if (!data.SubType) {

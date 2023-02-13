@@ -99,7 +99,7 @@ const ModalEditarSubTipos = ({datos, subTipos }) => {
             if (!data.IdSubType) {
                 errors.IdSubType = 'Se requiere el numero del tipo de cuenta.';
             }
-            else if (!/^[0-9]{2,10}$/i.test(data.IdSubType)) {
+            else if (!/^[0-9]{1,10}$/i.test(data.IdSubType)) {
                 errors.IdSubType = 'El numero de cuenta no debe contener letras';
             }
             if (!data.SubType) {
