@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 
 import { Button } from 'primereact/button';
 import { Checkbox } from 'primereact/checkbox';
+import { TabView, TabPanel } from 'primereact/tabview';
 
 //************** Componentes generales **************/
 import Card from "../../../../components/Card/Card";
@@ -10,6 +11,7 @@ import Icon from "../../../../components/icon/Icon";
 import Loader from "../../../../components/Loader/Loader";
 import IconApp from "../../../../components/icon/IconApp";
 import AgGrid from "../../../../components/Tables/AgGrid";
+
 
 //************** Funciones  **************/
 import { getCuentas } from "../../../../Api/Finanzas/PlanCuentasRequest";
@@ -38,6 +40,7 @@ const PlanCuentasScreen = () => {
     const [habilitarEditar, setHabilitarEditar] = useState(true);
     const [habilitar, setHabilitar] = useState(true);
     const [nodes, setNodes] = useState(null)
+    const [activeIndex, setActiveIndex] = useState(0);
 
     let aspectoBoton = [
         {
@@ -147,10 +150,10 @@ const PlanCuentasScreen = () => {
     const statusAccount = (rowData) => {
 
         if (rowData.ActiveStatus === 3) {
-            return <i className="pi pi-check" style={{ 'fontSize': '1em' }}></i>
+            return <i className="pi pi-check"  style={{ 'fontSize': '1em', color: "green" }}></i>
         }
         else {
-            return <i className="pi pi-times" style={{ 'fontSize': '1em' }}></i>
+            return <i className="pi pi-times" style={{ 'fontSize': '1em', color: "red" }}></i>
         }
 
     }
@@ -198,7 +201,7 @@ const PlanCuentasScreen = () => {
                 // Menu: 'Menu',
                 field: 'Account',
                 header: 'Account',
-                className: 'colum-width-large',
+                className: 'colum-width-XXlarge',
                 body: (rowData) => rowData.Account,
             },
             // {
@@ -331,12 +334,12 @@ const PlanCuentasScreen = () => {
                         e.forEach(n => {
                             const subCategorias = getSubCategorias(n.IdCategoria, result);
 
-                            if (categorias.findIndex(m => n.IdCategoria === m.key) < 0) {
+                            if (categorias.findIndex(m => "ca" + n.IdCategoria === m.key) < 0) {
                                 categorias.push({
-                                    key:  n.IdCategoria,
+                                    key: "ca" + n.IdCategoria,
                                     data: {
                                         IdType: n.IdCategoria,
-                                        NumberAccount:  n.CodigoType + "" +  "" + n.CodigoCategoria + setCeros(5),
+                                        NumberAccount: n.CodigoType + "" + "" + n.CodigoCategoria + setCeros(5),
                                         Account: n.Categoria,
                                         Description: n.DescriptionCategoria,
 
@@ -351,7 +354,7 @@ const PlanCuentasScreen = () => {
                             data: {
                                 IdType: e[0].IdType,
                                 Account: e[0].Type,
-                                NumberAccount:  e[0].CodigoType + setCeros(6),
+                                NumberAccount: e[0].CodigoType + setCeros(6),
                                 Description: e[0].DescriptionType,
 
                             },
@@ -365,7 +368,7 @@ const PlanCuentasScreen = () => {
                     } else {
                         const subCategorias = getSubCategorias(e[0].IdType, result);
                         let tipo = {
-                            key: 't'+ e[0].IdType,
+                            key: 't' + e[0].IdType,
                             data: {
                                 IdType: e[0].IdType,
                                 Account: e[0].Type,
@@ -411,12 +414,12 @@ const PlanCuentasScreen = () => {
         }
     }
 
- 
+
 
 
     const getSubCategorias = (IdCategoria, result) => {
         let sub = []
-        if (IdCategoria >=6) {
+        if (IdCategoria >= 6) {
             let subCate = result.filter((e) => IdCategoria === e.IdCategoria)
 
             subCate.forEach(i => {
@@ -425,20 +428,20 @@ const PlanCuentasScreen = () => {
                 }
             })
             let resultado = sub.map(e => {
-              const cuentas = cuentasHijos(e.IdSubCategoria, result)  
+                const cuentas = cuentasHijos(e.IdSubCategoria, result)
                 return {
-                    key:  'sc'+ e.IdSubCategoria,
+                    key: 'sc' + e.IdSubCategoria,
                     data: {
                         IdType: e.IdSubCategoria,
                         Account: e.SubCategoria,
-                        NumberAccount: e.CodigoType + "" +  e.CodigoCategoria +  "" + e.CodigoSubCategoria + setCeros(3) ,
+                        NumberAccount: e.CodigoType + "" + e.CodigoCategoria + "" + e.CodigoSubCategoria + setCeros(3),
                         Description: e.DescriptionSubCategoria
                     },
                     children: cuentas
                 }
 
             })
-            
+
             return resultado
 
         }
@@ -450,13 +453,13 @@ const PlanCuentasScreen = () => {
                 }
             })
             let resultado = sub.map(e => {
-                const cuentas = cuentasHijos(e.IdSubCategoria, result)  
+                const cuentas = cuentasHijos(e.IdSubCategoria, result)
                 return {
-                    key: 'sc'+ e.IdSubCategoria,
+                    key: 'sc' + e.IdSubCategoria,
                     data: {
                         IdType: e.IdSubCategoria,
                         Account: e.SubCategoria,
-                        NumberAccount: e.CodigoType +   "" + e.CodigoSubCategoria + setCeros(3),
+                        NumberAccount: e.CodigoType + "" + e.CodigoSubCategoria + setCeros(3),
                         Description: e.DescriptionSubCategoria
                     },
                     children: cuentas
@@ -470,62 +473,135 @@ const PlanCuentasScreen = () => {
     }
 
 
-    const cuentasHijos = (IdSubCategoria, result) =>{
+    const cuentasHijos = (IdSubCategoria, result) => {
 
         let sub = []
         // let hijos = []
         let subCate = result.filter((e) => IdSubCategoria === e.IdSubCategoria)
         subCate.forEach(i => {
-            if(i.IdContenedorAccount === 0){
+            if (i.IdContenedorAccount === 0) {
                 sub.push(i)
             }
             // if (sub.findIndex(m => ((m.IdContenedorAccount === 0) && (i.IdAccount === m.IdAccount)))< 0) {
             // }
-            
+
         })
         let resultado = sub.map(e => {
             let cuentaH = cuHijos(e.IdAccount, result)
             return {
-                key: 'a' + e.IdAccount,
+                key: 'cc' + e.IdAccount,
                 data: {
                     IdType: e.IdAccount,
                     Account: e.Account,
-                    NumberAccount: e.CodigoType +   "" +( e.IdType === 6 ? e.CodigoCategoria : '' )+ "" + e.CodigoSubCategoria + "" +  e.CodigoAccount,
+                    NumberAccount: e.CodigoType + "" + (e.IdType === 6 ? e.CodigoCategoria : '') + "" + e.CodigoSubCategoria + "" + e.CodigoAccount,
                     Description: e.DescriptionCharAccount
                 },
-                children : cuentaH
+                children: cuentaH
             }
 
         })
-        return resultado 
+        return resultado
         // hijos = cuentasHijos(IdSubCategoria, subCate)
     }
 
-    const cuHijos = (IdAccount, subCate) =>{
+    const cuHijos = (IdAccount, subCate) => {
         let hijos = []
         subCate.forEach(i => {
-            if(i.IdContenedorAccount === IdAccount){
+            if (i.IdContenedorAccount === IdAccount) {
                 hijos.push({
                     key: 'ah' + i.IdAccount,
                     data: {
                         IdType: i.IdAccount,
                         Account: i.Account,
-                        NumberAccount: i.CodigoType +   "" +( i.IdType === 6 ? i.CodigoCategoria : '' )+ "" + i.CodigoSubCategoria + "" +  i.CodigoAccount,
+                        NumberAccount: i.CodigoType + "" + (i.IdType === 6 ? i.CodigoCategoria : '') + "" + i.CodigoSubCategoria + "" + i.CodigoAccount,
                         Description: i.DescriptionCharAccount
                     },
-                    children : cuHijos(i.IdAccount, subCate)
+                    children: cuHijos(i.IdAccount, subCate)
                 })
             }
         })
         return hijos
     }
 
+    const rowClassName = (node) => {
+        // console.log(node)
+        switch (true) {
+            case node.key.toString().includes('t'):
+                return { 'p-highTipos': (true) };
+                break;
+            case node.key.toString().includes('ca'):
+                return { 'p-highCategoria': (true) };
+                break;
+            case node.key.toString().includes('sc'):
+                return { 'p-highSubCategoria': (true) };
+                break;
+            case node.key.toString().includes('cc'):
+                return { 'p-highCuentas': (true) };
+                break;
+            case node.key.toString().includes('ah'):
+                return { 'p-highCuentasHijos': (true) };
+                break;
+            default:
+                return { 'p-highFill': (true) }
+                break;
+        }
+        // return { 'p-highlight': (node.key.includes('t')) };
+    }
+
 
     return (
         <div>
             <Loader loading={loading} />
-            <Card
 
+            <TabView className="col-12 homeTabView" activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)}>
+
+                <TabPanel header="Listado de Cuentas">
+                    <Card
+                        titulo={""}
+                        contenido={
+                            <div className='pt-4' style={{ height: '90vh' }}>
+                                <Toast position="bottom-right" ref={toast} />
+
+                                <TreeTable value={nodes} rowClassName={rowClassName}>
+                                    <Column field="NumberAccount" header="NumberAccount" expander ></Column>
+                                    <Column field="Account" header="Account"   ></Column>
+                                    <Column field="Description" header="Description" ></Column>
+                                    {/* <Column field="type" header="Type"></Column> */}
+                                </TreeTable>
+                                {/* <AgGrid table={table} /> */}
+
+                            </div>
+                        }
+                    />
+                </TabPanel>
+                <TabPanel header="Plan de cuentas">
+                    <Card
+                        titulo={<div className="d-flex">
+
+                            <ModalAgregarCuenta
+                                cuentas={getPlanCuentas}
+                                toast={toast}
+                                icono={aspectoBoton[0].Icono}
+                                nombre={aspectoBoton[0].Nombre}
+                                className={aspectoBoton[0].className}
+                                habilitarEditar={habilitarEditar} />
+                            {/* <ModalEditarCuenta datos={data} cuentas={getPlanCuentas} toast={toast} habilitarEditar={habilitarEditar} /> */}
+                            {/* <Button className="p-button-text p-button-rounded mx-2" icon="ri-restart-line"  loading={loading} onClick={getPlanCuentas} /> */}
+                        </div>}
+
+                        contenido={
+                            <div className='pt-4' style={{ height: '90vh' }}>
+                                <Toast position="bottom-right" ref={toast} />
+
+
+                                <AgGrid table={table} />
+
+                            </div>
+                        }
+                    />
+                </TabPanel>
+            </TabView>
+            {/* <Card
                 titulo={<div className="d-flex"
                 >
                     <h3 className="mx-3">Plan de Cuentas</h3>
@@ -536,25 +612,24 @@ const PlanCuentasScreen = () => {
                         nombre={aspectoBoton[0].Nombre}
                         className={aspectoBoton[0].className}
                         habilitarEditar={habilitarEditar} />
-                    {/* <ModalEditarCuenta datos={data} cuentas={getPlanCuentas} toast={toast} habilitarEditar={habilitarEditar} /> */}
-                    {/* <Button className="p-button-text p-button-rounded mx-2" icon="ri-restart-line"  loading={loading} onClick={getPlanCuentas} /> */}
+                    
                 </div>}
 
                 contenido={
                     <div className='pt-4' style={{ height: '90vh' }}>
                         <Toast position="bottom-right" ref={toast} />
 
-                        <TreeTable value={nodes}>
-                            <Column field="NumberAccount" header ="NumberAccount" expander></Column>
+                        <TreeTable value={nodes} rowClassName={rowClassName}>
+                            <Column field="NumberAccount" header="NumberAccount" expander></Column>
                             <Column field="Account" header="Account" ></Column>
                             <Column field="Description" header="Description"></Column>
-                            {/* <Column field="type" header="Type"></Column> */}
+                           
                         </TreeTable>
                         <AgGrid table={table} />
 
                     </div>
                 }
-            />
+            /> */}
         </div>
     )
 }

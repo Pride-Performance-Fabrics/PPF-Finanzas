@@ -82,7 +82,10 @@ const ModalSubCategoria = ({ toast, datos, icono, nombre, className, subCategori
             if (!data.CodigoSubCategoria) {
                 errors.CodigoSubCategoria = 'Se requiere el numero de la SubCategoria.';
             }
-            else if (!/^[0-9]{1,5}$/i.test(data.CodigoSubCategoria)) {
+            else if (!/^[0-9]{1,2}$/i.test(data.CodigoSubCategoria) && data.IdCategoria >= 6){
+                errors.CodigoSubCategoria = 'El numero de cuenta no debe contener letras, ni mas de 2 digitos';
+            }
+            else if(!/^[0-9]{1,3}$/i.test(data.CodigoSubCategoria)) {
                 errors.CodigoSubCategoria = 'El numero de cuenta no debe contener letras, ni mas de 3 digitos';
             }
             if (!data.SubCategoria) {
