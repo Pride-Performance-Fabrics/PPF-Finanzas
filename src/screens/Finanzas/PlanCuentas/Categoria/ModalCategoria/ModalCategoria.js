@@ -94,6 +94,12 @@ const ModalCategoria = ({ toast, datos, icono, nombre, className, categorias }) 
         initialValues: typeof datos === 'object' ? datos : inicioValores,
         validate: (data) => {
             let errors = {};
+            if (!data.CodigoCategoria) {
+                errors.CodigoCategoria = 'Se requiere el numero de cuenta.';
+            }
+            else if (!/^[0-9]{1}$/i.test(data.CodigoCategoria)) {
+                errors.CodigoCategoria = 'El numero de cuenta no debe contener letras, ni mas de un digitos';
+            }
 
             if (!data.Categoria) {
                 errors.Categoria = 'Se requiere el nombre de la categoria.';
