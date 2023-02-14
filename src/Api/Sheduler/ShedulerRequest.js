@@ -24,4 +24,10 @@ export const updateScheduler = async(data) => {
     const respuesta = await PrivateInterceptor(`schedulerCalendar/${id}`, 'DELETE')
     return respuesta;
  }
+
+ //***************************** ELIMINA UN EVENTOS  ***********************************//
+ export const updateEstadoScheduler = async(id) => {
+    const respuesta = await PrivateInterceptor(`schedulerCalendar/${id}`, 'DELETE')
+    return respuesta;
+ }
  
