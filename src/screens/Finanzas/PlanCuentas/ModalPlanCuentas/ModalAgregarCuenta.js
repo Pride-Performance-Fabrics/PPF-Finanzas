@@ -364,7 +364,7 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast, icono, nombre, class
         setIdCuenta(0)
         // console.log(subCategorias)
         const sub = subCategorias.filter(e => formik.values.IdCategoria === e.IdCategoria);
-        console.log(sub, "categoria")
+        // console.log(sub, "categoria")
 
         setFilterSubCategoria(sub)
 

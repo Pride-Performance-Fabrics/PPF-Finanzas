@@ -1,0 +1,52 @@
+.schedulersContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: "week" "month";
+    height: 100%;
+    overflow: hidden;
+    background: var(--gray-100);
+    .schedulerCard {
+        // height: 100%;
+        // overflow-y: auto;
+        padding: 5px 0;
+    }
+    .card,
+    .card-header {
+        background: none;
+        &-header {
+            background: var(--gray-100) !important;
+        }
+    }
+    .day,
+    .week,
+    .month {
+        border: 2px solid var(--gray-200);
+        // margin: 30px;
+        // overflow: auto;
+        display: block;
+    }
+    .day {
+        grid-area: day;
+        max-height: 100%;
+    }
+    .week {
+        grid-area: week;
+        max-height: 100%;
+        overflow: auto;
+    }
+}
+
+.Layout-root .Layout-container {
+    display: block !important;
+}
+
+.Layout-stickyContainer {
+    .Layout-fullSize {
+        width: 650px !important;
+    }
+}
+
+.Overlay-fullSize {
+    width: 650px !important;
+}
