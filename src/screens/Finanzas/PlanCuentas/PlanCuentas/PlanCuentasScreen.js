@@ -75,17 +75,17 @@ const PlanCuentasScreen = () => {
     }
 
 
-    const onChangeCheck = async (id, estado) => {
+    const onChangeCheck = async (IdAccount, estado) => {
         let activo = 3
         let inactivo = 4
         if (estado === true) {
             const result = await putEstadosCuenta({
-                "id": id,
+                "IdAccount": IdAccount,
                 "ActiveStatus": activo
             })
 
             const temporal = data.map((item) => {
-                if (item.id === id) {
+                if (item.IdAccount === IdAccount) {
                     item.ActiveStatus = activo
                     toastShow(toast, 'success', 'Se actualizó el estado de la cuenta');
                 }
@@ -96,12 +96,12 @@ const PlanCuentasScreen = () => {
             setData(temporal)
         } else {
             const result = await putEstadosCuenta({
-                "id": id,
+                "IdAccount": IdAccount,
                 "ActiveStatus": inactivo
             })
 
             const temporal = data.map((item) => {
-                if (item.id === id) {
+                if (item.IdAccount === IdAccount) {
                     item.ActiveStatus = inactivo
                     toastShow(toast, 'success', 'Se actualizó el estado de la cuenta');
                 }
@@ -111,8 +111,6 @@ const PlanCuentasScreen = () => {
 
             setData(temporal)
         }
-
-
     }
 
     const botones = (rowData) => {
@@ -137,7 +135,7 @@ const PlanCuentasScreen = () => {
                 {/* <Checkbox onChange={onChangeCheck} checked={checked} style={{ marginTop: 10 }}
                     tooltip={rowData.ActiveStatus === true ? "Inhabilitar" : "Habilitar"} tooltipOptions={{ position: 'top', mouseTrack: true, mouseTrackTop: 15 }}
                 /> */}
-                <Checkbox onChange={(e) => onChangeCheck(rowData.id, e.checked)} checked={rowData.ActiveStatus === 3 ? !checked : checked} style={{ marginTop: 10 }} disabled={habilitar} ></Checkbox>
+                <Checkbox onChange={(e) => onChangeCheck(rowData.IdAccount, e.checked)} checked={rowData.ActiveStatus === 3 ? !checked : checked} style={{ marginTop: 10 }} disabled={habilitar} ></Checkbox>
                 <Button icon="pi pi-file-export" className="p-button-rounded p-button-info p-button-text" aria-label="User" />
             </div>
 
@@ -559,7 +557,7 @@ const PlanCuentasScreen = () => {
                     <Card
                         titulo={""}
                         contenido={
-                            <div className='pt-4' style={{ height: '90vh' }}>
+                            <div className='pt-4' style={{ height: '85vh' }}>
                                 <Toast position="bottom-right" ref={toast} />
 
                                 <TreeTable value={nodes} rowClassName={rowClassName}>
@@ -590,10 +588,8 @@ const PlanCuentasScreen = () => {
                         </div>}
 
                         contenido={
-                            <div className='pt-4' style={{ height: '90vh' }}>
+                            <div className='pt-4' style={{ height: '85vh' }}>
                                 <Toast position="bottom-right" ref={toast} />
-
-
                                 <AgGrid table={table} />
 
                             </div>
