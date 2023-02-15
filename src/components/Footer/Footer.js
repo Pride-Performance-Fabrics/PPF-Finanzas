@@ -1,4 +1,11 @@
-import React, {useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import { Button } from "primereact/button";
+
+import { TabView, TabPanel } from 'primereact/tabview';
+
+import { Sidebar } from 'primereact/sidebar';
+
+import SchedulerHomeScreen from "../../screens/Homes/SchedulerHomeScreen";
 
 // import "./FooterStyle.scss"
 
@@ -9,6 +16,9 @@ const Footer = ({ user }) => {
     const [ip, setIP] = useState('');
     const [mostrar, setMostrar] = useState(false);
     const [ingreso, setIngreso] = useState(0);
+
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [visible, setVisible] = useState(false)
 
     // Funcion para obtener la IP de la maquina desde la API `https://geolocation-db.com/`
     const getData = async () => {
@@ -80,8 +90,19 @@ const Footer = ({ user }) => {
 
             </div>
             <div className="footer_column-UserName">
+                <div className="d-flex align-items-center">
+                    <Button icon="pi pi-calendar" onClick={(e) => setVisible(true)} style={{color: '#a3c5e3', fontSize: 30}} 
+                    className="p-button-info p-button-text footer_column-icon mx-2"  />
+                    <small className="footer_column-info">    {`${user.UserName}`}</small>
+                </div>
+                <div>
+                    <Sidebar visible={visible} position="right" onHide={() => setVisible(false)} style={{ width: "50%" }}>
+                        <SchedulerHomeScreen />
+                    </Sidebar>
+
+                </div>
                 {/* <span className={`p-menuitem-icon pi pi-fw pi-user  footer_column-icon`} style={{ marginLeft: 5 }}></span> */}
-                <small className="footer_column-info">    {`${user.UserName}`}</small>
+
             </div>
         </div>
     )
