@@ -581,8 +581,8 @@ const PlanCuentasScreen = () => {
                                 <Toast position="bottom-right" ref={toast} />
                                 {/* <Button className="p-button-text p-button-rounded mx-2" icon="ri-restart-line"  loading={loading} onClick={getPlanCuentas} /> */}
                                 <TreeTable value={nodes} rowClassName={rowClassName} globalFilter={globalFilter1}  header={header1} >
-                                    <Column field="Account" header="Cuenta"  expander  ></Column>
-                                    <Column field="NumberAccount" header="Numero Cuenta"></Column>
+                                    <Column field="NumberAccount" header="Numero Cuenta" expander></Column>
+                                    <Column field="Account" header="Cuenta" ></Column>
                                     <Column field="Description" header="Descripción"  ></Column>
                                     {/* <Column field="type" header="Type"></Column> */}
                                 </TreeTable>
