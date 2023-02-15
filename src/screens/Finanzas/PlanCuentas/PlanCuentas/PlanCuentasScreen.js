@@ -559,11 +559,11 @@ const PlanCuentasScreen = () => {
                         contenido={
                             <div className='pt-4' style={{ height: '85vh' }}>
                                 <Toast position="bottom-right" ref={toast} />
-
-                                <TreeTable value={nodes} rowClassName={rowClassName}>
-                                    <Column field="NumberAccount" header="NumberAccount" expander ></Column>
-                                    <Column field="Account" header="Account"   ></Column>
-                                    <Column field="Description" header="Description" ></Column>
+                                {/* <Button className="p-button-text p-button-rounded mx-2" icon="ri-restart-line"  loading={loading} onClick={getPlanCuentas} /> */}
+                                <TreeTable value={nodes} rowClassName={rowClassName} >
+                                    <Column field="NumberAccount" header="Numero Cuenta" expander filter filterPlaceholder="Filtar por Numero Cuenta"  ></Column>
+                                    <Column field="Account" header="Cuenta"  expander filter filterPlaceholder="Filtar por Cuenta" ></Column>
+                                    <Column field="Description" header="Descripción" expander filter filterPlaceholder="Filtar por Descripción" ></Column>
                                     {/* <Column field="type" header="Type"></Column> */}
                                 </TreeTable>
                                 {/* <AgGrid table={table} /> */}
@@ -584,7 +584,7 @@ const PlanCuentasScreen = () => {
                                 className={aspectoBoton[0].className}
                                 habilitarEditar={habilitarEditar} />
                             {/* <ModalEditarCuenta datos={data} cuentas={getPlanCuentas} toast={toast} habilitarEditar={habilitarEditar} /> */}
-                            {/* <Button className="p-button-text p-button-rounded mx-2" icon="ri-restart-line"  loading={loading} onClick={getPlanCuentas} /> */}
+                            <Button className="p-button-text p-button-rounded mx-2" icon="ri-restart-line"  loading={loading} onClick={getPlanCuentas} />
                         </div>}
 
                         contenido={

@@ -603,5 +603,11 @@ thead th {
     // background: var(--primary-900) !important;
     background: #3a6dbd !important;
     color: var(--primary-color-text) !important;
-    padding: 0 !important;
+
+    // padding: 5 !important;
+  }
+
+  .p-treetable .p-treetable-thead 
+    > tr > th {
+        padding:  0.5rem !important;
   }
