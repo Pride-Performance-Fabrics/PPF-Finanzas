@@ -19,3 +19,9 @@ export const putEstadosCuenta = async (body) => {
     return respuesta
 }
 
+export const getEstadosActividad = async () => {
+    const respuesta = PrivateInterceptor('status/Actividad', 'GET')
+    return respuesta
+}
+
+
