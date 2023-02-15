@@ -33,9 +33,9 @@ import { getDateTimeSQL4, getDateTimeSQL } from "../../services/FechasService";
 import { Toast } from "primereact/toast";
 import Loader from "../Loader/Loader";
 
-import { getScheduler,insertScheduler, updateScheduler, deleteScheduler, updateEstadoScheduler } from "../../Api/Sheduler/ShedulerRequest";
+import { getScheduler, insertScheduler, updateScheduler, deleteScheduler, updateEstadoScheduler } from "../../Api/Sheduler/ShedulerRequest";
 
-const SchedulerComponent = ({ CurrentView = 'Day', state, setState,  resources, colores, editor }) => {
+const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, colores, editor }) => {
 
   const toast = useRef(null);
   const EditingStateRef = useRef(null);
@@ -43,13 +43,13 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState,  resources, 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [loading, setLoading] = useState(false);
 
-  const commitChanges = async ({ added, changed, deleted }) => {
+  const commitChanges = async ({ added, changed, changedStatus, deleted }) => {
     let { data } = state;
     const decoded = decodeToken(localStorage.getItem("ppfToken"));
     // SE CREA UN EVENTO
     if (added) {
       setLoading(true);
-      
+
       const tastk = {
         IdUser: decoded.idUser,
         IdRol: decoded.IdRol,
@@ -64,15 +64,15 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState,  resources, 
         createDate: getDateTimeSQL(new Date()),
         status: 1
       };
-       const result = await insertScheduler(tastk);
-       getDatosScheduler();
-        toast.current.show({
-          severity: "success",
-          summary: "Guardado",
-          detail: "Evento guardado correctamente."
-        })
-        setLoading(false);
-      
+      const result = await insertScheduler(tastk);
+      getDatosScheduler();
+      toast.current.show({
+        severity: "success",
+        summary: "Guardado",
+        detail: "Evento guardado correctamente."
+      })
+      setLoading(false);
+
       const startingAddedId =
         data.length > 0 ? data[data.length - 1].id + 1 : 0;
       data = [...data, { id: startingAddedId, ...added }];
@@ -107,49 +107,48 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState,  resources, 
           : appointment;
         return change;
       });
-       const resultado = await updateScheduler(tastk);
-       getDatosScheduler();
-          toast.current.show({
-            severity: "success",
-            summary: "Guardado",
-            detail: "Evento guardado correctamente."
-          });
-          setLoading(false);
-        
-      }
+      const resultado = await updateScheduler(tastk);
+      getDatosScheduler();
+      toast.current.show({
+        severity: "success",
+        summary: "Guardado",
+        detail: "Evento guardado correctamente."
+      });
+      setLoading(false);
+    }
 
-      // modificar estado de la actividad
-      if (changed) {
-        setLoading(true);
-        let tastk = {};
-        // console.log(changed.exDate)
-        // alert(changed.exDate)
-        data = data.map(async (appointment) => {
-          if (changed[appointment.id]) {
-            let tempo = { ...appointment, ...changed[appointment.id] };
-            // console.log(appointment)
-            tastk = {
-              IdCalendar: tempo.id,
-              status: tempo.status,
-            };
-          }
-          // console.log(appointment, changed[appointment.id]);
-          const change = changed[appointment.id]
-            ? { ...appointment, ...changed[appointment.id] }
-            : appointment;
-          return change;
-        });
-         const resultado = await updateEstadoScheduler(tastk);
-         getDatosScheduler();
-            toast.current.show({
-              severity: "success",
-              summary: "Actualizado",
-              detail: "Evento Actualizado correctamente."
-            });
-            setLoading(false);
-          
+    // modificar estado de la actividad
+    if (deleted !== undefined) {
+      setLoading(true);
+      let dataInfo = {};
+      console.log("entro aqui")
+      // alert(changed.exDate)
+      data = data.map(async (appointment) => {
+        if (changed[appointment.id]) {
+          let tempo = { ...appointment, ...changed[appointment.id] };
+          // console.log(appointment)
+          dataInfo = {
+            IdCalendar: tempo.id,
+            status: tempo.status,
+          };
         }
-    
+        // console.log(appointment, changed[appointment.id]);
+        const change = changed[appointment.id]
+          ? { ...appointment, ...changed[appointment.id] }
+          : appointment;
+        return change;
+      });
+      const resultado = await updateEstadoScheduler(dataInfo);
+      getDatosScheduler();
+      toast.current.show({
+        severity: "success",
+        summary: "Actualizado",
+        detail: "Estado Actualizado correctamente."
+      });
+      setLoading(false);
+
+    }
+
     // SE ELIMINA UN EVENTO
     // if (deleted !== undefined) {
     //   // console.log(deleted)
@@ -221,13 +220,13 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState,  resources, 
             onCurrentDateChange={setCurrentDate}
             defaultCurrentViewName={CurrentView}
           />
-          <EditingState 
-            ref={EditingStateRef} 
-            onCommitChanges={commitChanges} 
-            />
-         
-            <IntegratedEditing />
-           <EditRecurrenceMenu/>
+          <EditingState
+            ref={EditingStateRef}
+            onCommitChanges={commitChanges}
+          />
+
+          <IntegratedEditing />
+          <EditRecurrenceMenu />
 
           <DayView startDayHour={7} endDayHour={19} />
 
@@ -237,20 +236,19 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState,  resources, 
           <Toolbar />
 
           <DateNavigator />
-          
+
           <Appointments />
           <AppointmentTooltip
             showCloseButton
             showOpenButton
             showDeleteButton
-          
           />
-          <AppointmentForm/>
+          <AppointmentForm />
           <Resources
             data={resources}
             mainResourceName="colorId"
           />
-        
+
           <DragDropProvider />
         </Scheduler>
       </Paper>
