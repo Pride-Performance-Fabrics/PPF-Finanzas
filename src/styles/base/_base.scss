@@ -560,21 +560,23 @@ thead {
 }
 
 .p-highTipos {
-    background: #91b2e6!important;
+    background: #dae4ff!important;
+    // background: #dfe8ff!important;
     color: #000!important;
     
     
 }
 
 .p-highCategoria {
-    background: #86abdc!important;
+    background: #dfe8ff!important;
+    // background: #dae4ff!important;
     color: #000!important;
     
 }
 
 
 .p-highSubCategoria {
-    background: #C1D4F3!important;
+    background: #D7E4F9!important;
     color: #000!important;
     
 }
@@ -600,8 +602,8 @@ thead {
 }
 
 thead th {
-    // background: var(--primary-900) !important;
-    background: #3a6dbd !important;
+    background: var(--primary-900) !important;
+    // background: #3a6dbd !important;
     color: var(--primary-color-text) !important;
 
     // padding: 5 !important;
@@ -611,3 +613,11 @@ thead th {
     > tr > th {
         padding:  0.5rem !important;
   }
+  .p-treetable .p-treetable-thead 
+  > tr > th {
+      padding:  0.5rem !important;
+}
+
+.p-treetable .p-treetable-tbody > tr > td {
+    padding:  0.2rem !important;
+}
