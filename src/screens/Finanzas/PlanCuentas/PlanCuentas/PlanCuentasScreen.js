@@ -30,6 +30,7 @@ import { getAccesosUsuario } from "../../../../Api/IT/Accesos/AccesosRequest";
 
 import { Column } from 'primereact/column';
 import { TreeTable } from 'primereact/treetable';
+import { InputText } from "primereact/inputtext";
 
 const PlanCuentasScreen = () => {
     const [loading, setLoading] = useState(false);
@@ -41,6 +42,25 @@ const PlanCuentasScreen = () => {
     const [habilitar, setHabilitar] = useState(true);
     const [nodes, setNodes] = useState(null)
     const [activeIndex, setActiveIndex] = useState(0);
+    const [globalFilter1, setGlobalFilter1] = useState(null);
+
+    const treeTableFuncMap = {
+        'globalFilter1': setGlobalFilter1
+    };
+
+    
+    const getHeader = (globalFilterKey) => {
+        return (
+            <div className="text-right">
+                <div className="p-input-icon-left">
+                    <i className="pi pi-search"></i>
+                    <InputText type="search" onInput={(e) => treeTableFuncMap[`${globalFilterKey}`](e.target.value)} placeholder="Buscar Global" size="50" />
+                </div>
+            </div>
+        );
+    }
+    
+    let header1 = getHeader('globalFilter1');
 
     let aspectoBoton = [
         {
@@ -545,7 +565,7 @@ const PlanCuentasScreen = () => {
         }
         // return { 'p-highlight': (node.key.includes('t')) };
     }
-
+ 
 
     return (
         <div>
@@ -560,10 +580,10 @@ const PlanCuentasScreen = () => {
                             <div className='pt-4' style={{ height: '85vh' }}>
                                 <Toast position="bottom-right" ref={toast} />
                                 {/* <Button className="p-button-text p-button-rounded mx-2" icon="ri-restart-line"  loading={loading} onClick={getPlanCuentas} /> */}
-                                <TreeTable value={nodes} rowClassName={rowClassName} >
-                                    <Column field="NumberAccount" header="Numero Cuenta" expander filter filterPlaceholder="Filtar por Numero Cuenta"  ></Column>
-                                    <Column field="Account" header="Cuenta"  expander filter filterPlaceholder="Filtar por Cuenta" ></Column>
-                                    <Column field="Description" header="Descripción" expander filter filterPlaceholder="Filtar por Descripción" ></Column>
+                                <TreeTable value={nodes} rowClassName={rowClassName} globalFilter={globalFilter1}  header={header1} >
+                                    <Column field="Account" header="Cuenta"  expander  ></Column>
+                                    <Column field="NumberAccount" header="Numero Cuenta"></Column>
+                                    <Column field="Description" header="Descripción"  ></Column>
                                     {/* <Column field="type" header="Type"></Column> */}
                                 </TreeTable>
                                 {/* <AgGrid table={table} /> */}
