@@ -38,7 +38,7 @@ const SchedulerHomeScreen = () => {
             color: '#1F05F0'
         },
         {
-            id: 4,
+            id: 5,
             nombre: "Verde",
             color: '#11DDEB'
         }

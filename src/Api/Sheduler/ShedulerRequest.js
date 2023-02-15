@@ -26,9 +26,9 @@ export const updateScheduler = async(data) => {
  }
 
  //***************************** ELIMINA UN EVENTOS  ***********************************//
- export const updateEstadoScheduler = async(data) => {
-   console.log(data)
-   //  const respuesta = await PrivateInterceptor(`schedulerCalendar/status`, 'PUT', data)
-   //  return respuesta;
+ export const updateEstadoScheduler = async(id) => {
+   console.log(id)
+    const respuesta = await PrivateInterceptor(`schedulerCalendar/${id}`, 'PUT')
+    return respuesta;
  }
  

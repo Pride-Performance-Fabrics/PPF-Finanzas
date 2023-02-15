@@ -62,14 +62,15 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
         members: added.members !== undefined ? added.members.toString() : null,
         notes: added.notes !== undefined ? added.notes : "",
         createDate: getDateTimeSQL(new Date()),
-        status: 1
+        status: 1,
+        colorId: added.colorId
       };
       const result = await insertScheduler(tastk);
       getDatosScheduler();
       toast.current.show({
         severity: "success",
         summary: "Guardado",
-        detail: "Evento guardado correctamente."
+        detail: "Actividad guardada correctamente."
       })
       setLoading(false);
 
@@ -81,12 +82,11 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
     if (changed) {
       setLoading(true);
       let tastk = {};
-      // console.log(changed.exDate)
-      // alert(changed.exDate)
+      
       data = data.map(async (appointment) => {
         if (changed[appointment.id]) {
           let tempo = { ...appointment, ...changed[appointment.id] };
-          // console.log(appointment)
+          console.log(tempo)
           tastk = {
             IdCalendar: tempo.id,
             IdUser: decoded.idUser,
@@ -99,9 +99,10 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
             exDate: tempo.exDate,
             members: tempo.members !== undefined ? tempo.members.toString() : null,
             notes: tempo.notes !== undefined ? tempo.notes : "",
+            colorId: tempo.colorId
           };
         }
-        // console.log(appointment, changed[appointment.id]);
+        console.log(tastk)
         const change = changed[appointment.id]
           ? { ...appointment, ...changed[appointment.id] }
           : appointment;
@@ -112,58 +113,58 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
       toast.current.show({
         severity: "success",
         summary: "Guardado",
-        detail: "Evento guardado correctamente."
+        detail: "Actividad guardada correctamente."
       });
       setLoading(false);
     }
 
     // modificar estado de la actividad
-    if (deleted !== undefined) {
-      setLoading(true);
-      let dataInfo = {};
-      console.log("entro aqui")
-      // alert(changed.exDate)
-      data = data.map(async (appointment) => {
-        if (changed[appointment.id]) {
-          let tempo = { ...appointment, ...changed[appointment.id] };
-          // console.log(appointment)
-          dataInfo = {
-            IdCalendar: tempo.id,
-            status: tempo.status,
-          };
-        }
-        // console.log(appointment, changed[appointment.id]);
-        const change = changed[appointment.id]
-          ? { ...appointment, ...changed[appointment.id] }
-          : appointment;
-        return change;
-      });
-      const resultado = await updateEstadoScheduler(dataInfo);
-      getDatosScheduler();
-      toast.current.show({
-        severity: "success",
-        summary: "Actualizado",
-        detail: "Estado Actualizado correctamente."
-      });
-      setLoading(false);
-
-    }
-
-    // SE ELIMINA UN EVENTO
     // if (deleted !== undefined) {
-    //   // console.log(deleted)
-    //   await deleteScheduler(deleted);
+    //   setLoading(true);
+    //   let dataInfo = {};
+    //   console.log("entro aqui")
+      
+    //   data = data.map(async (appointment) => {
+    //     if (changed[appointment.id]) {
+    //       let tempo = { ...appointment, ...changed[appointment.id] };
+         
+    //       dataInfo = {
+    //         IdCalendar: tempo.id,
+    //         status: tempo.status,
+    //       };
+    //     }
+      
+    //     const change = changed[appointment.id]
+    //       ? { ...appointment, ...changed[appointment.id] }
+    //       : appointment;
+    //     return change;
+    //   });
+    //   const resultado = await updateEstadoScheduler(dataInfo);
+    //   getDatosScheduler();
     //   toast.current.show({
     //     severity: "success",
-    //     summary: "Eliminado",
-    //     detail: "Evento eliminado correctamente."
+    //     summary: "Actualizado",
+    //     detail: "Estado Actualizado correctamente."
     //   });
-    //   getDatosScheduler();
+    //   setLoading(false);
+
     // }
+
+    //modificar estado de la actividad
+    if (deleted !== undefined) {
+  
+      await updateEstadoScheduler(deleted);
+      toast.current.show({
+        severity: "success",
+        summary: "Eliminado",
+        detail: "Actividad desactivada correctamente."
+      });
+      getDatosScheduler();
+    }
   };
 
   const getDatosScheduler = async () => {
-    // console.log("entro aqui")
+    
     const respuesta = await getScheduler()
     const tempo = respuesta.map((item) => {
       let members = [];
@@ -189,6 +190,7 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
         createDate: item.createDate,
         status: item.status,
         members: members,
+        colorId: item.colorId
 
       }
     })
