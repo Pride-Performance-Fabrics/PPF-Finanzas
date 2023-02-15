@@ -36,12 +36,12 @@ hola
                 {/* </TabPanel>
                  </TabView> */}
 
-                <Sidebar visible={visible} position="right" onHide={() => setVisible(false)} style={{width: "50%"}}>
+                {/* <Sidebar visible={visible} position="right" onHide={() => setVisible(false)} style={{width: "50%"}}>
                     <SchedulerHomeScreen />
                 </Sidebar>
                 <div style={{width: 100, height:50,}}>
                 <Button icon="ri-calendar-event-fill" onClick={(e) => setVisible(true)} />
-                </div>
+                </div> */}
 
 
             </div>

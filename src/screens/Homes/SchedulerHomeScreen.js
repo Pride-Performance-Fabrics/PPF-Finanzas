@@ -4,13 +4,19 @@ import { Card } from '../../components/Card/Card';
 
 import {getScheduler} from "../../Api/Sheduler/ShedulerRequest";
 
+import { getEstadosActividad} from "../../Api/Global/StatusRequest";
+import { getPrioridades } from '../../Api/Global/PriorityRequest';
+import {getUsersActivos} from "../../Api/IT/Usuarios/UsuarioRequest"
+
 const SchedulerHomeScreen = () => {
 
     const editor = useRef(null);
 
     const [state, setState] = useState({data: [],});
     const [resources, setResources] = useState([]);
-    const [ colores, setColores] = useState([])
+    const [ colores, setColores] = useState([]);
+    const [estados, setEstados] = useState([]);
+    const [prioridades, setPrioridades] = useState([])
 
 
     const [shedulersContainerHeight, setShedulersContainerHeight] = useState(100);
@@ -49,6 +55,10 @@ const SchedulerHomeScreen = () => {
 
 
     const obtenerResources = async () =>{
+        
+        const prioridades = await getPrioridades()
+        const estados = await getEstadosActividad()
+
          const instanciaColores = colorsActividades.map((item) =>{
             return{
                 text: item.nombre,
@@ -56,15 +66,41 @@ const SchedulerHomeScreen = () => {
                 color: item.color
             }
          })
+         const instanciaPrioridades = prioridades.map((item) =>{
+            return {
+                text: item.Priority,
+                id: parseInt(item.IdPriority)
+            }
+         })
+
+         const instanciaEstados = estados.map((item)=>{
+            return {
+                text: item.StatusName,
+                id: parseInt(item.IdStatus)
+            }
+         })
 
          setColores(instanciaColores)
+         setPrioridades(instanciaPrioridades)
+         setEstados(instanciaEstados)
 
          const resources = [
             {
                 fieldName: "colorId",
                 title: "Colores",
                 instances: [...instanciaColores, { text: "color no requerido", id: 0 }],
+            },
+            {
+                fieldName: "Priority",
+                title: "Prioridad",
+                instances: instanciaPrioridades,
+            },
+            {
+                fieldName: "Status",
+                title: "Estado",
+                instances: instanciaEstados,
             }
+            
          ];
 
          setResources(resources)

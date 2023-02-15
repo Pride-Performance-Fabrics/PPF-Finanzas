@@ -61,9 +61,11 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
         exDate: added.exDate,
         members: added.members !== undefined ? added.members.toString() : null,
         notes: added.notes !== undefined ? added.notes : "",
-        createDate: getDateTimeSQL(new Date()),
+        createDate: getDateTimeSQL4(new Date()),
         status: 1,
-        colorId: added.colorId
+        colorId: added.colorId,
+        Priority: added.Priority,
+        reminder: added.reminder
       };
       const result = await insertScheduler(tastk);
       getDatosScheduler();
@@ -82,7 +84,7 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
     if (changed) {
       setLoading(true);
       let tastk = {};
-      
+
       data = data.map(async (appointment) => {
         if (changed[appointment.id]) {
           let tempo = { ...appointment, ...changed[appointment.id] };
@@ -99,7 +101,9 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
             exDate: tempo.exDate,
             members: tempo.members !== undefined ? tempo.members.toString() : null,
             notes: tempo.notes !== undefined ? tempo.notes : "",
-            colorId: tempo.colorId
+            colorId: tempo.colorId,
+            Priority: tempo.Priority,
+            reminder: tempo.reminder
           };
         }
         console.log(tastk)
@@ -123,17 +127,17 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
     //   setLoading(true);
     //   let dataInfo = {};
     //   console.log("entro aqui")
-      
+
     //   data = data.map(async (appointment) => {
     //     if (changed[appointment.id]) {
     //       let tempo = { ...appointment, ...changed[appointment.id] };
-         
+
     //       dataInfo = {
     //         IdCalendar: tempo.id,
     //         status: tempo.status,
     //       };
     //     }
-      
+
     //     const change = changed[appointment.id]
     //       ? { ...appointment, ...changed[appointment.id] }
     //       : appointment;
@@ -152,7 +156,7 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
 
     //modificar estado de la actividad
     if (deleted !== undefined) {
-  
+
       await updateEstadoScheduler(deleted);
       toast.current.show({
         severity: "success",
@@ -164,7 +168,7 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
   };
 
   const getDatosScheduler = async () => {
-    
+
     const respuesta = await getScheduler()
     const tempo = respuesta.map((item) => {
       let members = [];
