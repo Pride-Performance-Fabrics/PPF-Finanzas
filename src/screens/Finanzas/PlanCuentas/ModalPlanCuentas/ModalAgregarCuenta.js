@@ -158,6 +158,7 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast, icono, nombre, class
         setValueSubCategoria({ description: "" })
         setChecked(false)
         setHabilitarBoton(false)
+      
         // valoresDatos()
        
 
@@ -416,9 +417,11 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast, icono, nombre, class
     };
 
 
+
+
     return (
         <Fragment>
-            <Button label={nombre} icon={icono} className={className} onClick={openNew} />
+            <Button label={nombre} icon={icono} className={className} onClick={openNew}  disabled ={habilitarEditar}/>
             {/* <Toast position="bottom-right" ref={toast}></Toast> */}
             <Loader loading={loading} />
             <Dialog visible={cuentaDialog} breakpoints={{ '960px': '75vw', '640px': '100vw' }} style={{ width: '30vw', height: '35vw' }}

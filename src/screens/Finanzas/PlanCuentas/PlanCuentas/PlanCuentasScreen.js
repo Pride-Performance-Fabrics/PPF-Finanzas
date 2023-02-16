@@ -38,6 +38,7 @@ const PlanCuentasScreen = () => {
     const toast = useRef(null);
     const [data, setData] = useState([]);
     const [accesos, setAccesos] = useState([]);
+    const[habilitarCrear, setHabilitarCrear] = useState(true)
     const [habilitarEditar, setHabilitarEditar] = useState(true);
     const [habilitar, setHabilitar] = useState(true);
     const [nodes, setNodes] = useState(null)
@@ -92,6 +93,9 @@ const PlanCuentasScreen = () => {
 
         const accesoHabilitar = ordenado.some((item) => item === "2")
         setHabilitar(!accesoHabilitar)
+
+        const accesoHabilitarCrear = ordenado.some((item) => item === "3")
+        setHabilitarCrear(!accesoHabilitarCrear)
     }
 
 
@@ -602,7 +606,7 @@ const PlanCuentasScreen = () => {
                                 icono={aspectoBoton[0].Icono}
                                 nombre={aspectoBoton[0].Nombre}
                                 className={aspectoBoton[0].className}
-                                habilitarEditar={habilitarEditar} />
+                                habilitarEditar={habilitarCrear} />
                             {/* <ModalEditarCuenta datos={data} cuentas={getPlanCuentas} toast={toast} habilitarEditar={habilitarEditar} /> */}
                             <Button className="p-button-text p-button-rounded mx-2" icon="ri-restart-line"  loading={loading} onClick={getPlanCuentas} />
                         </div>}
