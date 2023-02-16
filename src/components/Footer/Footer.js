@@ -7,7 +7,11 @@ import { Sidebar } from 'primereact/sidebar';
 
 import SchedulerHomeScreen from "../../screens/Homes/SchedulerHomeScreen";
 
+import { Badge } from 'primereact/badge';
+
 // import "./FooterStyle.scss"
+
+import { getNotificaciones } from "../../Api/Sheduler/ShedulerRequest";
 
 
 const Footer = ({ user }) => {
@@ -18,7 +22,21 @@ const Footer = ({ user }) => {
     const [ingreso, setIngreso] = useState(0);
 
     const [activeIndex, setActiveIndex] = useState(0);
-    const [visible, setVisible] = useState(false)
+    const [visible, setVisible] = useState(false);
+    const [notificaciones, setNotificaiones] = useState([]);
+    const[ cantidad, setCantidad] = useState(0)
+
+    const ObtenerNotificaciones = async () => {
+        const respuesta = await getNotificaciones()
+
+        setNotificaiones(respuesta)
+        console.log(respuesta)
+        let c = respuesta.length
+        console.log(c)
+        setCantidad(c)
+        
+    }
+
 
     // Funcion para obtener la IP de la maquina desde la API `https://geolocation-db.com/`
     const getData = async () => {
@@ -42,6 +60,7 @@ const Footer = ({ user }) => {
     // UseEffect para obtener los datos de la IP
     useLayoutEffect(() => {
         getData();
+        ObtenerNotificaciones()
     }, []);
 
     useEffect(() => {
@@ -91,8 +110,11 @@ const Footer = ({ user }) => {
             </div>
             <div className="footer_column-UserName">
                 <div className="d-flex align-items-center">
-                    <Button icon="pi pi-calendar" onClick={(e) => setVisible(true)} style={{color: '#a3c5e3', fontSize: 30}} 
-                    className="p-button-info p-button-text footer_column-icon mx-2"  />
+                    <Button icon="pi pi-calendar" onClick={(e) => setVisible(true)} style={{color: '#a3c5e3', fontSize: 35}} 
+                    className="p-button-info p-button-text footer_column-icon "/>
+                     <i className="pi pi-bell  p-button-text footer_column-icon mx-2 p-overlay-badge" style={{ fontSize: 20, marginLeft: -10, color: '#a3c5e3'}}>
+                        <Badge value={cantidad} style={{ fontSize: 10, marginRight: 10 }} size="small" ></Badge>
+                    </i>
                     <small className="footer_column-info">    {`${user.UserName}`}</small>
                 </div>
                 <div>
