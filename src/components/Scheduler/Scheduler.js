@@ -7,6 +7,7 @@ import {
   ViewState,
   EditingState,
   IntegratedEditing,
+  SchedulerDateTime
 } from "@devexpress/dx-react-scheduler";
 
 
@@ -24,7 +25,11 @@ import {
   Resources,
   EditRecurrenceMenu,
   DragDropProvider,
+  ViewSwitcher
 } from "@devexpress/dx-react-scheduler-material-ui";
+
+
+import { Calendar } from "primereact/calendar";
 
 import { decodeToken } from "react-jwt";
 
@@ -59,13 +64,13 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
         allDay: added.allDay,
         rRule: added.rRule !== undefined ? added.rRule : "",
         exDate: added.exDate,
-        members: added.members !== undefined ? added.members.toString() : null,
         notes: added.notes !== undefined ? added.notes : "",
+        members: added.members !== undefined ? added.members.toString() : null,
         createDate: getDateTimeSQL4(new Date()),
-        status: 1,
+        status: added.status,
         colorId: added.colorId,
         Priority: added.Priority,
-        reminder: added.reminder
+        reminder: added.RecordatorioId
       };
       const result = await insertScheduler(tastk);
       getDatosScheduler();
@@ -90,7 +95,6 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
           let tempo = { ...appointment, ...changed[appointment.id] };
           console.log(tempo)
           tastk = {
-            IdCalendar: tempo.id,
             IdUser: decoded.idUser,
             IdRol: decoded.IdRol,
             startDate: getDateTimeSQL4(new Date(tempo.startDate)),
@@ -99,11 +103,13 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
             allDay: tempo.allDay,
             rRule: tempo.rRule !== undefined ? tempo.rRule : "",
             exDate: tempo.exDate,
-            members: tempo.members !== undefined ? tempo.members.toString() : null,
             notes: tempo.notes !== undefined ? tempo.notes : "",
+            members: tempo.members !== undefined ? tempo.members.toString() : null,
+            status: tempo.status,
             colorId: tempo.colorId,
             Priority: tempo.Priority,
-            reminder: tempo.reminder
+            reminder: tempo.reminder,
+            IdCalendar: tempo.id
           };
         }
         console.log(tastk)
@@ -194,7 +200,9 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
         createDate: item.createDate,
         status: item.status,
         members: members,
-        colorId: item.colorId
+        colorId: item.colorId,
+        Priority: item.Priority,
+        reminder: item.reminder
 
       }
     })
@@ -214,7 +222,52 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
   //    console.log(state.data)
   // },[state.data])
 
+  const DateEditor = () => {
+    // const dateFormat = excludeTime ? "MM/DD/YYYY" : "MM/DD/YYYY HH:mm";
+  
+    return (
+      <div>
+        <Calendar/>
+      </div>
+      // <AppointmentForm.DateEditor
+      //   {...restProps}
+      //   excludeTime={excludeTime}
+      //   format={dateFormat}
+      // />
+    );
+  };
+  
+
+  const BasicLayout = ({
+    onFieldChange,
+    appointmentData,
+    ...restProps
+  }) => (
+    <AppointmentForm.BasicLayout
+      appointmentData={appointmentData}
+      onFieldChange={onFieldChange}
+      {...restProps}
+      locale={"da-DK"}
+    ></AppointmentForm.BasicLayout>
+  );
+
+  const AppointmentLayout = ({
+    onFieldChange,
+    appointmentData,
+    children,
+    ...restProps
+  }) => (
+    <AppointmentForm.Layout
+      basicLayoutComponent={BasicLayout}
+      {...restProps}
+      locale={"da-DK"}
+           >
+        {children}
+      </AppointmentForm.Layout>
+   );
+
   return (
+
     <div id='schedulerContainer'>
       <Loader loading={loading} querySelector='#schedulerContainer' />
       <Toast position="bottom-right" ref={toast} />
@@ -243,19 +296,31 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
 
           <DateNavigator />
 
-          <Appointments />
+          <Appointments/>
           <AppointmentTooltip
             showCloseButton
             showOpenButton
             showDeleteButton
           />
-          <AppointmentForm />
+          {/* <ViewSwitcher /> */}
+          <AppointmentForm 
+           children={DateEditor}
+            //  layoutComponent={DateEditor}
+            //  recurrenceLayoutComponent={DateEditor}
+            //  booleanEditorComponent={DateEditor}
+            //  dateEditorComponent={DateEditor}
+          />
+          
+          {/* <AppointmentForm.DateEditor
+            AppointmentForm.DateEditorProps
+          /> */}
           <Resources
             data={resources}
             mainResourceName="colorId"
           />
 
           <DragDropProvider />
+          
         </Scheduler>
       </Paper>
     </div>

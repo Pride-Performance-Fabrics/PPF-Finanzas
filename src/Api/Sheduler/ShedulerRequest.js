@@ -9,6 +9,7 @@ export const getScheduler = async () => {
 
 //***************************** INSERTA NUEVO EVENTOS  ***********************************//
 export const insertScheduler = async(data) => {
+   console.log(data)
     const respuesta = await PrivateInterceptor(`schedulerCalendar`, 'POST', data)
     return respuesta;
  }
@@ -30,5 +31,10 @@ export const updateScheduler = async(data) => {
    console.log(id)
     const respuesta = await PrivateInterceptor(`schedulerCalendar/${id}`, 'PUT')
     return respuesta;
+ }
+
+ export const getNotificaciones = async() => {
+   const respuesta = await PrivateInterceptor(`schedulerCalendar/notificaciones`, 'GET')
+   return respuesta;
  }
  
