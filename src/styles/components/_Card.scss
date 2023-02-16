@@ -92,3 +92,35 @@
     //     width: 50px;
     // }
 }
+
+.cardNotificaciones {
+    background: 'rgba(255,255,255,0.5)' !important;
+    // backgroundColor: 'rgba(0,255,0,0.7)',
+    border-radius: 20px;
+    padding-left: 10px;
+    padding-right: 0;
+    padding-bottom: 15px;
+    margin-top: 5px;
+}
+
+.cardContenidoNoficacion {
+    background: 'rgba(255,255,255,0.5)';
+    // backgroundColor: 'rgba(0,255,0,0.7)',
+    border-radius: 20px;
+    padding-left: 10px;
+    padding-right: 0;
+    padding-bottom: 15px;
+    margin-top: 5px;
+}
+
+.p-card {
+    background: 'rgba(255,255,255,0.2)' !important;
+}
+
+.contenidoCard {
+    font-size: 0.8rem;
+    color: #fff;
+    margin: 0;
+    margin-right: 10px;
+    font-weight: bold;
+}
