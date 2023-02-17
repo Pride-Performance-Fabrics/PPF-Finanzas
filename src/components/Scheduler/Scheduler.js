@@ -67,10 +67,10 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
         notes: added.notes !== undefined ? added.notes : "",
         members: added.members !== undefined ? added.members.toString() : null,
         createDate: getDateTimeSQL4(new Date()),
-        status: added.status,
-        colorId: added.colorId,
-        Priority: added.Priority,
-        reminder: added.RecordatorioId
+        status: added.status !== undefined ? added.status : 5,
+        colorId: added.colorId !== undefined ? added.colorId : 1,
+        Priority: added.Priority !== undefined ? added.Priority : 1,
+        reminder: added.reminder !== undefined ? added.reminder : 3
       };
       const result = await insertScheduler(tastk);
       getDatosScheduler();
@@ -105,11 +105,11 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
             exDate: tempo.exDate,
             notes: tempo.notes !== undefined ? tempo.notes : "",
             members: tempo.members !== undefined ? tempo.members.toString() : null,
-            status: tempo.status,
+            status: tempo.status !== undefined ? tempo.status : 5,
             colorId: tempo.colorId,
-            Priority: tempo.Priority,
-            reminder: tempo.reminder,
-            IdCalendar: tempo.id
+            Priority: tempo.Priority !== undefined ? tempo.Priority : 1,
+            reminder: tempo.reminder !== undefined ? tempo.reminder : 3,
+            IdCalendar: tempo.id 
           };
         }
         console.log(tastk)
