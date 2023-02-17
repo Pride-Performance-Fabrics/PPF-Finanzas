@@ -10,13 +10,35 @@ import CardNotificaciones from "../../components/Card/CardNotifcaciones";
 
 import { getNotificaciones } from "../../Api/Sheduler/ShedulerRequest";
 
-import {getDateTimeSQL, setDateTimeSQL} from "../../services/FechasService"
+import { getDateTimeSQL, setDateTimeSQL, getLocalDateTimeString } from "../../services/FechasService";
+
+import { decodeToken } from "react-jwt";
+
+import { getAccesosUsuario } from "../../Api/IT/Accesos/AccesosRequest";
+
+import CardNotificacionesComponent from "../../components/CardNotificaciones/CardNotificacionesComponent";
+
 
 const HomeScreen = () => {
 
     const [activeIndex, setActiveIndex] = useState(0);
     const [visible, setVisible] = useState(false);
-    const [notificaciones, setNotificaiones] = useState([])
+    const [notificaciones, setNotificaiones] = useState([]);
+    const [accesos, setAccesos] = useState([]);
+    const [habilitar, setHabilitar] = useState(true);
+    const [displayModal, setDisplayModal] = useState(false);
+
+    const getAccesosByUsuario = async () => {
+        const userInformation = decodeToken(localStorage.getItem(`ppfToken`));
+        let user = userInformation.idUser
+
+        const result = await getAccesosUsuario(user)
+        const ordenado = result.accesos.split(',').sort();
+        setAccesos(ordenado)
+        const accesoHabilitar = ordenado.some((item) => item === "4")
+        setHabilitar(!accesoHabilitar)
+
+    }
 
     const ObtenerNotificaciones = async () => {
         const respuesta = await getNotificaciones()
@@ -38,55 +60,23 @@ const HomeScreen = () => {
 
 
 
+
     useEffect(() => {
         window.document.title = 'PPF • Home';
+        getAccesosByUsuario()
         ObtenerNotificaciones()
     }, [])
     return (
         <Fragment>
-            <div style={{ backgroundImage: `url(${process.env.PUBLIC_URL + '/imagenes/PPFHome1.png'})`, bottom: 0, backgroundSize: 'cover', backgroundPosition: 'center', overflow: 'hiddden' }}
+            <div style={{ backgroundImage: `url(${process.env.PUBLIC_URL + '/imagenes/PPFHome1.png'})`, 
+            bottom: 0, backgroundSize: 'cover', backgroundPosition: 'center', overflow: 'hiddden', overflowY:"auto"}}
                 className="contenedor-imagen animate__animated animate__fadeIn animate__faster ">
-                {/* <TabView className="col-12 homeTabView" activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)}>
-                    <TabPanel header="Tareas">
-                        <TodoList />
-                    </TabPanel> */}
-                {/* <TabPanel header="Calendario">
-                        <SchedulerHomeScreen />
-                    </TabPanel> */}
-                {/* <TabPanel header="Extensiones"> */}
-                {/* <div className="homeTabView_Extenciones">
-                        <Extensiones />
-                        </div> */}
-                {/* </TabPanel>
-                 </TabView> */}
+                <div class="left" style={{ width: "80%", display: "flex" }}>
 
-                {/* <Sidebar visible={visible} position="right" onHide={() => setVisible(false)} style={{width: "50%"}}>
-                    <SchedulerHomeScreen />
-                </Sidebar>
-                <div style={{width: 100, height:50,}}>
-                <Button icon="ri-calendar-event-fill" onClick={(e) => setVisible(true)} />
-                </div> */}
-                <div class="left" style={{ width: "80%", display: "flex" }}><span></span></div>
-                <div style={{ width: "20%", height: "10%", display: "flex-column", marginRight: 20 }} className="contenidoCard">
-                    {notificaciones.map((item) => {
-                        let fecha = setDateTimeSQL(item.endDate)
-                        console.log(fecha)
-                        return (
-                            <CardNotificaciones
-                                titulo={""}
-                                className="cardNotificaciones"
-                                contenido={
-                                    <div className='pt-1' style={{ height: '10vh' }}>
-                                       <span>{item.title}</span><br/>
-                                       {/* <span>{item.notes}</span><br/> */}
-                                       <span>Prioridad: {item.Priority}</span><br/>
-                                       <span>Fecha Vencimiento: {fecha}</span>
-                                    </div>
-                                }
-                            />
-                        )
-                    })}
-
+                </div>
+                <div style={{ minWidth: "20%", display: "flex-column", marginRight: 20 }} className="contenidoCard"
+                    hidden={habilitar} >
+                        <CardNotificacionesComponent/>
                 </div>
 
 

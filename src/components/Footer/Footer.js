@@ -9,6 +9,10 @@ import SchedulerHomeScreen from "../../screens/Homes/SchedulerHomeScreen";
 
 import { Badge } from 'primereact/badge';
 
+import { decodeToken } from "react-jwt";
+
+import { getAccesosUsuario } from "../../Api/IT/Accesos/AccesosRequest";
+
 // import "./FooterStyle.scss"
 
 import { getNotificaciones } from "../../Api/Sheduler/ShedulerRequest";
@@ -24,7 +28,21 @@ const Footer = ({ user }) => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [visible, setVisible] = useState(false);
     const [notificaciones, setNotificaiones] = useState([]);
-    const[ cantidad, setCantidad] = useState(0)
+    const[ cantidad, setCantidad] = useState(0);
+    const [accesos, setAccesos] = useState([]);
+    const [habilitar, setHabilitar] = useState(true);
+
+    const getAccesosByUsuario = async () => {
+        const userInformation = decodeToken(localStorage.getItem(`ppfToken`));
+        let user = userInformation.idUser
+
+        const result = await getAccesosUsuario(user)
+        const ordenado = result.accesos.split(',').sort();
+        setAccesos(ordenado)
+        const accesoHabilitar = ordenado.some((item) => item === "4")
+        setHabilitar(!accesoHabilitar)
+       
+    }
 
     const ObtenerNotificaciones = async () => {
         const respuesta = await getNotificaciones()
@@ -60,6 +78,7 @@ const Footer = ({ user }) => {
     // UseEffect para obtener los datos de la IP
     useLayoutEffect(() => {
         getData();
+        getAccesosByUsuario();
         ObtenerNotificaciones()
     }, []);
 
@@ -112,7 +131,7 @@ const Footer = ({ user }) => {
                 <div className="d-flex align-items-center">
                     <Button icon="pi pi-calendar" onClick={(e) => setVisible(true)} style={{color: '#a3c5e3', fontSize: 35}} 
                     className="p-button-info p-button-text footer_column-icon "/>
-                     <i className="pi pi-bell  p-button-text footer_column-icon mx-2 p-overlay-badge" style={{ fontSize: 20, marginLeft: -10, color: '#a3c5e3'}}>
+                     <i className="pi pi-bell  p-button-text footer_column-icon mx-2 p-overlay-badge" style={{ fontSize: 20, marginLeft: -10, color: '#a3c5e3'}} hidden={habilitar}>
                         <Badge value={cantidad} style={{ fontSize: 10, marginRight: 10 }} size="small" ></Badge>
                     </i>
                     <small className="footer_column-info">    {`${user.UserName}`}</small>

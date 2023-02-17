@@ -157,7 +157,7 @@ const days = [
     return d.toLocaleString('ES-US', { hour12: false }).replace(',', '');
  }
  export const getLocalDateTimeString = (date) => {
-    const d = new Date(date.getTime());
+    const d = new Date(date);
     return d.toLocaleString('ES-US', { hour12: false }).toUpperCase();
  }
  export const getLocalDateString1  = (date) => {
