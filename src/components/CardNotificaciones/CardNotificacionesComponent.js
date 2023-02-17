@@ -17,6 +17,8 @@ import { useFormik } from 'formik';
 
 import { Toast } from 'primereact/toast';
 
+import ModalNotificacion from "./ModalNotificacion";
+
 const CardNotificacionesComponent = () => {
 
     const [notificaciones, setNotificaiones] = useState([]);
@@ -52,48 +54,24 @@ const CardNotificacionesComponent = () => {
 
     const open = (item) => {
         setDisplayModal(true)
-        console.log(item)
         setDatos(item)
     }
 
-    const hideDialog = () => {
+    const onHideDialog = () =>{
+        console.log("cerrar")
         setDisplayModal(false)
+        console.log(setDisplayModal)
     }
-
-    const formik = useFormik({
-        initialValues: datos,
-        validate: (data) => {
-            let errors = {};
-            if (!data.Type) {
-                errors.SubType = 'Se requiere el nombre del tipo de cuenta.';
-            }
-            if (!data.Description) {
-                errors.Description = 'Se requiere una descripcion';
-            }
-
-            return errors;
-        },
-
-        onSubmit: async (data) => {
-            setFormData(data);
-            // await agregarTipo(data);
-
-        }
-    });
-
-    const isFormFieldValid = (name) => !!(formik.touched[name] && formik.errors[name]);
-
-    const getFormErrorMessage = (name) => {
-        return isFormFieldValid(name) && <small className="p-error">{formik.errors[name]}</small>;
-
-    };
-
 
 
     useEffect(() => {
         getAccesosByUsuario()
         ObtenerNotificaciones()
     }, [])
+
+    useEffect(() => {
+        ObtenerNotificaciones()
+    },[displayModal])
 
 
     return (
@@ -119,6 +97,7 @@ const CardNotificacionesComponent = () => {
                         </div>
                     )
                 })}
+                <ModalNotificacion displayModal={displayModal} onHideDialog = {onHideDialog} datos = {datos} setDatos = {setDatos}/>
 
 
             </div>
