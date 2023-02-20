@@ -107,7 +107,7 @@ const ModalNotificacion = ({ displayModal, onHideDialog, datos, setDatos }) => {
             <div className="columnasheader" >
                 <div style={{ width:"110%"}}>
 
-              <span style={{fontSize: "1rem", fontWeight:"bold"}} >{datos.title}</span><br />
+              <span style={{fontSize: "1rem", fontWeight:"bold"}} >{datos.title === undefined ? "": datos.title}</span><br />
                 </div>
             
               <div style={{float: "right", marginRight:3}}>
@@ -145,7 +145,7 @@ const ModalNotificacion = ({ displayModal, onHideDialog, datos, setDatos }) => {
                         </div><br/> */}
                     </div>
                     <div className="modal__input-contenedor" style={{ width: "100%" }}>
-                    <label htmlFor="dropdown">Estado de la Actividad</label>
+                    <label htmlFor="dropdown">Estado del Pago</label>
                     </div>
                     <div className="modal__input-contenedor" style={{ width: "100%" }}>
 

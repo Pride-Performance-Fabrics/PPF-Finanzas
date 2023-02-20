@@ -2,6 +2,7 @@ import React, { useState, Fragment, useEffect, useRef} from "react";
 
 import { Dialog } from 'primereact/dialog';
 import { Button } from "primereact/button";
+import {Tag} from "primereact/tag";
 
 import CardNotificaciones from "../Card/CardNotifcaciones";
 
@@ -73,6 +74,27 @@ const CardNotificacionesComponent = () => {
         ObtenerNotificaciones()
     },[displayModal])
 
+    const getPrioridadesTag = (datos) => {
+        console.log(datos)
+        switch (datos.IdPriority) {
+            case 1:
+                return <Tag style={{ width: 70, opacity:8 }} severity="success" value={datos.Priority} />
+                break;
+            case 2:
+                return <Tag style={{ width: 70 }} severity="info" value={datos.Priority} />
+                break;
+            case 3:
+                return <Tag style={{ width: 70 }} severity="warning" value={datos.Priority} />
+                break;
+            case 4:
+                return <Tag style={{ width: 70 }} severity="danger" value={datos.Priority} />
+                break;
+
+            default:
+                break;
+        }
+    }
+
 
     return (
         <div>
@@ -87,6 +109,9 @@ const CardNotificacionesComponent = () => {
                                 className="cardNotificaciones"
                                 contenido={
                                     <div className='pt-1' style={{ height: '10vh' }}>
+                                        <div  style={{float: "right", marginRight:3}}>
+                                         {getPrioridadesTag(item)}
+                                        </div>
                                         <span>{item.title}</span><br />
                                         <span>Prioridad: {item.Priority}</span><br />
                                         <span>Vencimiento: {fecha}</span>
