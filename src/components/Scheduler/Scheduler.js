@@ -72,18 +72,36 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
         Priority: added.Priority !== undefined ? added.Priority : 1,
         reminder: added.reminder !== undefined ? added.reminder : 3
       };
-      const result = await insertScheduler(tastk);
-      getDatosScheduler();
-      toast.current.show({
-        severity: "success",
-        summary: "Guardado",
-        detail: "Actividad guardada correctamente."
-      })
-      setLoading(false);
+      if(tastk.title === undefined || tastk.title ===""){
+        toast.current.show({
+          severity: "error",
+          summary: "Error",
+          detail: "Debe ingresar el nombre del Pago."
+        })
+        setLoading(false);
+      }else if (tastk.startDate === tastk.endDate) {
+        toast.current.show({
+          severity: "error",
+          summary: "Error",
+          detail: "Debe seleccionar una hora de finalizacion."
+        })
+        setLoading(false);
 
-      const startingAddedId =
-        data.length > 0 ? data[data.length - 1].id + 1 : 0;
-      data = [...data, { id: startingAddedId, ...added }];
+      } else {
+        const result = await insertScheduler(tastk);
+        getDatosScheduler();
+        toast.current.show({
+          severity: "success",
+          summary: "Guardado",
+          detail: "Actividad guardada correctamente."
+        })
+        setLoading(false);
+
+        const startingAddedId =
+          data.length > 0 ? data[data.length - 1].id + 1 : 0;
+        data = [...data, { id: startingAddedId, ...added }];
+      }
+
     }
     // SE MODIFICA UN EVENTO
     if (changed) {
@@ -109,7 +127,7 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
             colorId: tempo.colorId,
             Priority: tempo.Priority !== undefined ? tempo.Priority : 1,
             reminder: tempo.reminder !== undefined ? tempo.reminder : 3,
-            IdCalendar: tempo.id 
+            IdCalendar: tempo.id
           };
         }
         console.log(tastk)
@@ -118,14 +136,31 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
           : appointment;
         return change;
       });
-      const resultado = await updateScheduler(tastk);
-      getDatosScheduler();
-      toast.current.show({
-        severity: "success",
-        summary: "Guardado",
-        detail: "Actividad guardada correctamente."
-      });
-      setLoading(false);
+      if(tastk.title === undefined || tastk.title === ""){
+        toast.current.show({
+          severity: "error",
+          summary: "Error",
+          detail: "Debe ingresar el nombre del Pago."
+        })
+        setLoading(false);
+      }else if(tastk.startDate === tastk.endDate){
+        toast.current.show({
+          severity: "error",
+          summary: "Error",
+          detail: "Debe seleccionar una hora de finalizacion."
+        })
+        setLoading(false);
+      }else{
+        const resultado = await updateScheduler(tastk);
+        getDatosScheduler();
+        toast.current.show({
+          severity: "success",
+          summary: "Guardado",
+          detail: "Actividad guardada correctamente."
+        });
+        setLoading(false);
+      }
+      
     }
 
     // modificar estado de la actividad
@@ -224,10 +259,10 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
 
   const DateEditor = () => {
     // const dateFormat = excludeTime ? "MM/DD/YYYY" : "MM/DD/YYYY HH:mm";
-  
+
     return (
       <div>
-        <Calendar/>
+        <Calendar />
       </div>
       // <AppointmentForm.DateEditor
       //   {...restProps}
@@ -236,7 +271,7 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
       // />
     );
   };
-  
+
 
   const BasicLayout = ({
     onFieldChange,
@@ -261,10 +296,10 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
       basicLayoutComponent={BasicLayout}
       {...restProps}
       locale={"da-DK"}
-           >
-        {children}
-      </AppointmentForm.Layout>
-   );
+    >
+      {children}
+    </AppointmentForm.Layout>
+  );
 
   return (
 
@@ -296,21 +331,21 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
 
           <DateNavigator />
 
-          <Appointments/>
+          <Appointments />
           <AppointmentTooltip
             showCloseButton
             showOpenButton
             showDeleteButton
           />
           {/* <ViewSwitcher /> */}
-          <AppointmentForm 
-           children={DateEditor}
-            //  layoutComponent={DateEditor}
-            //  recurrenceLayoutComponent={DateEditor}
-            //  booleanEditorComponent={DateEditor}
-            //  dateEditorComponent={DateEditor}
+          <AppointmentForm
+            children={DateEditor}
+          //  layoutComponent={DateEditor}
+          //  recurrenceLayoutComponent={DateEditor}
+          //  booleanEditorComponent={DateEditor}
+          //  dateEditorComponent={DateEditor}
           />
-          
+
           {/* <AppointmentForm.DateEditor
             AppointmentForm.DateEditorProps
           /> */}
@@ -320,7 +355,7 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
           />
 
           <DragDropProvider />
-          
+
         </Scheduler>
       </Paper>
     </div>

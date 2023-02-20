@@ -6,7 +6,7 @@ import { getScheduler } from "../../Api/Sheduler/ShedulerRequest";
 
 import { getEstadosActividad } from "../../Api/Global/StatusRequest";
 import { getPrioridades } from '../../Api/Global/PriorityRequest';
-import { getUsersActivos, getUsuarios } from "../../Api/IT/Usuarios/UsuarioRequest";
+import { getUsersActivos, getUsuarios, getUsuariosFinanzas } from "../../Api/IT/Usuarios/UsuarioRequest";
 
 
 const SchedulerHomeScreen = () => {
@@ -95,7 +95,7 @@ const SchedulerHomeScreen = () => {
 
         const prioridades = await getPrioridades();
         const estados = await getEstadosActividad();
-        const usuarios = await getUsersActivos()
+        const usuarios = await getUsuariosFinanzas()
 
         const instanciaColores = colorsActividades.map((item) => {
             return {
@@ -175,7 +175,7 @@ const SchedulerHomeScreen = () => {
     }
 
     useEffect(() => {
-        setShedulersContainerHeight(document.querySelector('.schedulersContainer')?.clientHeight - 40);
+        setShedulersContainerHeight(document.querySelector('.schedulersContainer')?.clientHeight - 60);
         obtenerResources()
     }, [state])
 
