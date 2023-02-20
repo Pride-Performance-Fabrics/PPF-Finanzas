@@ -10,3 +10,8 @@ export const getUsersActivos = async() => {
     return respuesta;
 }
 
+export const getUsuariosFinanzas = async () =>{
+    const respuesta = await PrivateInterceptor(`users/seleccionUsuariosFinanzas`, 'GET')
+    return respuesta;
+}
+
