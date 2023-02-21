@@ -9,7 +9,7 @@ import {
   IntegratedEditing,
   SchedulerDateTime
 } from "@devexpress/dx-react-scheduler";
-
+import { Checkbox} from "primereact/checkbox"
 
 import {
   Scheduler,
@@ -38,7 +38,10 @@ import { getDateTimeSQL4, getDateTimeSQL } from "../../services/FechasService";
 import { Toast } from "primereact/toast";
 import Loader from "../Loader/Loader";
 
+
+
 import { getScheduler, insertScheduler, updateScheduler, deleteScheduler, updateEstadoScheduler } from "../../Api/Sheduler/ShedulerRequest";
+import { CheckBox } from "@mui/icons-material";
 
 const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, colores, editor }) => {
 
@@ -61,7 +64,7 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
         startDate: getDateTimeSQL4(new Date(added.startDate)),
         endDate: getDateTimeSQL4(new Date(added.endDate)),
         title: added.title,
-        allDay: added.allDay,
+        allDay: 0,
         rRule: added.rRule !== undefined ? added.rRule : "",
         exDate: added.exDate,
         notes: added.notes !== undefined ? added.notes : "",
@@ -118,7 +121,7 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
             startDate: getDateTimeSQL4(new Date(tempo.startDate)),
             endDate: getDateTimeSQL4(new Date(tempo.endDate)),
             title: tempo.title,
-            allDay: tempo.allDay,
+            allDay: 0,
             rRule: tempo.rRule !== undefined ? tempo.rRule : "",
             exDate: tempo.exDate,
             notes: tempo.notes !== undefined ? tempo.notes : "",
@@ -244,6 +247,7 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
 
     setState({ data: tempo });
     console.log(respuesta)
+    
   }
 
 
@@ -262,7 +266,8 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
 
     return (
       <div>
-        <Calendar />
+        {/* <label>All Day</label> */}
+        {/* <CheckBox/> */}
       </div>
       // <AppointmentForm.DateEditor
       //   {...restProps}
@@ -342,7 +347,7 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
             children={DateEditor}
           //  layoutComponent={DateEditor}
           //  recurrenceLayoutComponent={DateEditor}
-          //  booleanEditorComponent={DateEditor}
+           booleanEditorComponent={DateEditor}
           //  dateEditorComponent={DateEditor}
           />
 

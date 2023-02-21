@@ -15,7 +15,7 @@ import { getAccesosUsuario } from "../../Api/IT/Accesos/AccesosRequest";
 
 // import "./FooterStyle.scss"
 
-import { getNotificaciones } from "../../Api/Sheduler/ShedulerRequest";
+import { getNotificaciones, getCantidadActividades, getScheduler } from "../../Api/Sheduler/ShedulerRequest";
 
 
 const Footer = ({ user }) => {
@@ -31,6 +31,7 @@ const Footer = ({ user }) => {
     const[ cantidad, setCantidad] = useState(0);
     const [accesos, setAccesos] = useState([]);
     const [habilitar, setHabilitar] = useState(true);
+    
 
     const getAccesosByUsuario = async () => {
         const userInformation = decodeToken(localStorage.getItem(`ppfToken`));
@@ -48,12 +49,28 @@ const Footer = ({ user }) => {
         const respuesta = await getNotificaciones()
 
         setNotificaiones(respuesta)
-        console.log(respuesta)
+        // console.log(respuesta)
         let c = respuesta.length
-        console.log(c)
+        // console.log(c)
         setCantidad(c)
         
     }
+
+    const actividadesCalendario = async() => {
+        const tempo = await getCantidadActividades()
+        const tempo2 = await getScheduler() 
+
+        console.log(tempo[0].Cantidad)
+        console.log(tempo2.length)
+        if(tempo[0].Cantidad === tempo2.length){
+            console.log("son iguales")
+        }else{
+            console.log("no son iguales")
+        }
+    }
+
+   
+    
 
 
     // Funcion para obtener la IP de la maquina desde la API `https://geolocation-db.com/`
@@ -80,6 +97,8 @@ const Footer = ({ user }) => {
         getData();
         getAccesosByUsuario();
         ObtenerNotificaciones()
+
+        actividadesCalendario()
     }, []);
 
     useEffect(() => {

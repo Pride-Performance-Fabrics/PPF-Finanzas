@@ -189,7 +189,7 @@ const SchedulerHomeScreen = () => {
                     <div className='' style={{ width: schedulerContainerWidth }}>
                         <div className='schedulerCard' style={{ marginTop: 10 }} >
                             <SchedulerComponent
-                                CurrentView='Month'
+                                CurrentView='Week'
                                 state={state}
                                 setState={setState}
                                 resources={resources}

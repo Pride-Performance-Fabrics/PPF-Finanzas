@@ -51,4 +51,12 @@ export const updateScheduler = async(data) => {
  }
 
 
+ export const getCantidadActividades = async() => {
+
+  const respuesta = await PrivateInterceptor(`schedulerCalendar/cantidadActividades`, 'GET')
+  return respuesta;
+}
+
+
+
  

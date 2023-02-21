@@ -48,7 +48,7 @@ const CardNotificacionesComponent = () => {
         const respuesta = await getNotificaciones()
 
         setNotificaiones(respuesta)
-        console.log(respuesta)
+        // console.log(respuesta)
         // notificacion(respuesta)
     }
 
@@ -59,9 +59,9 @@ const CardNotificacionesComponent = () => {
     }
 
     const onHideDialog = () =>{
-        console.log("cerrar")
+        // console.log("cerrar")
         setDisplayModal(false)
-        console.log(setDisplayModal)
+        // console.log(setDisplayModal)
     }
 
 
@@ -75,7 +75,7 @@ const CardNotificacionesComponent = () => {
     },[displayModal])
 
     const getPrioridadesTag = (datos) => {
-        console.log(datos)
+        // console.log(datos)
         switch (datos.IdPriority) {
             case 1:
                 return <Tag style={{ width: 70, opacity:8 }} severity="success" value={datos.Priority} />
@@ -104,11 +104,12 @@ const CardNotificacionesComponent = () => {
                     let fecha = getLocalDateTimeString(item.endDate)
                     return (
                         <div onClick={() => open(item)}>
-                            <CardNotificaciones
+                            <CardNotificaciones 
+                                key= {item.IdCalendar}
                                 titulo={""}
                                 className="cardNotificaciones"
                                 contenido={
-                                    <div className='pt-1' style={{ height: '10vh' }}>
+                                    <div className='pt-1' style={{ height: '10vh' }} >
                                         <div  style={{float: "right", marginRight:3}}>
                                          {getPrioridadesTag(item)}
                                         </div>

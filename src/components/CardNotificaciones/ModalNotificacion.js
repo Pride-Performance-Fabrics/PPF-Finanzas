@@ -18,7 +18,7 @@ import { Label } from "@mui/icons-material";
 import { getDateTimeSQL, setDateTimeSQL, getLocalDateTimeString } from "../../services/FechasService";
 
 const ModalNotificacion = ({ displayModal, onHideDialog, datos, setDatos }) => {
-    console.log(datos)
+    // console.log(datos)
 
     const toast = useRef(null);
     const [formData, setFormData] = useState({});
@@ -38,7 +38,7 @@ const ModalNotificacion = ({ displayModal, onHideDialog, datos, setDatos }) => {
 
 
     useEffect(() => {
-        console.log(displayModal);
+        // console.log(displayModal);
     }, [displayModal])
 
     const formik = useFormik({
@@ -70,20 +70,28 @@ const ModalNotificacion = ({ displayModal, onHideDialog, datos, setDatos }) => {
     };
 
     const onChangeEstado = async (e, IdStatus) => {
-        console.log(IdStatus)
+        // console.log(IdStatus)
         let data = {
             IdCalendar: datos.IdCalendar,
             Status: IdStatus
         }
         const respuesta = await putEstadoActividad(data)
-        console.log(respuesta)
+        // if(respuesta){
+        //     toast.current.show({
+        //         severity: "success",
+        //         summary: "Eliminado",
+        //         detail: "Actividad desactivada correctamente."
+        //       });
+        // }
+       
+        // console.log(respuesta)
         setDatos(respuesta[0])
         // const result = await getActividad(datos.Id)
 
     }
 
     const getPrioridadesTag = (datos) => {
-        console.log(datos)
+        // console.log(datos)
         switch (datos.IdPriority) {
             case 1:
                 return <Tag style={{ width: 70 }} severity="success" value={datos.Priority} />
