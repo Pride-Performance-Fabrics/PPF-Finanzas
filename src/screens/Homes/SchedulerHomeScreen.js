@@ -8,6 +8,9 @@ import { getEstadosActividad } from "../../Api/Global/StatusRequest";
 import { getPrioridades } from '../../Api/Global/PriorityRequest';
 import { getUsersActivos, getUsuarios, getUsuariosFinanzas } from "../../Api/IT/Usuarios/UsuarioRequest";
 
+import {agregarDias, restarDias} from "../../services/FechasService";
+import { decodeToken } from "react-jwt";
+
 
 const SchedulerHomeScreen = () => {
 
@@ -19,7 +22,10 @@ const SchedulerHomeScreen = () => {
     const [estados, setEstados] = useState([]);
     const [prioridades, setPrioridades] = useState([]);
     const [usuarios, setUsuarios] = useState([]);
-    const [recordatorios, setRecordatorios] = useState([])
+    const [recordatorios, setRecordatorios] = useState([]);
+    const [currentDate, setCurrentDate] = useState(new Date());
+   
+    
 
 
     const [shedulersContainerHeight, setShedulersContainerHeight] = useState(100);
@@ -59,36 +65,35 @@ const SchedulerHomeScreen = () => {
         {
             id: 1,
             nombre: "Un dia antes",
-           
+
         },
         {
             id: 2,
             nombre: "Dos dias antes",
-           
+
         },
         {
             id: 3,
             nombre: "Tres dias antes",
-           
+
         },
         {
             id: 5,
             nombre: "Cinco dias antes",
-          
+
         },
         {
             id: 7,
             nombre: "Una semana antes",
-            
+
         },
         {
             id: 15,
             nombre: "Dos semanas antes",
-          
+
         },
 
     ]
-
 
 
     const obtenerResources = async () => {
@@ -97,13 +102,13 @@ const SchedulerHomeScreen = () => {
         const estados = await getEstadosActividad();
         const usuarios = await getUsuariosFinanzas()
 
-        const instanciaColores = colorsActividades.map((item) => {
-            return {
-                text: item.nombre,
-                id: parseInt(item.id),
-                color: item.color
-            }
-        })
+        // const instanciaColores = colorsActividades.map((item) => {
+        //     return {
+        //         text: item.nombre,
+        //         id: parseInt(item.id),
+        //         color: item.color
+        //     }
+        // })
         const instanciaPrioridades = prioridades.map((item) => {
             return {
                 text: item.Priority,
@@ -114,18 +119,19 @@ const SchedulerHomeScreen = () => {
         const instanciaEstados = estados.map((item) => {
             return {
                 text: item.StatusName,
-                id: parseInt(item.IdStatus)
+                id: parseInt(item.IdStatus),
+                color: item.ColorStatus
             }
         })
 
-        const instanciaUsuarios = usuarios.map((item) =>{
-            return{
+        const instanciaUsuarios = usuarios.map((item) => {
+            return {
                 text: item.UserName,
                 id: parseInt(item.idUser)
             }
         })
 
-        const instanciaRecordatorios = diasRecordatorios.map((item) =>{
+        const instanciaRecordatorios = diasRecordatorios.map((item) => {
             return {
                 text: item.nombre,
                 id: parseInt(item.id)
@@ -133,30 +139,28 @@ const SchedulerHomeScreen = () => {
         })
 
 
-
-
-        setColores(instanciaColores)
+        // setColores(instanciaColores)
         setPrioridades(instanciaPrioridades)
         setEstados(instanciaEstados)
         setUsuarios(instanciaUsuarios)
         setRecordatorios(instanciaRecordatorios)
 
-        const resources = [
-            {
-                fieldName: "colorId",
-                title: "Colores",
-                instances: [...instanciaColores, { text: "color no requerido", id: 0 }],
-            },
+        let resources = [
+            // {
+            //     fieldName: "colorId",
+            //     title: "Colores",
+            //     instances: [...instanciaColores, { text: "color no requerido", id: 0 }],
+            // },
             {
                 fieldName: "Priority",
                 title: "Prioridad",
                 instances: instanciaPrioridades,
             },
-            {
-                fieldName: "status",
-                title: "Estado",
-                instances: instanciaEstados,
-            },
+            // {
+            //     fieldName: "status",
+            //     title: "Estado",
+            //     instances: instanciaEstados,
+            // },
             {
                 fieldName: "members",
                 title: "Members",
@@ -171,20 +175,34 @@ const SchedulerHomeScreen = () => {
 
         ];
 
+        const decoded = decodeToken(localStorage.getItem("ppfToken"));
+
+        if(decoded.IdRol === 1){
+            resources.push({
+                fieldName: "status",
+                title: "Estado",
+                instances: instanciaEstados,
+            })
+        }
+
         setResources(resources)
     }
 
     useEffect(() => {
         setShedulersContainerHeight(document.querySelector('.schedulersContainer')?.clientHeight - 60);
         obtenerResources()
+      
+        // let d = agregarDias(currentDate)
+        // console.log(d)
+        // setCurrentDate2(d)
+        
     }, [state])
 
 
     return (
-        <div className=''>
-
+        <div  className='schedulersContainer'>
             <Card className='schedulerCard month'
-                titulo={<h5>CALENDARIO MENSUAL</h5>}
+                titulo={<h5>CALENDARIO ACTUAL</h5>}
                 contenido={
                     <div className='' style={{ width: schedulerContainerWidth }}>
                         <div className='schedulerCard' style={{ marginTop: 10 }} >
@@ -195,6 +213,29 @@ const SchedulerHomeScreen = () => {
                                 resources={resources}
                                 colors={colores}
                                 editor={editor}
+                                currentDate={currentDate}
+                                setCurrentDate={setCurrentDate}
+
+                            />
+                        </div>
+                    </div>
+                }
+            />
+
+            <Card className='schedulerCard month'
+                titulo={<h5>CALENDARIO PROXIMA SEMANA</h5>}
+                contenido={
+                    <div className='' style={{ width: schedulerContainerWidth }}>
+                        <div className='schedulerCard' style={{ marginTop: 10 }} >
+                            <SchedulerComponent
+                                CurrentView='Week'
+                                state={state}
+                                setState={setState}
+                                resources={resources}
+                                colors={colores}
+                                editor={editor}
+                                currentDate={agregarDias(currentDate, 7)}
+                                setCurrentDate={(e)=>{setCurrentDate(restarDias(e,7)) }}
 
                             />
                         </div>

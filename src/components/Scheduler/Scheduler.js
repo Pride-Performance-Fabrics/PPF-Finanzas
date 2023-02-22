@@ -9,7 +9,7 @@ import {
   IntegratedEditing,
   SchedulerDateTime
 } from "@devexpress/dx-react-scheduler";
-import { Checkbox} from "primereact/checkbox"
+import { Checkbox } from "primereact/checkbox"
 
 import {
   Scheduler,
@@ -28,6 +28,10 @@ import {
   ViewSwitcher
 } from "@devexpress/dx-react-scheduler-material-ui";
 
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+
 
 import { Calendar } from "primereact/calendar";
 
@@ -38,18 +42,40 @@ import { getDateTimeSQL4, getDateTimeSQL } from "../../services/FechasService";
 import { Toast } from "primereact/toast";
 import Loader from "../Loader/Loader";
 
-
-
 import { getScheduler, insertScheduler, updateScheduler, deleteScheduler, updateEstadoScheduler } from "../../Api/Sheduler/ShedulerRequest";
 import { CheckBox } from "@mui/icons-material";
 
-const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, colores, editor }) => {
+const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, colores, editor, currentDate, setCurrentDate }) => {
 
   const toast = useRef(null);
   const EditingStateRef = useRef(null);
 
-  const [currentDate, setCurrentDate] = useState(new Date());
+  // const [currentDate, setCurrentDate] = useState(new Date());
   const [loading, setLoading] = useState(false);
+  const [currentViewName, setCurrentViewName] = useState('Week')
+
+  const currentViewNameChange = (e) =>{
+    console.log(e)
+    setCurrentViewName(e.target.value)
+  }
+
+  const ExternalViewSwitcher = ({
+    currentViewName,
+    onChange,
+  }) => (
+    <RadioGroup
+      aria-label="Views"
+      style={{ flexDirection: 'row' }}
+      name="views"
+      value={currentViewName}
+      onChange={onChange}
+    >
+      <FormControlLabel value="Week" control={<Radio />} label="Week" />
+      <FormControlLabel value="Month" control={<Radio />} label="Month" />
+    </RadioGroup>
+  );
+
+ 
 
   const commitChanges = async ({ added, changed, changedStatus, deleted }) => {
     let { data } = state;
@@ -71,18 +97,18 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
         members: added.members !== undefined ? added.members.toString() : null,
         createDate: getDateTimeSQL4(new Date()),
         status: added.status !== undefined ? added.status : 5,
-        colorId: added.colorId !== undefined ? added.colorId : 1,
+        // colorId: added.colorId !== undefined ? added.colorId : 1,
         Priority: added.Priority !== undefined ? added.Priority : 1,
         reminder: added.reminder !== undefined ? added.reminder : 3
       };
-      if(tastk.title === undefined || tastk.title ===""){
+      if (tastk.title === undefined || tastk.title === "") {
         toast.current.show({
           severity: "error",
           summary: "Error",
           detail: "Debe ingresar el nombre del Pago."
         })
         setLoading(false);
-      }else if (tastk.startDate === tastk.endDate) {
+      } else if (tastk.startDate === tastk.endDate) {
         toast.current.show({
           severity: "error",
           summary: "Error",
@@ -127,7 +153,7 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
             notes: tempo.notes !== undefined ? tempo.notes : "",
             members: tempo.members !== undefined ? tempo.members.toString() : null,
             status: tempo.status !== undefined ? tempo.status : 5,
-            colorId: tempo.colorId,
+            // colorId: tempo.colorId,
             Priority: tempo.Priority !== undefined ? tempo.Priority : 1,
             reminder: tempo.reminder !== undefined ? tempo.reminder : 3,
             IdCalendar: tempo.id
@@ -139,21 +165,21 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
           : appointment;
         return change;
       });
-      if(tastk.title === undefined || tastk.title === ""){
+      if (tastk.title === undefined || tastk.title === "") {
         toast.current.show({
           severity: "error",
           summary: "Error",
           detail: "Debe ingresar el nombre del Pago."
         })
         setLoading(false);
-      }else if(tastk.startDate === tastk.endDate){
+      } else if (tastk.startDate === tastk.endDate) {
         toast.current.show({
           severity: "error",
           summary: "Error",
           detail: "Debe seleccionar una hora de finalizacion."
         })
         setLoading(false);
-      }else{
+      } else {
         const resultado = await updateScheduler(tastk);
         getDatosScheduler();
         toast.current.show({
@@ -163,7 +189,7 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
         });
         setLoading(false);
       }
-      
+
     }
 
     // modificar estado de la actividad
@@ -238,7 +264,7 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
         createDate: item.createDate,
         status: item.status,
         members: members,
-        colorId: item.colorId,
+        // colorId: item.colorId,
         Priority: item.Priority,
         reminder: item.reminder
 
@@ -247,7 +273,7 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
 
     setState({ data: tempo });
     console.log(respuesta)
-    
+
   }
 
 
@@ -310,6 +336,10 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
 
     <div id='schedulerContainer'>
       <Loader loading={loading} querySelector='#schedulerContainer' />
+      <ExternalViewSwitcher
+          currentViewName={currentViewName}
+          onChange={(e) =>currentViewNameChange(e)}
+        />
       <Toast position="bottom-right" ref={toast} />
       <Paper>
 
@@ -317,6 +347,7 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
           <ViewState
             currentDate={currentDate}
             onCurrentDateChange={setCurrentDate}
+            currentViewName={currentViewName}
             defaultCurrentViewName={CurrentView}
           />
           <EditingState
@@ -345,9 +376,9 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
           {/* <ViewSwitcher /> */}
           <AppointmentForm
             children={DateEditor}
-          //  layoutComponent={DateEditor}
-          //  recurrenceLayoutComponent={DateEditor}
-           booleanEditorComponent={DateEditor}
+            //  layoutComponent={DateEditor}
+            //  recurrenceLayoutComponent={DateEditor}
+            booleanEditorComponent={DateEditor}
           //  dateEditorComponent={DateEditor}
           />
 
@@ -356,7 +387,7 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
           /> */}
           <Resources
             data={resources}
-            mainResourceName="colorId"
+            mainResourceName="status"
           />
 
           <DragDropProvider />
