@@ -12,21 +12,19 @@ const firebaseConfig = {
     measurementId: "G-8PHFXEVMZT"
   };
 
+  firebase.initializeApp(firebaseConfig);
 
-const app = firebase.initializeApp(firebaseConfig);
-
-export const messaging = firebase.messaging(app)
-
-messaging.onBackgroundMessage(payload =>{
-    console.log("Recibiste un mensaje")
-    console.log(payload)
-    const notificationTitle = payload.notification.title
+  // Retrieve firebase messaging
+  const messaging = firebase.messaging();
+  
+  messaging.onBackgroundMessage(function(payload) {
+    console.log('Received background message ', payload);
+  
+    const notificationTitle = payload.notification.title;
     const notificationOptions = {
-        body: payload.notification.body,
-        icon:"../../assets/SVG/Primario_H.svg"
-    }
-
-    return self.registration.showNotificacion(
-        notificationTitle, notificationOptions
-    )
-})
+      body: payload.notification.body,
+    };
+  
+    self.registration.showNotification(notificationTitle,
+      notificationOptions);
+  });
