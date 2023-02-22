@@ -156,7 +156,7 @@ const Footer = ({ user }) => {
                     <small className="footer_column-info">    {`${user.UserName}`}</small>
                 </div>
                 <div>
-                    <Sidebar visible={visible} position="right" onHide={() => setVisible(false)} style={{ width: "50%" }}>
+                    <Sidebar visible={visible} position="right" onHide={() => setVisible(false)} style={{ width: "80%" }}>
                         <SchedulerHomeScreen />
                     </Sidebar>
 
