@@ -5,15 +5,22 @@ import { Button } from "primereact/button";
 import { useFormik } from 'formik';
 
 import { Toast } from 'primereact/toast';
+import { ConfirmDialog, confirmDialog  } from 'primereact/confirmdialog'
 import { classNames } from 'primereact/utils';
 import { Dropdown } from "primereact/dropdown";
 import { Checkbox } from "primereact/checkbox";
 import { InputText } from "primereact/inputtext";
 import { Tag } from "primereact/tag";
 import { Calendar } from "primereact/calendar";
+
+
+
 import { getEstadosActividad, getActividad } from "../../Api/Global/StatusRequest";
 import { putEstadoActividad } from "../../Api/Sheduler/ShedulerRequest";
 import { Label } from "@mui/icons-material";
+import { decodeToken } from "react-jwt";
+
+import { toastShow } from '../../services/ToastService';
 
 import { getDateTimeSQL, setDateTimeSQL, getLocalDateTimeString } from "../../services/FechasService";
 
@@ -21,8 +28,10 @@ const ModalNotificacion = ({ displayModal, onHideDialog, datos, setDatos }) => {
     // console.log(datos)
 
     const toast = useRef(null);
+    const [visible, setVisible] = useState(false);
     const [formData, setFormData] = useState({});
     const [estados, setEstados] = useState([]);
+    const [infoEstado, setInfoEstado] = useState({})
     // const[hideModal, setHideModal] = useState(displayModal)
 
 
@@ -69,20 +78,23 @@ const ModalNotificacion = ({ displayModal, onHideDialog, datos, setDatos }) => {
 
     };
 
-    const onChangeEstado = async (e, IdStatus) => {
-        // console.log(IdStatus)
+
+
+    const onChangeEstado = async (infoEstado) => {
+        console.log(infoEstado)
+     
+        
         let data = {
             IdCalendar: datos.IdCalendar,
-            Status: IdStatus
+            Status: infoEstado.IdStatus,
+            // IdUser: decoded.idUser
         }
         const respuesta = await putEstadoActividad(data)
-        // if(respuesta){
-        //     toast.current.show({
-        //         severity: "success",
-        //         summary: "Eliminado",
-        //         detail: "Actividad desactivada correctamente."
-        //       });
-        // }
+        if(respuesta){
+            toastShow(toast, 'success', 'Creado', 'Estado Modificado Correctamente.');
+        }else{
+            toastShow(toast, 'error', 'Error', 'Error al modificar el estado');
+        }
        
         // console.log(respuesta)
         setDatos(respuesta[0])
@@ -136,6 +148,9 @@ const ModalNotificacion = ({ displayModal, onHideDialog, datos, setDatos }) => {
 
     return (
         <div>
+           <ConfirmDialog visible={visible} onHide={() => setVisible(false)} message={`¿Esta seguro que desea cambiar el estado del pago: ${datos.title} a ${infoEstado.StatusName}?`}
+                                            header="Confirmation" icon="pi pi-exclamation-triangle" reject={() => setVisible(false)} accept ={()=>onChangeEstado(infoEstado)} />
+             <Toast position="bottom-right" ref={toast}></Toast>
             <Dialog header={headerDialog(datos)} visible={displayModal} style={{ width: '20vw' }} onHide={onHideDialog}>
                 <form onSubmit={formik.handleSubmit} className="p-fluid" style={{ margin: "Auto", marginBottom: 0 }}>
 
@@ -165,8 +180,14 @@ const ModalNotificacion = ({ displayModal, onHideDialog, datos, setDatos }) => {
                                     // console.log(estados.some((e) => e.IdStatus === datos.IdStatus),)
                                     return (
                                         <div >
-                                            <Checkbox values={item.IdStatus} onChange={(e) => onChangeEstado(e.checked, item.IdStatus)} checked={estados.some((e) => datos.IdStatus === item.IdStatus)} />
+                                            <Checkbox values={item.IdStatus}  onChange={
+                                                (e) =>{
+                                                    setVisible(true)
+                                                    setInfoEstado(({...item, e}))
+                                                }
+                                            } checked={estados.some((e) => datos.IdStatus === item.IdStatus)} />
                                             <label htmlFor={item.IdStatus}>{item.StatusName}</label>
+                                           
                                         </div>
                                     )
                                 })
