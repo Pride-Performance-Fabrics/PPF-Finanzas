@@ -42,6 +42,7 @@ export const fechaRealTemplate = (date) => {
 }
 // FECHA TEMPLATE
 export const fechaLocalStringTemplate = (date) => {
+    console.log(date)
     if (date != null) {
         return <span >{getLocalDateString(new Date(date))}</span>
     } else {
@@ -50,6 +51,7 @@ export const fechaLocalStringTemplate = (date) => {
 }
 // FECHA TEMPLATE
 export const fechaLocalTemplate = (date) => {
+   
     if (date != null) {
         return <span >{getLocalDateTimeString(new Date(date))}</span>
     } else {

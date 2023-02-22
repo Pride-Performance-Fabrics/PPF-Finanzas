@@ -40,6 +40,9 @@ import TiposScreen from "../screens/Finanzas/PlanCuentas/Tipos/TiposScreen";
 import CategoriaScreen from "../screens/Finanzas/PlanCuentas/Categoria/CategoriaScreen";
 import SubCategoriasScreen from "../screens/Finanzas/PlanCuentas/SubCategorias/SubCategoriasScreen";
 
+//--------------------------------- Planeacion -----------------------------
+import CalendarioPagosScreen from "../screens/Planeacion/CalendarioPagos/CalendarioPagosScreen";
+
 
 export const DashboardRoutes = () => {
 
@@ -157,15 +160,6 @@ export const DashboardRoutes = () => {
 
 
 
-    // const SubTiposScreenPermision = Permissible(
-    //     SubTiposScreen,
-    //     userPermisions, // userPermissions
-    //     [10], // requiredPermissions
-    //     () => {
-    //         navigate("fin/home", { replace: true })
-    //     }
-    // );
-
     const AccesoScreenPermision = Permissible(
         AccesosScreen,
         userPermisions,
@@ -186,7 +180,14 @@ export const DashboardRoutes = () => {
         }
     );
 
-
+    const CalendarioPagosScreenPermision = Permissible(
+        CalendarioPagosScreen,
+        userPermisions, // userPermissions
+        [14], // requiredPermissions
+        () => {
+            navigate("fin/home", { replace: true })
+        }
+    );
 
 
     useEffect(() => {
@@ -235,6 +236,8 @@ export const DashboardRoutes = () => {
                     <Route path={`${process.env.REACT_APP_ENV}/RegistroContable/Categoria`} element={<CategoriaScreenPermision />} />
                     <Route path={`${process.env.REACT_APP_ENV}/RegistroContable/SubCategoria`} element={<SubCategoriasScreenPermision />} />
 
+                    {/*--------------------------------------------Planeacion---------------------------------------------*/}
+                    <Route path={`${process.env.REACT_APP_ENV}/Planeacion/CalendarioPagos`} element={<CalendarioPagosScreenPermision />} />
 
 
                 </Routes>
