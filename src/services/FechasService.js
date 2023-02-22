@@ -267,3 +267,18 @@ const days = [
     }
  }
  
+export const agregarDias = ( date, days) =>{
+   let d = new Date(date)
+  
+   return new Date(d.getTime() + 1000* 60 * 60 * 24 * days)  
+}
+
+ 
+export const restarDias = ( date, days) =>{
+   let d = new Date(date)
+  
+   return new Date(d.getTime() - 1000* 60 * 60 * 24 * days)  
+}
+
+
+ 
