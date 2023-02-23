@@ -42,6 +42,9 @@ import { getDateTimeSQL4, getDateTimeSQL } from "../../services/FechasService";
 import { Toast } from "primereact/toast";
 import Loader from "../Loader/Loader";
 
+import { getUsuariosByRol } from "../../Api/IT/Usuarios/UsuarioRequest";
+import {  setNotificacionesWeb } from "../../Api/Global/NotificacionesRequest";
+
 import { getScheduler, insertScheduler, updateScheduler, deleteScheduler, updateEstadoScheduler } from "../../Api/Sheduler/ShedulerRequest";
 import { CheckBox } from "@mui/icons-material";
 
@@ -54,7 +57,7 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
   const [loading, setLoading] = useState(false);
   const [currentViewName, setCurrentViewName] = useState('Week')
 
-  const currentViewNameChange = (e) =>{
+  const currentViewNameChange = (e) => {
     console.log(e)
     setCurrentViewName(e.target.value)
   }
@@ -75,7 +78,7 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
     </RadioGroup>
   );
 
- 
+
 
   const commitChanges = async ({ added, changed, changedStatus, deleted }) => {
     let { data } = state;
@@ -125,6 +128,7 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
           detail: "Actividad guardada correctamente."
         })
         setLoading(false);
+        enviarNotificacion()
 
         const startingAddedId =
           data.length > 0 ? data[data.length - 1].id + 1 : 0;
@@ -276,8 +280,39 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
 
   }
 
+  const enviarNotificacion = async () => {
+    const tempo = await getUsuariosByRol()
+    console.log("usuarios", tempo)
+    let usuarios = []
+    tempo.map((e) => {
+      usuarios.push(e.idUser)
+    })
+
+    // let title = 'Nuevo Pago'
+    // let body = 'Se agrego un nuevo pago al calendario de pagos'
+    // let data = {}
+    // let UserSend = null
+    // let priority = 'high'
+    // let Tipo = 1
+
+    let datos = {
+      usuarios: usuarios,
+      title: 'Nuevo Pago',
+      body:'Se agrego un nuevo pago al calendario de pagos',
+      data: {},
+      UserSend: null,
+      priority: 'high',
+      Tipo:1
+    }
+
+    const respuesta = await  setNotificacionesWeb(datos)
+    console.log(respuesta)
+
+  }
+
 
   useEffect(() => {
+    // enviarNotificacion()
     getDatosScheduler();
     // ObtenerScheduler();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -337,9 +372,9 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
     <div id='schedulerContainer'>
       <Loader loading={loading} querySelector='#schedulerContainer' />
       <ExternalViewSwitcher
-          currentViewName={currentViewName}
-          onChange={(e) =>currentViewNameChange(e)}
-        />
+        currentViewName={currentViewName}
+        onChange={(e) => currentViewNameChange(e)}
+      />
       <Toast position="bottom-right" ref={toast} />
       <Paper>
 
