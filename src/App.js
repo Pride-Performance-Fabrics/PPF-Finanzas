@@ -1,41 +1,17 @@
-import React, { useReducer, useEffect, useState} from "react";
+import React, { useReducer, useEffect, useState, useRef} from "react";
 import { View, StyleSheet } from "react-native-web";
 import { AuthContext } from "./auth/AuthContext";
 import { authReducer } from "./auth/authReducer";
 import { AppRouter } from "./routers/AppRouter";
+import { Toast } from "primereact/toast";
 // import LoginScreen from "../screens/Login/LoginScreen";
 
 import PrimeReact from 'primereact/api';
 import { MemoProvider } from "./context/Memo/MemoContext";
 import 'remixicon/fonts/remixicon.css';
 
-// Import the functions you need from the SDKs you need
-// import { initializeApp } from "firebase/app";
-// import { getAnalytics } from "firebase/analytics";
-// import {getToken, onMessage } from "firebase/messaging";
+import { fetchToken, onMessageListener, deleteTokenNotification} from './firebase';
 
-import { fetchToken, onMessageListener } from './firebase';
-
-
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-// const firebaseConfig = {
-//   apiKey: "AIzaSyBo7mD4fOYagQaLxVraqJb0qM3YPiO_ihk",
-//   authDomain: "ppf-finanzas.firebaseapp.com",
-//   projectId: "ppf-finanzas",
-//   storageBucket: "ppf-finanzas.appspot.com",
-//   messagingSenderId: "36541013773",
-//   appId: "1:36541013773:web:984b982aecf5e27b729a44",
-//   measurementId: "G-NRV7V3R80Q"
-// };
-
-// Initialize Firebase
-// const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
-// const messaging = getMessaging(app);
-
-// const tok  = getToken(messaging, {vapidKey: "BC6rKSLnnTnbZ2dWAiOBX7WwHQdtuRjV_3FcoMBZKwPk4n2nBIPtLUaN2NpwnkpOCniiPu5TDC5t9JFl-7iGQwk"});
 
 PrimeReact.ripple = true;
 PrimeReact.zIndex = {
@@ -64,47 +40,37 @@ function requestPermission() {
 }
 
 
-
-
-
 function App() {
 
   const [user, dispatch] = useReducer(authReducer, {}, init);
-  requestPermission()
   const [show, setShow] = useState(false);
   const [notification, setNotification] = useState({title: '', body: ''});
-  const [isTokenFound, setTokenFound] = useState(false);
-  fetchToken(setTokenFound);
+  // const [isTokenFound, setTokenFound] = useState(false);
+  // const [tokenNotification, setTokenNotification] = useState('a');
+  const toast = useRef(null)
+  requestPermission()
+  // fetchToken(setTokenFound, setTokenNotification);
 
   onMessageListener().then(payload => {
-    setShow(true);
+    toast.current.show({ backgroundColor:"blue",
+      severity: 'success',summary: payload.notification.title, detail: payload.notification.body, life: 6000});
+      
     setNotification({title: payload.notification.title, body: payload.notification.body})
     console.log(payload);
   }).catch(err => console.log('failed: ', err));
 
-//   const activarMensajes  = async() => {
-//     const tokenFirebase = await getToken(messaging, {
-//      vapidKey: "BC6rKSLnnTnbZ2dWAiOBX7WwHQdtuRjV_3FcoMBZKwPk4n2nBIPtLUaN2NpwnkpOCniiPu5TDC5t9JFl-7iGQwk"
-//     }).catch(error => console.log("Error al generar el token", error))
-//     console.log(tokenFirebase)
 
-
-//     if(tokenFirebase) console.log("tu token:" , tokenFirebase)
-//     if(!tokenFirebase) console.log("no tienes token")
-//  }
 
 
 //  useEffect(() => {
-//   activarMensajes()
-//     onMessage(messaging, message =>{
-//      console.log("tu mensaje", message)
-//     })
-//  },[])
+//   isTokenFound === true ?  console.log(tokenNotification) : deleteTokenNotification()
+//  },[isTokenFound])
  
 
   return (
+    
     <AuthContext.Provider value={{ user, dispatch }}>
-      
+      <Toast ref={toast}/>
       <View style={styles.container} className={'animate__animated animate__fadeIn tableAnimate'} >
         <MemoContainer>
           <AppRouter />

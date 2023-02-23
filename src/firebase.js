@@ -1,5 +1,5 @@
-import { initializeApp } from 'firebase/app';
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import {initializeApp } from 'firebase/app';
+import { deleteToken, getMessaging, getToken, onMessage } from "firebase/messaging";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBo7mD4fOYagQaLxVraqJb0qM3YPiO_ihk",
@@ -10,13 +10,20 @@ const firebaseConfig = {
     appId: "1:36541013773:web:984b982aecf5e27b729a44",
     measurementId: "G-NRV7V3R80Q"
   };
+
   const firebaseApp = initializeApp(firebaseConfig);
   const messaging = getMessaging(firebaseApp);
-  
-  export const fetchToken = (setTokenFound) => {
+
+ export const deleteTokenNotification = async() =>{
+  deleteToken(messaging);
+ }
+  export const fetchToken = (setTokenFound, setTokenNotification) => {
+
     return getToken(messaging, {vapidKey: 'BC6rKSLnnTnbZ2dWAiOBX7WwHQdtuRjV_3FcoMBZKwPk4n2nBIPtLUaN2NpwnkpOCniiPu5TDC5t9JFl-7iGQwk'}).then((currentToken) => {
       if (currentToken) {
-        console.log('current token for client: ', currentToken);
+        // console.log('current token', currentToken);
+        return(currentToken)
+        // setTokenNotification(currentToken)
         setTokenFound(true);
         // Track the token -> client mapping, by sending to backend server
         // show on the UI that permission is secured
@@ -37,5 +44,7 @@ const firebaseConfig = {
         resolve(payload);
       });
   });
+
+  
 
   // export const messaging = getMessaging(app)

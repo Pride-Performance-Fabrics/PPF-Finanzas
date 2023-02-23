@@ -1,6 +1,14 @@
 importScripts('https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/9.17.1/firebase-messaging-compat.js');
 
+function requestPermission() {
+    console.log('Requesting permission...');
+    Notification.requestPermission().then((permission) => {
+      if (permission === 'granted') {
+        console.log('Notification permission granted.');
+      }
+    });
+  }
 
 const firebaseConfig = {
     apiKey: "AIzaSyBo7mD4fOYagQaLxVraqJb0qM3YPiO_ihk",
@@ -28,3 +36,5 @@ const firebaseConfig = {
     self.registration.showNotification(notificationTitle,
       notificationOptions);
   });
+
+
