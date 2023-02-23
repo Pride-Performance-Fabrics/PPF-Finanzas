@@ -15,3 +15,8 @@ export const getUsuariosFinanzas = async () =>{
     return respuesta;
 }
 
+export const getUsuariosByRol = async() =>{
+    const respuesta = await PrivateInterceptor(`users/seleccionUsuariosRol`, 'GET')
+    return respuesta;
+}
+
