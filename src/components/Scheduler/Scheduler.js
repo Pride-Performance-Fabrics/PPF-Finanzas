@@ -58,7 +58,7 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
   const [currentViewName, setCurrentViewName] = useState('Week')
 
   const currentViewNameChange = (e) => {
-    console.log(e)
+    // console.log(e)
     setCurrentViewName(e.target.value)
   }
 
@@ -144,7 +144,7 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
       data = data.map(async (appointment) => {
         if (changed[appointment.id]) {
           let tempo = { ...appointment, ...changed[appointment.id] };
-          console.log(tempo)
+          // console.log(tempo)
           tastk = {
             IdUser: decoded.idUser,
             IdRol: decoded.IdRol,
@@ -163,7 +163,7 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
             IdCalendar: tempo.id
           };
         }
-        console.log(tastk)
+        // console.log(tastk)
         const change = changed[appointment.id]
           ? { ...appointment, ...changed[appointment.id] }
           : appointment;
@@ -276,13 +276,13 @@ const SchedulerComponent = ({ CurrentView = 'Day', state, setState, resources, c
     })
 
     setState({ data: tempo });
-    console.log(respuesta)
+    // console.log(respuesta)
 
   }
 
   const enviarNotificacion = async () => {
     const tempo = await getUsuariosByRol()
-    console.log("usuarios", tempo)
+    // console.log("usuarios", tempo)
     let usuarios = []
     tempo.map((e) => {
       usuarios.push(e.idUser)

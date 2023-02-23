@@ -11,6 +11,8 @@ import { getUsersActivos, getUsuarios, getUsuariosFinanzas } from "../../Api/IT/
 import {agregarDias, restarDias} from "../../services/FechasService";
 import { decodeToken } from "react-jwt";
 
+import ModalSchedulerHome from './Modales/ModalSchedulerHome';
+
 
 const SchedulerHomeScreen = () => {
 
@@ -201,10 +203,12 @@ const SchedulerHomeScreen = () => {
 
     return (
         <div  className='schedulersContainer'>
+
             <Card className='schedulerCard month'
                 titulo={<h5>CALENDARIO ACTUAL</h5>}
                 contenido={
                     <div className='' style={{ width: schedulerContainerWidth }}>
+                        {/* <ModalSchedulerHome/> */}
                         <div className='schedulerCard' style={{ marginTop: 10 }} >
                             <SchedulerComponent
                                 CurrentView='Week'
