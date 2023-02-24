@@ -8,6 +8,7 @@ import IconApp from '../../../components/icon/IconApp';
 import AgGrid from '../../../components/Tables/AgGrid';
 
 import { Tag } from 'primereact/tag';
+import { Button } from 'primereact/button';
 
 import { getTodasActividades } from '../../../Api/Sheduler/ShedulerRequest';
 
@@ -126,11 +127,11 @@ const CalendarioPagosScreen = () => {
       },
       {
         // MenuWeb
-        field: 'completetStatusDate',
+        field: 'completeStatusDate',
         header: 'Fecha Completo',
         className: 'colum-width-medium',
         Format: 'Template',
-        body: (rowData) => fechaTemplate(rowData.completetStatusDate)
+        body: (rowData) => fechaTemplate(rowData.completeStatusDate)
       },
       {
         // MenuWeb
@@ -186,6 +187,7 @@ const CalendarioPagosScreen = () => {
         titulo={
           <div className="d-flex">
             <h3 className="mx-3">Calendario Pagos</h3>
+            <Button className="p-button-text p-button-rounded mx-2" icon="ri-restart-line"  loading={loading} onClick={getListadoActividades} />
           </div>}
         contenido={
           <div className='pt-4' style={{ height: '85vh' }}>
