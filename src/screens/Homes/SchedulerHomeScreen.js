@@ -158,11 +158,11 @@ const SchedulerHomeScreen = () => {
                 title: "Prioridad",
                 instances: instanciaPrioridades,
             },
-            // {
-            //     fieldName: "status",
-            //     title: "Estado",
-            //     instances: instanciaEstados,
-            // },
+            {
+                fieldName: "status",
+                title: "Estado",
+                instances: instanciaEstados,
+            },
             {
                 fieldName: "members",
                 title: "Members",
@@ -177,15 +177,15 @@ const SchedulerHomeScreen = () => {
 
         ];
 
-        const decoded = decodeToken(localStorage.getItem("ppfToken"));
+        // const decoded = decodeToken(localStorage.getItem("ppfToken"));
 
-        if(decoded.IdRol === 1){
-            resources.push({
-                fieldName: "status",
-                title: "Estado",
-                instances: instanciaEstados,
-            })
-        }
+        // if(decoded.IdRol === 1){
+        //     resources.push({
+        //         fieldName: "status",
+        //         title: "Estado",
+        //         instances: instanciaEstados,
+        //     })
+        // }
 
         setResources(resources)
     }
