@@ -20,7 +20,7 @@ import Loader from '../../../components/Loader/Loader';
 import IconApp from '../../../components/icon/IconApp';
 import AgGrid from '../../../components/Tables/AgGrid';
 
-import { VencimientoToken } from "../../../utils/Sesiones/Sesiones";
+import { VencimientoToken, VencimientoAllToken } from "../../../utils/Sesiones/Sesiones";
 
 import {setNotificacionesWeb} from "../../../Api/Global/NotificacionesRequest";
 
@@ -148,7 +148,7 @@ const SesionesScreen = () => {
 
    const respuesta = await  setNotificacionesWeb(datos)
    console.log(respuesta)
-   await VencimientoToken(rowData.idUser)
+   await VencimientoAllToken(rowData.idUser)
    
 
 

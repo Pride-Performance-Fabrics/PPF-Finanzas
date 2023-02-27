@@ -92,6 +92,7 @@ function App() {
     }
 
     if(payload.data.cierreSesion === 'true'){
+      console.log(payload);
       handleLogout()
     }
    
