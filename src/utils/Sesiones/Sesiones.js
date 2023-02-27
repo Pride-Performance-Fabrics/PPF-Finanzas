@@ -6,7 +6,7 @@ import instancias from "../../Api/backend";
 export const VencimientoToken = async(idUser) =>{
 // TODO PETICION -> FUNCION
     let respuesta = null;
-    const promesa = await fetch(`${instancias.API_URL}/sessions/${idUser}?${Date.now()}`, { 
+    const promesa = await fetch(`${instancias.API_URL}/sesiones/${idUser}?${Date.now()}`, { 
         method: 'PUT',
         headers: {
             "Content-Type": "application/json",
