@@ -20,6 +20,10 @@ import Loader from '../../../components/Loader/Loader';
 import IconApp from '../../../components/icon/IconApp';
 import AgGrid from '../../../components/Tables/AgGrid';
 
+import { VencimientoToken } from "../../../utils/Sesiones/Sesiones";
+
+import {setNotificacionesWeb} from "../../../Api/Global/NotificacionesRequest";
+
 
 
 const SesionesScreen = () => {
@@ -130,6 +134,39 @@ const SesionesScreen = () => {
     return '';
   }
 
+  const cerrarSesion = async(rowData) =>{
+    console.log(rowData)
+    let datos = {
+      usuarios: [rowData.idUser],
+      title: 'Cierre de Session',
+      body:'La sesión sera cerrada',
+      data: {cierreSesion : "true"},
+      UserSend: null,
+      priority: 'high',
+      Tipo:2
+    }
+
+   const respuesta = await  setNotificacionesWeb(datos)
+   console.log(respuesta)
+   await VencimientoToken(rowData.idUser)
+   
+
+
+
+
+  }
+
+  const Acciones = (rowData) =>{
+   return(
+    <Button 
+        className='p-button-rounded p-button-text mx-1'
+        label="Cerrar Sesión" 
+        style={{marginTop:-5}}
+        onClick ={()=> cerrarSesion(rowData)}
+    />
+   )
+  }
+
 
   const Columns = [
     {
@@ -175,22 +212,30 @@ const SesionesScreen = () => {
     {
       field: 'Estado',
       header: 'Estado',
-      className: 'colum-width-medium',
+      className: 'colum-width-small',
       Format: 'Template',
       body: rowData => labelStatus(rowData),
     },
     {
       field: 'Type',
       header: 'Type',
-      className: 'colum-width-medium',
+      className: 'colum-width-small',
       Format: 'Template',
       body: (rowData) => typeLabel(rowData),
     },
     {
       field: 'Device',
       header: 'Device',
-      className: 'colum-width-medium',
+      className: 'colum-width-Xsmall',
       body: (rowData) => DeviceLabel(rowData),
+
+    },
+    {
+      field: 'Acciones',
+      header: 'Acciones',
+      className: 'colum-width-medium',
+      Format: 'Template',
+      body: (rowData) => Acciones(rowData),
 
     }
 
