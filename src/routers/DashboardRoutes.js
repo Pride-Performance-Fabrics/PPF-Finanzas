@@ -44,6 +44,11 @@ import SubCategoriasScreen from "../screens/Finanzas/PlanCuentas/SubCategorias/S
 import CalendarioPagosScreen from "../screens/Planeacion/CalendarioPagos/CalendarioPagosScreen";
 
 
+//------------------------------------ Clientes -----------------------------------------------
+
+import ClientesScreen from "../screens/Clientes/Clientes/ClientesScreen";
+
+
 export const DashboardRoutes = () => {
 
     const splitterPanel = useRef();
@@ -189,6 +194,17 @@ export const DashboardRoutes = () => {
         }
     );
 
+    const ClientesScreenPermision = Permissible(
+        ClientesScreen,
+        userPermisions, // userPermissions
+        [16], // requiredPermissions
+        () => {
+            navigate("fin/home", { replace: true })
+        }
+    );
+
+
+
 
     useEffect(() => {
         const token = localStorage.getItem('ppfToken') || undefined;
@@ -238,6 +254,9 @@ export const DashboardRoutes = () => {
 
                     {/*--------------------------------------------Planeacion---------------------------------------------*/}
                     <Route path={`${process.env.REACT_APP_ENV}/Planeacion/CalendarioPagos`} element={<CalendarioPagosScreenPermision />} />
+
+                      {/*--------------------------------------------Clientes---------------------------------------------*/}
+                      <Route path={`${process.env.REACT_APP_ENV}/Clientes/Clientes`} element={<ClientesScreenPermision />} />
 
 
                 </Routes>
