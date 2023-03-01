@@ -26,6 +26,8 @@ import { changePermisos, getPermisos } from "../../../../Api/Menu/PermisosReques
 import { getMenuNuevo } from "../../../../Api/Menu/MenuRequest";
 import { mdiConsoleLine } from "@mdi/js";
 
+import CryptoJS from "crypto-js";
+
 
 
 import { getAccesosModulos, getAccesos, cambiarAccesos, getAccesosUsuario } from "../../../../Api/IT/Accesos/AccesosRequest";
@@ -148,8 +150,9 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
             }
         }
         else {
+            var PasswordEncrypted = CryptoJS.AES.encrypt(formik.values.ConfirmarPassword, "finazas2023").toString();
             const user = {
-                Password: formik.values.ConfirmarPassword,
+                Password: PasswordEncrypted,
                 idUser: formik.values.idUser
             }
             const res = await updatePassword(user);
@@ -161,7 +164,7 @@ export const ModalEditarUsuario = ({ datos, usuarios }) => {
                 toastShow(toast, 'success', 'Modificdo', 'Usuario Modificado Correctamente.');
                 hideDialog()
                 setLoading1(false);
-                postCorreoContraseña()
+                // postCorreoContraseña()
             }
         }
     }

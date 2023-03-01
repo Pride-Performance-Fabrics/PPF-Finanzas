@@ -1,6 +1,8 @@
 import cryptoJS from 'crypto-js';
 import { VencimientoToken } from '../utils/Sesiones/Sesiones';
 
+import {putVencimientoToken} from '../Api/Global/SesionesRequest'
+
 // Importacion de librerias decodificaion de token
 import { isExpired, decodeToken } from "react-jwt";
 
@@ -42,7 +44,13 @@ export const verifyToken = (token) => {
 export const handleLogout = async() => {
     const ppfToken = localStorage.getItem('ppfToken');
     const decoded = decodeToken(ppfToken);
+    console.log(decoded)
+    // VencimientoToken(decoded.idUser);
+    // putVencimientoToken(decoded.idUser)
     if(!isExpired(ppfToken)){
+        putVencimientoToken(decoded.idUser)
+    }else{
+        console.log("njghjf")
         VencimientoToken(decoded.idUser);
     }
     localStorage.removeItem('tiempoToken');
@@ -54,6 +62,9 @@ export const handleLogout = async() => {
     localStorage.removeItem('ppfToken');
     window.localStorage.removeItem('ppfToken');
     localStorage.setItem('ppfToken', null);
+
+    localStorage.removeItem('ppfUser');
+    localStorage.setItem('ppfUser', null);
     window.location.href = ``;
     // window.location.href = `http://localhost:4444/fin/login`;
 }

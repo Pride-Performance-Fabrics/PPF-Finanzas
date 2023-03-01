@@ -43,7 +43,7 @@ const SesionesScreen = () => {
   });
 
   const getUsuariosActivos = async () => {
-    console.log("entro aqui")
+    // console.log("entro aqui")
     setLoading(true);
     const promesa = await fetch(`${instancias.API_URL}/sesiones?${Date.now()}`, {
       headers: { 'x-access-token': localStorage.getItem('ppfToken') }

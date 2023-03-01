@@ -4,6 +4,7 @@ import instancias from "../../Api/backend";
 // ACTUALIZA EL TIEMPO DE VENCIMIENTO DEL TOKEN DEL USUARIO
 
 export const VencimientoToken = async(idUser) =>{
+    console.log({idUser}, "este es el usuario")
 // TODO PETICION -> FUNCION
     let respuesta = null;
     const promesa = await fetch(`${instancias.API_URL}/sesiones/${idUser}?${Date.now()}`, { 
@@ -24,6 +25,8 @@ export const VencimientoToken = async(idUser) =>{
         })
         return respuesta;
 }
+
+
 
 
 
