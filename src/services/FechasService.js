@@ -280,5 +280,12 @@ export const restarDias = ( date, days) =>{
    return new Date(d.getTime() - 1000* 60 * 60 * 24 * days)  
 }
 
+// export const fechaSinHora = (date) =>{
+//    let f = new Date(date)
+  
+//    return (f.getFullYear() + '/' + f.getMonth() + '/' + f.getDay())
+
+// }
+
 
  

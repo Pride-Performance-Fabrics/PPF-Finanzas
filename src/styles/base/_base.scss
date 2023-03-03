@@ -7,6 +7,7 @@ $colum-widt-large: 200px;
 $colum-widt-Xlarge: 250px;
 $colum-widt-XXlarge: 300px;
 $colum-widt-XXXlarge: 350px;
+
 body {
     font-family: Helvetica, Arial, sans-serif;
     src: url('../../../public/fonts/Radio-Canada-Medium.ttf') format('ttf');
@@ -40,6 +41,7 @@ body {
     margin: 20px;
     display: grid;
     grid-template-columns: 1fr 1fr;
+
     label {
         margin-left: 5px;
     }
@@ -53,9 +55,11 @@ body {
     align-items: center;
     z-index: 100;
     display: none;
+
     .p-progress-spinner {
         margin: auto;
     }
+
     &.showSpinner {
         display: flex;
         position: absolute;
@@ -96,6 +100,7 @@ thead {
         color: var(--primary-color-text) !important;
         padding: 0 !important;
     }
+
     input:before {
         border-bottom: 1px solid var(--primary-color-text) !important;
     }
@@ -126,10 +131,12 @@ thead {
 // ***************************
 .text_small {
     font-size: 0.7rem !important;
+
     .p-component,
     .p-inputtext {
         font-size: 0.7rem !important;
     }
+
     span {
         font-size: 0.7rem !important;
         // color: var(--text-color) !important;
@@ -141,6 +148,7 @@ thead {
 // ***************************
 .dataTable-headerLight {
     padding: 0.2rem !important;
+
     .p-datatable-wrapper {
         .p-datatable-thead {
             tr {
@@ -164,6 +172,7 @@ thead {
 
 .tooltipContent {
     width: 100%;
+
     .tooltiptext {
         visibility: hidden;
         width: 120px;
@@ -176,9 +185,11 @@ thead {
         position: absolute;
         z-index: 1;
     }
+
     &:hover .tooltiptext {
         visibility: visible;
     }
+
     .toltipClass {
         box-shadow: none !important;
         background-color: blue !important;
@@ -418,6 +429,7 @@ thead {
 .modal__screen {
     width: 95%;
     height: 98vh;
+
     .p-dialog-header,
     .p-dialog-content {
         padding: 0.5rem !important;
@@ -427,6 +439,7 @@ thead {
 .modal__screen_small {
     width: 60%;
     height: 60vh;
+
     .p-dialog-header,
     .p-dialog-content {
         padding: 0.5rem !important;
@@ -460,10 +473,13 @@ thead {
 .ChipsContainer {
     position: absolute;
     bottom: 50px;
+
     .p-button.p-component {
         padding: 0;
     }
+
     .ChipsFilter {
+
         // .p-button.p-button-icon-only.p-button-rounded {
         //     padding: 0;
         //     height: 1rem !important;
@@ -474,6 +490,7 @@ thead {
             background-color: none;
             border: none;
             overflow-x: auto;
+
             li.p-chips-input-token {
                 input {
                     font-size: 0.5rem;
@@ -551,54 +568,55 @@ thead {
     margin: 0
 }
 
-.p-button{
+.p-button {
     background-color: #0684b6;
     border: #0684b6 !important;
+
     &:enabled:hover {
-      background-color:#149ec4;
+        background-color: #149ec4;
     }
 }
 
 .p-highTipos {
-    background: #dae4ff!important;
+    background: #dae4ff !important;
     // background: #dfe8ff!important;
-    color: #000!important;
-    
-    
+    color: #000 !important;
+
+
 }
 
 .p-highCategoria {
-    background: #dfe8ff!important;
+    background: #dfe8ff !important;
     // background: #dae4ff!important;
-    color: #000!important;
-    
+    color: #000 !important;
+
 }
 
 
 .p-highSubCategoria {
-    background: #D7E4F9!important;
-    color: #000!important;
-    
+    background: #D7E4F9 !important;
+    color: #000 !important;
+
 }
 
 
 .p-highCuentas {
-    background: #DFE6F3!important;
-    color: #000!important;
-    
+    background: #DFE6F3 !important;
+    color: #000 !important;
+
 }
 
 .p-highCuentasHijos {
     background: #f7f8fb !important;
-    color: #000!important;
-    
+    color: #000 !important;
+
 }
 
 
-.p-highFill{
+.p-highFill {
     background: #f3f3f4 !important;
-    color: #000!important;
-    
+    color: #000 !important;
+
 }
 
 thead th {
@@ -607,31 +625,54 @@ thead th {
     color: var(--primary-color-text) !important;
 
     // padding: 5 !important;
-  }
-
-  .p-treetable .p-treetable-thead 
-    > tr > th {
-        padding:  0.5rem !important;
-  }
-  .p-treetable .p-treetable-thead 
-  > tr > th {
-      padding:  0.5rem !important;
 }
 
-.p-treetable .p-treetable-tbody > tr > td {
-    padding:  0.2rem !important;
+.p-treetable .p-treetable-thead>tr>th {
+    padding: 0.5rem !important;
 }
 
-.columnasCheck{
-    column-count:2;
-    column-gap:20px;
- }
+.p-treetable .p-treetable-thead>tr>th {
+    padding: 0.5rem !important;
+}
 
- .columnasheader{
-    column-count:2;
-    column-gap:20px;
- }
+.p-treetable .p-treetable-tbody>tr>td {
+    padding: 0.2rem !important;
+}
 
- .p-sidebar .p-component .p-sidebar-enter-done {
+.columnasCheck {
+    column-count: 2;
+    column-gap: 20px;
+}
+
+.columnasheader {
+    column-count: 2;
+    column-gap: 20px;
+}
+
+.p-sidebar .p-component .p-sidebar-enter-done {
     width: 80% !important;
- }
+}
+
+
+.columnasFormulario {
+    column-count: 6;
+    column-gap: 2%;
+    margin-bottom: 2%;
+    // row-gap: 50px;
+}
+
+.columnasFormulario2 {
+    column-count: 2;
+    column-gap: 2%;
+    margin-bottom: 2%;
+    // row-gap: 50px;
+}
+
+
+
+// .columnasFormulario2 {
+//     margin-left: 220px;
+//     margin-right: 20px;
+//     margin-top: 10px;
+//     background-color: #ffffbb;
+// }
