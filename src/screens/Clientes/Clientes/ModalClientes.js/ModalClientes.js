@@ -10,10 +10,11 @@ import { InputText } from 'primereact/inputtext';
 import { classNames } from 'primereact/utils';
 import { Dropdown } from "primereact/dropdown";
 import { Calendar } from 'primereact/calendar';
+import { InputTextarea } from "primereact/inputtextarea";
 
 //************** Componentes  **************/
 import { useFormik } from 'formik';
-import { InputTextarea } from "primereact/inputtextarea";
+import { decodeToken } from "react-jwt";
 
 
 //************** Componentes generales **************/
@@ -84,6 +85,7 @@ const ModalClientes = ({ toast, datos, icono, nombre, className, getListadoClien
         Porcentaje: 0,
         BlockFinanzas: 0,
         SalesEmail: 0,
+        IdUserEditWeb: 0
     }
 
 
@@ -127,10 +129,15 @@ const ModalClientes = ({ toast, datos, icono, nombre, className, getListadoClien
     }
 
     const agregarCLiente = async (data) => {
+
+        const userInformation = decodeToken(localStorage.getItem(`ppfToken`));
+        let user = userInformation.idUser
+        data.IdUserEditWeb = user
+
         typeof datos === 'object' ? data.DateCreate = datos.DateCreate : data.DateCreate = getLocalDateString1(new Date())
         console.log(data)
+        
         const result = await postCustomer(data)
-
         if (result) {
             toastShow(toast, 'success', 'Creado', 'Cliente Creado Correctamente.');
             setFormData({})
