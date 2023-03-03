@@ -21,12 +21,36 @@ import { getCustomers } from "../../../Api/Clientes/ClientesRequest";
 //************** Servicios **************/
 import { fechaLocalStringTemplate, fechaTemplate } from '../../../services/TemplatesServices';
 
+
+//************** Componentes Especificos **************/
+
+import ModalClientesDetails from "./ModalClientesDetalle/ModalClientesDetails";
+import ModalClientes from "./ModalClientes.js/ModalClientes";
+
+
 const ClientesScreen = () => {
 
     const [loading, setLoading] = useState(false);
     const [checked, setChecked] = useState(false);
     const toast = useRef(null);
     const [data, setData] = useState([]);
+
+    
+    let aspectoBoton = [
+        {
+            Id: 1,
+            Nombre: "Nuevo",
+            Icono: "pi pi-plus",
+            className: "p-button-Primary mr-2"
+        },
+
+        {
+            Id: 2,
+            Nombre: "",
+            Icono: "pi pi-pencil",
+            className: "p-button-rounded p-button-info p-button-text"
+        }
+    ]
 
 
     const onChangeCheck = async (activo, IdAcceso, e) => {
@@ -80,8 +104,15 @@ const ClientesScreen = () => {
         // console.log(rowData)
         return (
             <div className='col-12 d-flex' style={{ textAlign: 'center', height: 28, marginTop: -6 }}>
-                <Button label={''} className='p-button-rounded p-button-info p-button-text' icon='pi pi-pencil'  />
-                <Button label={''} className='p-button-rounded p-button-info p-button-text' icon='ri-file-user-line' style={{color:"black"}} />
+                   <ModalClientes
+                    datos={rowData}
+                    toast={toast}
+                    icono={aspectoBoton[1].Icono}
+                    nombre={aspectoBoton[1].Nombre}
+                    className={aspectoBoton[1].className}
+                    getListadoClientes={getListadoClientes}
+                />
+                <ModalClientesDetails IdCustomer = {rowData.IdCustomer} />
                 <Button label={''} className='p-button-rounded p-button-info p-button-text' icon='ri-close-circle-line' style={{color:"red"}} />
             </div>
 
@@ -245,6 +276,12 @@ const ClientesScreen = () => {
                 header: 'Terminos Flete',
                 className: 'colum-width-medium',
             },
+
+            {
+                field: 'Comments',
+                header: 'Comentario',
+                className: 'colum-width-medium',
+            },
       
           
             {
@@ -255,7 +292,7 @@ const ClientesScreen = () => {
             }
 
         ],
-        key: 'IdAcceso ',
+        key: 'IdCustomer ',
         // scrollHeight: '100%',
     }
 
@@ -281,14 +318,15 @@ const ClientesScreen = () => {
             <Card
                 titulo={<div className="d-flex">
                     <h3 className="mx-3">Clientes</h3>
-                    {/* <ModalAccesos
+                    <ModalClientes
                         toast={toast}
                         icono={aspectoBoton[0].Icono}
                         nombre={aspectoBoton[0].Nombre}
                         className={aspectoBoton[0].className}
-                        getListadoAccesos={getListadoAccesos}
-                    /> */}
-                    {/* <Button className="p-button-text p-button-rounded mx-2" icon="ri-restart-line"  loading={loading} onClick={getListadoAccesos} /> */}
+                        getListadoClientes={getListadoClientes}
+                    />
+                  
+                    <Button className="p-button-text p-button-rounded mx-2" icon="ri-restart-line"  loading={loading} onClick={getListadoClientes} />
                 </div>}
                 contenido={
                     <div className='pt-4' style={{ height: '90vh' }}>
