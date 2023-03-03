@@ -63,3 +63,31 @@
        
     }
 }
+
+
+
+.informacionClienteDetailsContainer {
+    padding: 15px 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-column-gap: 10px;
+    grid-row-gap: 25px;
+    .p-inputtext {
+        width: 100%;
+    }
+    .p-float-label {
+        width: 100%
+    }
+    small {
+        font-size: 12px;
+        color: #999;
+        // left: 10px;
+        width: 100%;
+        position: absolute;
+        z-index: 100;
+        bottom: -20px;
+    }
+    .p-float-label {
+        margin-top: 15px;
+    }
+}
