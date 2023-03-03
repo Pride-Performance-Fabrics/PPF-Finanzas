@@ -282,8 +282,11 @@ const ClientesScreen = () => {
                 header: 'Comentario',
                 className: 'colum-width-medium',
             },
-      
-          
+            // {
+            //     field: 'IdUserEditWeb',
+            //     header: 'IdUser',
+            //     className: 'colum-width-medium',
+            // },
             {
                 header: 'Acciones',
                 className: 'colum-width-small',
