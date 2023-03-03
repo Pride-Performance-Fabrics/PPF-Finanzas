@@ -25,3 +25,7 @@ export const getEstadosActividad = async () => {
 }
 
 
+export const getEstadosClientesIPS = async () => {
+    const respuesta = PrivateInterceptor('status/CustomerIPS', 'GET')
+    return respuesta
+}
