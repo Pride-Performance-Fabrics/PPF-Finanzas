@@ -16,9 +16,10 @@ import Icon from "../../../../components/icon/Icon";
 import Loader from "../../../../components/Loader/Loader";
 import IconApp from "../../../../components/icon/IconApp";
 import AgGrid from "../../../../components/Tables/AgGrid";
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 
 //************** Consultas API **************/
-import { getALLCustomersDetails, getCustomerDetails } from '../../../../Api/Clientes/ClientesRequest';
+import { getALLCustomersDetails, getCustomerDetails, putChecksCustomerDetails, putStatusCustomerDetails } from '../../../../Api/Clientes/ClientesRequest';
 
 //************** Servicios **************/
 import { fechaLocalStringTemplate, fechaTemplate } from '../../../../services/TemplatesServices';
@@ -36,6 +37,7 @@ const ModalClientesDetails = ({ IdCustomer }) => {
     const [checked, setChecked] = useState(false);
     const [data, setData] = useState([]);
     const toast = useRef(null);
+    const [habilitar, setHabilitar] = useState(false)
 
 
     let aspectoBoton = [
@@ -54,7 +56,30 @@ const ModalClientesDetails = ({ IdCustomer }) => {
         }
     ]
 
-    const onChangeCheck = async (activo, IdAcceso, e) => {
+    const onChangeCheck = async (valor, IdDCustomer, e) => {
+
+        console.log(valor, IdDCustomer, e)
+
+        let checkValores = {
+            Valor: valor,
+            Activo: e,
+         IdDCustomer: IdDCustomer,
+         IdCustomer: IdCustomer
+        }
+
+
+        setLoading(true)
+        const result = await putChecksCustomerDetails(checkValores)
+        const temporal = result.map((item) => {
+            // console.log(item)
+            if (item.id === IdDCustomer) {
+                item.IsShipTo = true
+            }
+            return item
+        })
+
+        setData(temporal)
+        setLoading(false)
 
     }
 
@@ -78,6 +103,43 @@ const ModalClientesDetails = ({ IdCustomer }) => {
 
     }
 
+    const reject = () => {
+        toast.current.show({ severity: 'warn', summary: 'Cancelado', detail: 'Cambio de estado cancelado', life: 3000 });
+    }
+
+    const putStatus = async(datosCliente) =>{
+        const result = await putStatusCustomerDetails(datosCliente)
+        console.log(result)
+        setData(result)
+
+        console.log(datosCliente)
+
+        datosCliente.IdStatus === 2 ? setHabilitar(true) : setHabilitar(false) 
+    } 
+
+    
+
+    const cancelarCliente = async (rowData,valor) =>{
+        console.log(rowData)
+      
+        let datosCliente = {
+            IdCustomer: rowData.IdCustomer,
+            IdDCustomer: rowData.IdDCustomer,
+            IdStatus: valor
+        }
+
+        confirmDialog({
+            message: '¿Está seguro que desea cambiar el estado del cliente?',
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            accept : () => putStatus(datosCliente),
+            reject:  reject
+        });
+
+       
+  
+    }
+
     const botones = (rowData) => {
         // console.log(rowData)
         return (
@@ -92,7 +154,10 @@ const ModalClientesDetails = ({ IdCustomer }) => {
                     // clienteDetalleDialog={clienteDetalleDialog}
                     // setClienteDetalleDialog={ setClienteDetalleDialog}
                 />
-                <Button label={''} className='p-button-rounded p-button-info p-button-text' icon='ri-close-circle-line' style={{ color: "red" }} />
+                <Button label={''} className='p-button-rounded p-button-info p-button-text' icon='ri-close-circle-line' style={{ color: "red" }}
+                onClick={() =>cancelarCliente(rowData, 2)} disabled={habilitar}/>
+                <Button label={''} className='p-button-rounded p-button-info p-button-text' icon='ri-checkbox-circle-fill' style={{ color: "green" }}
+                onClick={() =>cancelarCliente(rowData, 1)} disabled={!habilitar}/>
             </div>
 
         )
@@ -133,7 +198,7 @@ const ModalClientesDetails = ({ IdCustomer }) => {
                 className: 'colum-width-small',
                 Format: "Template",
                 align: "center",
-                body: (rowData) => <Checkbox onChange={(e) => onChangeCheck(1, rowData.IsBuyer, e.checked)} style={{ marginBottom: 5 }} checked={rowData.IsBuyer} />,
+                body: (rowData) => <Checkbox onChange={(e) => onChangeCheck(1, rowData.IdDCustomer, e.checked)} style={{ marginBottom: 5 }} checked={rowData.IsBuyer} />,
             },
             {
                 field: 'IsShipTo',
@@ -141,7 +206,7 @@ const ModalClientesDetails = ({ IdCustomer }) => {
                 className: 'colum-width-small',
                 Format: "Template",
                 align: "center",
-                body: (rowData) => <Checkbox onChange={(e) => onChangeCheck(1, rowData.IsShipTo, e.checked)} style={{ marginBottom: 5 }} checked={rowData.IsShipTo} />,
+                body: (rowData) => <Checkbox onChange={(e) => onChangeCheck(2, rowData.IdDCustomer, e.checked)} style={{ marginBottom: 5 }} checked={rowData.IsShipTo} />,
             },
             {
                 field: 'IsBillTo',
@@ -149,7 +214,7 @@ const ModalClientesDetails = ({ IdCustomer }) => {
                 className: 'colum-width-small',
                 Format: "Template",
                 align: "center",
-                body: (rowData) => <Checkbox onChange={(e) => onChangeCheck(1, rowData.IsBillTo, e.checked)} style={{ marginBottom: 5 }} checked={rowData.IsBillTo} />,
+                body: (rowData) => <Checkbox onChange={(e) => onChangeCheck(3, rowData.IdDCustomer, e.checked)} style={{ marginBottom: 5 }} checked={rowData.IsBillTo} />,
             },
 
             {
@@ -203,7 +268,9 @@ const ModalClientesDetails = ({ IdCustomer }) => {
                 header: 'Acciones',
                 className: 'colum-width-small',
                 body: (rowData) => botones(rowData),
-                Format: "Template"
+                Format: "Template",
+                frozen: 'true',
+                alignFrozen: 'right',
             }
 
         ],

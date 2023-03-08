@@ -6,6 +6,7 @@ import { Button } from 'primereact/button';
 import { Checkbox } from 'primereact/checkbox';
 import { Toast } from 'primereact/toast';
 import { Tag } from 'primereact/tag';
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 
 
 //************** Componentes generales **************/
@@ -16,7 +17,7 @@ import IconApp from "../../../components/icon/IconApp";
 import AgGrid from "../../../components/Tables/AgGrid";
 
 //************** Consultas API **************/
-import { getCustomers } from "../../../Api/Clientes/ClientesRequest";
+import { getCustomers, putChecksCustomer } from "../../../Api/Clientes/ClientesRequest";
 
 //************** Servicios **************/
 import { fechaLocalStringTemplate, fechaTemplate } from '../../../services/TemplatesServices';
@@ -35,7 +36,7 @@ const ClientesScreen = () => {
     const toast = useRef(null);
     const [data, setData] = useState([]);
 
-    
+
     let aspectoBoton = [
         {
             Id: 1,
@@ -51,34 +52,73 @@ const ClientesScreen = () => {
             className: "p-button-rounded p-button-info p-button-text"
         }
     ]
+    
+    const accept = () => {
+        toast.current.show({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted', life: 3000 });
+    }
 
+    const reject = () => {
+        toast.current.show({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+    }
+    const confirm1 = () => {
+        confirmDialog({
+            message: '¿Está seguro que desea cambiar el estado del cliente?',
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            accept,
+            reject
+        });
+    };
 
-    const onChangeCheck = async (activo, IdAcceso, e) => {
+    const cambiarEstado = async (checkValores, IdCustomer) =>{
+        setLoading(true)
+        const result = await putChecksCustomer(checkValores)
+        const temporal = result.map((item) => {
+            // console.log(item)
+            if (item.id === IdCustomer) {
+                item.IsShipTo = true
+            }
+            return item
+        })
 
-        // let  activosAccesos = {
-        //     Acceso: activo,
-        //     Activo: e,
-        //     IdAcceso: IdAcceso
-        // }
-
-        // const result = await putActividadAcceso(activosAccesos)
-        // const temporal = result.map((item) => {
-        //     console.log(item)
-        //     if (item.id === IdAcceso) {
-        //         console.log(item)
-        //         item.ActivoAPP = true
-               
-        //     }
-
-        //     return item
-        // })
-
-        // setData(temporal)
-
-        // setData(result)
-
+        setData(temporal)
+        setLoading(false)
 
     }
+    
+
+
+    const onChangeCheck = async (valor, IdCustomer, e) => {
+
+        console.log(valor)
+
+        console.log(valor, IdCustomer, e)
+
+        let checkValores = {
+            Valor: valor,
+            Activo: e,
+            IdCustomer: IdCustomer
+        }
+
+        if(valor === 3 || valor === 4){
+            confirmDialog({
+                message: '¿Está seguro que desea cambiar el estado del cliente?',
+                header: 'Confirmation',
+                icon: 'pi pi-exclamation-triangle',
+                accept : () => cambiarEstado(checkValores, IdCustomer),
+                reject:  reject
+            });
+        }
+        else{
+            cambiarEstado(checkValores, IdCustomer)
+        }
+
+
+      
+
+    }
+
+
 
     const statusBodyTemplate = (e) => {
 
@@ -104,7 +144,7 @@ const ClientesScreen = () => {
         // console.log(rowData)
         return (
             <div className='col-12 d-flex' style={{ textAlign: 'center', height: 28, marginTop: -6 }}>
-                   <ModalClientes
+                <ModalClientes
                     datos={rowData}
                     toast={toast}
                     icono={aspectoBoton[1].Icono}
@@ -112,8 +152,8 @@ const ClientesScreen = () => {
                     className={aspectoBoton[1].className}
                     getListadoClientes={getListadoClientes}
                 />
-                <ModalClientesDetails IdCustomer = {rowData.IdCustomer} />
-                <Button label={''} className='p-button-rounded p-button-info p-button-text' icon='ri-close-circle-line' style={{color:"red"}} />
+                <ModalClientesDetails IdCustomer={rowData.IdCustomer} />
+                {/* <Button label={''} className='p-button-rounded p-button-info p-button-text' icon='ri-close-circle-line' style={{ color: "red" }} /> */}
             </div>
 
         )
@@ -170,7 +210,7 @@ const ClientesScreen = () => {
             {
                 field: 'Porcentaje',
                 header: '% Exportacion',
-                className: 'colum-width-large',
+                className: 'colum-width-Xsmall',
             },
             {
                 field: 'IsShipTo',
@@ -178,7 +218,7 @@ const ClientesScreen = () => {
                 className: 'colum-width-small',
                 Format: "Template",
                 align: "center",
-                body: (rowData) => <Checkbox onChange={(e) => onChangeCheck(1, rowData.IsShipTo, e.checked)} style={{ marginBottom: 5 }} checked={rowData.IsShipTo} />,
+                body: (rowData) => <Checkbox onChange={(e) => onChangeCheck(1, rowData.IdCustomer, e.checked)} style={{ marginBottom: 5 }} checked={rowData.IsShipTo} />,
             },
             {
                 field: 'IsBillTo',
@@ -186,7 +226,7 @@ const ClientesScreen = () => {
                 className: 'colum-width-small',
                 Format: "Template",
                 align: "center",
-                body: (rowData) => <Checkbox onChange={(e) => onChangeCheck(1, rowData.IsBillTo, e.checked)} style={{ marginBottom: 5 }} checked={rowData.IsBillTo} />,
+                body: (rowData) => <Checkbox onChange={(e) => onChangeCheck(2, rowData.IdCustomer, e.checked)} style={{ marginBottom: 5 }} checked={rowData.IsBillTo} />,
             },
             {
                 field: 'NombreTipoPago',
@@ -258,13 +298,13 @@ const ClientesScreen = () => {
                 header: 'ZipCode',
                 className: 'colum-width-medium',
             },
-          
+
             {
                 field: 'UnitName',
                 header: 'Unidad Orden',
                 className: 'colum-width-medium',
             },
-           
+
             {
                 field: 'TermName',
                 header: 'Terminos',
@@ -282,16 +322,33 @@ const ClientesScreen = () => {
                 header: 'Comentario',
                 className: 'colum-width-medium',
             },
-            // {
-            //     field: 'IdUserEditWeb',
-            //     header: 'IdUser',
-            //     className: 'colum-width-medium',
-            // },
+            {
+                field: 'IsContado',
+                header: 'IsContado',
+                className: 'colum-width-Xsmall',
+                Format: "Template",
+                align: "center",
+                frozen: 'true',
+                alignFrozen: 'right',
+                body: (rowData) => <Checkbox onChange={(e) => onChangeCheck(3, rowData.IdCustomer, e.checked)} style={{ marginBottom: 5 }} checked={rowData.IsContado} />,
+            },
+            {
+                field: 'BlockFinanzas',
+                header: 'BlockFinanzas',
+                className: 'colum-width-Xsmall',
+                Format: "Template",
+                align: "center",
+                frozen: 'true',
+                alignFrozen: 'right',
+                body: (rowData) => <Checkbox onChange={(e) => onChangeCheck(4, rowData.IdCustomer, e.checked)} style={{ marginBottom: 5 }} checked={rowData.BlockFinanzas} />,
+            },
             {
                 header: 'Acciones',
                 className: 'colum-width-small',
                 body: (rowData) => botones(rowData),
-                Format: "Template"
+                Format: "Template",
+                frozen: 'true',
+                alignFrozen: 'right',
             }
 
         ],
@@ -318,6 +375,7 @@ const ClientesScreen = () => {
     return (
         <div>
             <Loader loading={loading} />
+            <ConfirmDialog  />
             <Card
                 titulo={<div className="d-flex">
                     <h3 className="mx-3">Clientes</h3>
@@ -328,8 +386,8 @@ const ClientesScreen = () => {
                         className={aspectoBoton[0].className}
                         getListadoClientes={getListadoClientes}
                     />
-                  
-                    <Button className="p-button-text p-button-rounded mx-2" icon="ri-restart-line"  loading={loading} onClick={getListadoClientes} />
+
+                    <Button className="p-button-text p-button-rounded mx-2" icon="ri-restart-line" loading={loading} onClick={getListadoClientes} />
                 </div>}
                 contenido={
                     <div className='pt-4' style={{ height: '90vh' }}>

@@ -22,6 +22,12 @@ export const postCustomer = async(data) =>{
 
 }
 
+export const putChecksCustomer = async (body) =>{
+    console.log(body)
+    const result = await PrivateInterceptor(`clientes/checkCustomer`, 'PUT', body);
+    return result;
+}
+
 //************************************** CUSTOMER DETAILS ************************************** */
 
 export const getALLCustomersDetails = async () => {
@@ -44,5 +50,19 @@ export const getUltimoIdCustomerDetails = async() =>{
 
 export const postCustomerDetails = async (data) =>{
     const result = await PrivateInterceptor(`clientes/IUCustomerDetails`, 'POST', data);
+    return result;
+}
+
+
+export const putChecksCustomerDetails = async (body) =>{
+    console.log(body)
+    const result = await PrivateInterceptor(`clientes/checkCustomerDetails`, 'PUT', body);
+    return result;
+}
+
+
+
+export const putStatusCustomerDetails = async (data) =>{
+    const result = await PrivateInterceptor(`clientes/cambiarEstadoCustomerDetails`, 'PUT', data);
     return result;
 }

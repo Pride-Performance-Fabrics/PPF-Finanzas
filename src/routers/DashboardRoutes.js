@@ -49,6 +49,11 @@ import CalendarioPagosScreen from "../screens/Planeacion/CalendarioPagos/Calenda
 import ClientesScreen from "../screens/Clientes/Clientes/ClientesScreen";
 
 
+//------------------------------------ Ventas -----------------------------------------------
+
+import FacturasScreen from "../screens/Ventas/Facturas/FacturasScreen";
+
+
 export const DashboardRoutes = () => {
 
     const splitterPanel = useRef();
@@ -203,6 +208,15 @@ export const DashboardRoutes = () => {
         }
     );
 
+    const FacturasScreenPermision = Permissible(
+        FacturasScreen,
+        userPermisions, // userPermissions
+        [18], // requiredPermissions
+        () => {
+            navigate("fin/home", { replace: true })
+        }
+    );
+
 
 
 
@@ -257,6 +271,9 @@ export const DashboardRoutes = () => {
 
                       {/*--------------------------------------------Clientes---------------------------------------------*/}
                       <Route path={`${process.env.REACT_APP_ENV}/Clientes/Clientes`} element={<ClientesScreenPermision />} />
+
+                       {/*--------------------------------------------Ventas---------------------------------------------*/}
+                       <Route path={`${process.env.REACT_APP_ENV}/Ventas/Facturas`} element={<FacturasScreenPermision />} />
 
 
                 </Routes>
