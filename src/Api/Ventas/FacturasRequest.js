@@ -9,6 +9,13 @@ export const getInvoices = async () => {
 }
 
 
+export const getInvoicesCustomer = async (IdCustomer) =>{
+    
+    const result = await PrivateInterceptor(`ventas/facturas/InvoicesCustomer/${IdCustomer}`, 'GET');
+    return result;
+}
+
+
 //*************************** Invoices Details******************************/
 export const getInvoicesDetails = async (idFactura) => {
     
@@ -16,3 +23,6 @@ export const getInvoicesDetails = async (idFactura) => {
     return result;
 
 }
+
+
+

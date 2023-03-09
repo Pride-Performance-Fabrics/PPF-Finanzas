@@ -1,9 +1,9 @@
 .informacionFacturaContainer{
-    padding: 15px 10px;
+    // padding: 15px 10px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr ;
     grid-column-gap: 10px;
-    grid-row-gap: 25px;
+    grid-row-gap: 5px;
     .p-inputtext {
         width: 100%;
     }
@@ -11,7 +11,7 @@
         width: 100%
     }
     small {
-        font-size: 12px;
+        font-size: 13px;
         color: #999;
         // left: 10px;
         width: 100%;
@@ -24,22 +24,36 @@
     }
     span {
         font-weight: bold;
-        font-size: 13px;
+        font-size: 10px;
+        margin-bottom: 5px;
         label{
-            font-weight:normal
+            font-weight:normal;
+            font-size:13px;
         }
+    }
+}
+.cardContenedorGeneral{
+    background: #F7FCFF;
+    margin-bottom: 0.5%;
+    // width: 220px !important;
+    width: 60% !important;
+    div .card-header{
+        background: 3CEF2FA;
     }
 }
 
 .cardContenedorFacturas{
     background: #F7FCFF;
     margin-bottom: 0.5%;
-    width: 450px !important;
+    // width: 405px !important;
+    width: 100% !important;
     div .card-header{
         background: 3CEF2FA;
     }
     
 }
+
+
 
 .informacionFacturasDetailsContainer{
     // padding: 15px 10px;
@@ -48,6 +62,8 @@
     grid-column-gap: 1px;
     grid-row-gap: 2px;
     margin-left: 10px;
+    margin-bottom: 5px;
+   
 }
 
 .contenedorClientesFactura{
@@ -55,6 +71,7 @@
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-column-gap: 1px;
     grid-row-gap: 2px;
+    
 }
 .spanNombresGeneral{
     font-weight: bold;
@@ -72,11 +89,79 @@
         font-size: 13px;
         margin-left: 5px;
     }
+
+    
 }
 
-.InformacionTipoFactura{
-    // span{
-    //     margin-left: 30px;
-    //     align-items: flex-end;
-    // }
+.detalleFactura{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1f;
+//   span{
+//     font-weight: bold;
+//   }
+    
+}
+
+
+#btnEXO{
+    font-size: 6px;
+}
+
+@media screen and (min-width: 1500px) and (max-width: 1739.99px) {
+
+    .informacionFacturaContainer{
+        padding: 15px 10px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr ;
+        grid-column-gap: 10px;
+        grid-row-gap: 5px;
+        .p-inputtext {
+            width: 100%;
+        }
+        .p-float-label {
+            width: 100%
+        }
+        small {
+            font-size: 12px;
+            color: #999;
+            // left: 10px;
+            width: 100%;
+            position: absolute;
+            z-index: 100;
+            bottom: -20px;
+        }
+        .p-float-label {
+            margin-top: 15px;
+        }
+        span {
+            font-weight: bold;
+            font-size: 10px;
+            margin-bottom: 5px;
+            label{
+                font-weight:normal;
+                font-size:13px;
+            }
+        }
+    }
+    .cardContenedorGeneral{
+        background: #F7FCFF;
+        margin-bottom: 0.5%;
+        width: 80% !important;
+        background:red;
+        div .card-header{
+            background: 3CEF2FA;
+        }
+    }
+    
+    .cardContenedorFacturas{
+        background: #F7FCFF;
+        margin-bottom: 0.5%;
+        width: 100% !important;
+        div .card-header{
+            background: 3CEF2FA;
+        }
+    
+        
+        
+    }
 }

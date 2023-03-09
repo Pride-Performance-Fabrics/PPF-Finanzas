@@ -27,6 +27,7 @@ import { fechaLocalStringTemplate, fechaTemplate } from '../../../services/Templ
 
 import ModalClientesDetails from "./ModalClientesDetalle/ModalClientesDetails";
 import ModalClientes from "./ModalClientes.js/ModalClientes";
+import ModalFacturasCliente from "./ModalClientes.js/ModalFacturasCliente";
 
 
 const ClientesScreen = () => {
@@ -153,6 +154,7 @@ const ClientesScreen = () => {
                     getListadoClientes={getListadoClientes}
                 />
                 <ModalClientesDetails IdCustomer={rowData.IdCustomer} />
+                <ModalFacturasCliente IdCustomer={rowData.IdCustomer}/>
                 {/* <Button label={''} className='p-button-rounded p-button-info p-button-text' icon='ri-close-circle-line' style={{ color: "red" }} /> */}
             </div>
 
