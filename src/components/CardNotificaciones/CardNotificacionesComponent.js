@@ -109,7 +109,7 @@ const CardNotificacionesComponent = () => {
                                 titulo={""}
                                 className="cardNotificaciones"
                                 contenido={
-                                    <div className='pt-1' style={{ height: '10vh' }} >
+                                    <div className='pt-1' style={{ height: '7vh' }} >
                                         <div  style={{float: "right", marginRight:3}}>
                                          {getPrioridadesTag(item)}
                                         </div>
