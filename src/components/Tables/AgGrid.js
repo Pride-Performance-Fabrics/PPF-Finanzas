@@ -304,7 +304,7 @@ function AgGrid({ table }) {
                     return { cellRenderer: (data) => textCenterTemplate(data.value), type: setType(col) };
 
                 case 'Template':
-                    return { cellRenderer: (data) => col.body(data.data), filter: col?.filter ? col.filter : false };
+                    return { cellRenderer: (data) => col.body(data.data), filter: col?.filter ? "agTextColumnFilter"  : false  };
                     
                 case 'Icon':
                     return { cellRenderer: setIcon };

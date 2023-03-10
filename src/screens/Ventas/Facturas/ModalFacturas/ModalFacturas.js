@@ -34,22 +34,24 @@ const ModalFacturas = ({ datos }) => {
     const [facturaDialog, setFacturaDialog] = useState(false);
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false)
-    
+
 
     const obtenerListadoInvoiceDetails = async (idFactura) => {
         setLoading(true)
         const result = await getInvoicesDetails(idFactura)
         setData(result)
-       setLoading(false)
+        setLoading(false)
     }
 
-    const onChangeCheck = (tipo, valor, activo) =>{
+    const onChangeCheck = (tipo, valor, activo) => {
 
     }
 
     const openNew = () => {
+        setLoading(true)
         setFacturaDialog(true)
         obtenerListadoInvoiceDetails(datos.IdInvoiceIPS)
+        // setLoading(false)
 
     }
 
@@ -61,45 +63,53 @@ const ModalFacturas = ({ datos }) => {
     const table = {
         Data: data,
         Columns: [
-            {
-                field: 'IsSelected',
-                header: 'Selected',
-                className: 'colum-width-Xsmall',
-                frozen: 'true',
-                alignFrozen: 'left',
-                Format: "Template",
-                body: (rowData) => <Checkbox onChange={(e) => onChangeCheck(1, rowData.IsSelected, e.checked)} style={{ marginBottom: 5 }} checked={rowData.IsSelected} />,
+            // {
+            //     field: 'IsSelected',
+            //     header: 'Selected',
+            //     className: 'colum-width-Xsmall',
+            //     frozen: 'true',
+            //     alignFrozen: 'left',
+            //     Format: "Template",
+            //     body: (rowData) => <Checkbox onChange={(e) => onChangeCheck(1, rowData.IsSelected, e.checked)} style={{ marginBottom: 5 }} checked={rowData.IsSelected} />,
 
-            }, ,
+            // }, ,
+            // {
+            //     field: 'ShipmentNo',
+            //     header: 'Shipment No',
+            //     className: 'colum-width-Xsmall',
+            //     frozen: 'true',
+            //     alignFrozen: 'left'
+
+            // },
             {
-                field: 'ShipmentNo',
-                header: 'Shipment No',
-                className: 'colum-width-Xsmall',
+                field: 'PC',
+                header: 'PC',
+                className: 'colum-width-small',
                 frozen: 'true',
                 alignFrozen: 'left'
 
             },
             {
                 field: 'SalesOrder',
-                header: 'Sales Order',
+                header: 'Orden Venta',
                 className: 'colum-width-medium',
                 // body: (rowData) => NumberInvoiceTemplate(rowData),
                 // Format: "Template",
                 frozen: 'true',
                 alignFrozen: 'left'
             },
-            {
-                field: 'CustomerName',
-                header: 'Cliente',
-                className: 'colum-width-large',
-                // Format: 'Template',
-                // body: e => statusBodyTemplate(e)
+            // {
+            //     field: 'CustomerName',
+            //     header: 'Cliente',
+            //     className: 'colum-width-large',
+            //     // Format: 'Template',
+            //     // body: e => statusBodyTemplate(e)
 
-            },
+            // },
             {
                 field: 'StyleName',
-                header: 'Style',
-                className: 'colum-width-medium',
+                header: 'Estilo',
+                className: 'colum-width-large',
                 //  Format: 'Template',
                 // body: (rowData) => fechaTemplate(rowData.InvoiceDate)
 
@@ -122,16 +132,16 @@ const ModalFacturas = ({ datos }) => {
                 header: 'PO',
                 className: 'colum-width-small',
             },
-            {
-                field: 'StyleCategory',
-                header: 'Categoria',
-                className: 'colum-width-medium',
-            },
-            {
-                field: 'CompanyName',
-                header: 'Cliente',
-                className: 'colum-width-Xlarge',
-            },
+            // {
+            //     field: 'StyleCategory',
+            //     header: 'Categoria',
+            //     className: 'colum-width-medium',
+            // },
+            // {
+            //     field: 'CompanyName',
+            //     header: 'Cliente',
+            //     className: 'colum-width-Xlarge',
+            // },
             {
                 field: 'StatusName',
                 header: 'Estado',
@@ -144,116 +154,91 @@ const ModalFacturas = ({ datos }) => {
             },
             {
                 field: 'UnitName',
-                header: 'Unit',
+                header: 'Unidad',
                 className: 'colum-width-small',
             },
-            {
-                field: 'Porcentaje',
-                header: 'Porcentaje',
-                className: 'colum-width-Xsmall',
-                frozen: 'true',
-                alignFrozen: 'right',
-                Format:"Template",
-                body:(rowData) => decimalValueTemplate(rowData.Porcentaje)
-            },
-            {
-                field: 'BlockFinanzas',
-                header: 'BlockFinanzas',
-                className: 'colum-width-Xsmall',
-                Format: "Template",
-                body: (rowData) => <Checkbox onChange={(e) => onChangeCheck(1, rowData.BlockFinanzas, e.checked)} style={{ marginBottom: 5 }} checked={rowData.BlockFinanzas} />,
-            },
-            {
-                field: 'Price',
-                header: 'Price',
-                className: 'colum-width-Xsmall',
-                Format:"Template",
-                body:(rowData) => decimalValueTemplate(rowData.Price)
-            },
+            // {
+            //     field: 'Porcentaje',
+            //     header: 'Porcentaje',
+            //     className: 'colum-width-Xsmall',
+            //     // frozen: 'true',
+            //     // alignFrozen: 'right',
+            //     Format: "Template",
+            //     body: (rowData) => decimalValueTemplate(rowData.Porcentaje)
+            // },
+            // {
+            //     field: 'BlockFinanzas',
+            //     header: 'BlockFinanzas',
+            //     className: 'colum-width-Xsmall',
+            //     Format: "Template",
+            //     body: (rowData) => <Checkbox onChange={(e) => onChangeCheck(1, rowData.BlockFinanzas, e.checked)} style={{ marginBottom: 5 }} checked={rowData.BlockFinanzas} />,
+            // },
             {
                 field: 'RollosF',
                 header: 'Rollos',
                 className: 'colum-width-Xsmall',
-                frozen: 'true',
-                alignFrozen: 'right',
-                Format:"Template",
-                body:(rowData) => decimalValueTemplate(rowData.RollosF),
-                Sumary:'sum'
+                // frozen: 'true',
+                // alignFrozen: 'right',
+                Format: "Decimal",
+                Sumary: 'sum'
             },
             {
                 field: 'KgsF',
                 header: 'Kgs',
                 className: 'colum-width-Xsmall',
-                frozen: 'true',
-                alignFrozen: 'right',
-                Format:"Template",
-                body:(rowData) => decimalValueTemplate(rowData.KgsF),
-                Sumary:'sum'
+                // frozen: 'true',
+                // alignFrozen: 'right',
+                Format: "Decimal",
+                Sumary: 'sum'
             },
             {
                 field: 'YdsF',
                 header: 'Yds',
                 className: 'colum-width-Xsmall',
-                frozen: 'true',
-                alignFrozen: 'right',
-                Format:"Template",
-                body:(rowData) => decimalValueTemplate(rowData.YdsF),
-                Sumary:'sum'
+                Format: "Decimal",
+                Sumary: 'sum'
             },
             {
                 field: 'LbsF',
                 header: 'Lbs',
                 className: 'colum-width-Xsmall',
-                frozen: 'true',
-                alignFrozen: 'right',
-                Format:"Template",
-                body:(rowData) => decimalValueTemplate(rowData.LbsF),
-                Sumary:'sum'
+                Format: "Decimal",
+                Sumary: 'sum'
 
             },
             {
                 field: 'PcsF',
                 header: 'Pcs',
                 className: 'colum-width-Xsmall',
-                frozen: 'true',
-                alignFrozen: 'right',
-                Format:"Template",
-                body:(rowData) => decimalValueTemplate(rowData.PcsF),
-                Sumary:'sum'
+                Format: "Decimal",
+                Sumary: 'sum'
 
             },
             {
                 field: 'PcsMalas',
                 header: 'Pcs Malas',
                 className: 'colum-width-Xsmall',
-                frozen: 'true',
-                alignFrozen: 'right',
-                Format:"Template",
-                body:(rowData) => decimalValueTemplate(rowData.PcsMalas),
-                Sumary:'sum'
+                Format: "Decimal",
+                Sumary: 'sum'
 
             },
             {
                 field: 'Price',
-                header: 'Price',
+                header: 'Precio',
                 className: 'colum-width-Xsmall',
-                frozen: 'true',
-                alignFrozen: 'right',
-                Format:"Template",
-                body:(rowData) => decimalValueTemplate(rowData.Price),
-                Sumary:'sum'
+                Format: "Decimal",
+                Sumary: 'sum'
 
 
             },
             {
                 field: 'Amount',
-                header: 'Amount',
-                className: 'colum-width-Xsmall',
+                header: 'Total',
+                className: 'colum-width-medium',
                 frozen: 'true',
                 alignFrozen: 'right',
-                Format:"Template",
-                body:(rowData) => decimalValueTemplate(rowData.Amount),
-                Sumary:'sum'
+                Format: "Decimal",
+                Sumary: 'sum'
 
             },
 
@@ -262,233 +247,270 @@ const ModalFacturas = ({ datos }) => {
     }
     return (
         <Fragment>
-            <Loader loading={loading} />
             <Button label={datos.NumberInvoice} icon="" className="p-button-text" onDoubleClick={openNew} style={{ color: "black", fontSize: 12 }} />
             <Dialog visible={facturaDialog} breakpoints={{ '960px': '75vw', '640px': '100vw' }} style={{ width: '95vw', height: '100vh' }}
-                onHide={hideDialog}>
-                <Card
-                    titulo={"General"}
-                    contenido={
-                        <div style={{ width: '100%'}} className="informacionFacturaContainer">
+                onHide={hideDialog} header={<div><h3> No.Factura: <strong>{datos.NumberInvoice}</strong> </h3></div>}>
+                <div id="ModalFactura">
+                    {/* {loading + ""} */}
+                    <Loader loading={loading} querySelector="#ModalFactura" />
 
-                            <Card
-                           
-                                titulo={""}
-                                className="cardContenedorFacturas"
-                                contenido={
-                                    <div className="justify-content-center"  style={{}} >
-                                        <div>
-                                            <span>No.Factura:</span>
-                                            <InputText id="NumberInvoice" name="NumberInvoice" value={datos.NumberInvoice} style={{ width: 200}} />
+                    {/* <div className="d-flex flex-column justify-content-center"></div> */}
+                    <Card
+                        titulo={"General"}
+                        contenido={
+                            <div className="d-flex flex-row">
+
+                                <Card
+                                    // style={{wid}}
+                                    titulo={""}
+                                    className="cardContenedorGeneral"
+                                    contenido={
+                                        <div className="d-flex flex-row justify-content-center">
+                                            <div className="me-3">
+
+                                                <div className="mt-1" >
+                                                    <span >Estado: </span>
+                                                    <label id="StatusName" name="StatusName"> {datos.StatusName}</label>
+                                                    {/* <InputText id="NumberInvoice" name="NumberInvoice" value={datos.StatusName} style={{ width: 160 }} /> */}
+                                                </div>
+                                                <div>
+                                                    <span > Fecha Factura:  </span>
+                                                    <label id="FechaFactura" name="FechaFactura">{setDateTimeSQL(datos.FechaFactura)}</label>
+                                                </div>
+
+                                                <div>
+                                                    <span >  CAI:  </span>
+                                                    <label>{datos.CAI}</label>
+                                                    {/* <InputText id="CAI" name="CAI" value={datos.CAI} style={{ width: 150, marginLeft: 5 }}  className="mb-1"/><br /> */}
+                                                </div>
+                                                <div>
+                                                    <span > RTN: </span>
+                                                    <label>{datos.RTNEmpresa}</label>
+                                                    {/* <InputText id="RTNEmpresa" name="RTNEmpresa" value={datos.RTNEmpresa} style={{ width: 150, marginLeft: 5 }}  className="mb-1"/><br /> */}
+                                                </div>
+
+                                            </div>
+
+                                            <div className="InformacionTipoFactura" >
+
+                                                <span>
+                                                    <span > No.Exo:  </span>
+                                                    <label>{datos.NoExoneracion}</label><br />
+                                                    {/* <InputText id="RTNEmpresa" name="RTNEmpresa" value={datos.NoExoneracion} style={{ width: 150 }}  className="mb-1"/><br /> */}
+                                                </span>
+                                                <span>
+                                                    <span  >    Vence el:  </span>
+                                                    <label id="FechaVencido" name="FechaVencido">{setDateTimeSQL(datos.FechaVencido)}</label><br />
+                                                    {/* <InputText id="FechaVencido" name="FechaVencido" value={setDateTimeSQL (datos.FechaVencido)} style={{ width: 200 }}  className="mb-1"/><br /> */}
+                                                </span>
+                                                <span>
+
+                                                    <span>Remision: </span>
+                                                    <label id="NumberInvoice" name="NumberInvoice"></label>
+                                                    {/* <InputText id="NumberInvoice" name="NumberInvoice" value={""} style={{ width: 200}} className="mb-1" /><br /> */}
+                                                </span>
+                                            </div>
                                         </div>
-                                        <div className="mt-1" >
-                                            <span style={{ width: 200 }}>Estado: </span>
-                                            {/* <Dropdown id="IdStatus" name="IdStatus" value={datos.StatusName} style={{ height: 20 }}/> */}
-                                            <InputText id="NumberInvoice" name="NumberInvoice" value={datos.StatusName} style={{ width: 160 }} />
-                                        </div>
-                                    </div>
 
-                                }
-                            />
-                            <Card
-                                
-                                titulo={"Clientes"}
-                                className="cardContenedorFacturas"
-                                contenido={
-                                    <div className="justify-content-center">
-                                        <div className="d-flex flex-row" >
-                                            <span align="right" id="InputText" >
-                                                <span style={{ marginLeft: 15 }}> Cliente: </span>
-                                                <InputText id="CustomerName" name="CustomerName" value={datos.CustomerName} style={{ width: "70%" }} />
-                                            </span>
+                                    }
+                                />
+                                <Card
 
-                                            <span  >
+                                    titulo={"Clientes"}
+                                    className="cardContenedorClientesG"
+                                    contenido={
+                                        <div className="justify-content-center">
+                                            <div className="d-flex flex-row" >
+                                                <div id="InputText">
+                                                    <span > Cliente: </span>
+                                                    <label id="CustomerName" name="CustomerName"> {datos.CustomerName}</label>
+                                                    {/* <InputText id="CustomerName" name="CustomerName" value={datos.CustomerName} style={{ width: "70%" }} /> */}
+                                                </div>
+
+                                                {/* <span  >
                                                 <Checkbox style={{ marginLeft: 2 }} />
                                                 <span>Block</span>
-                                            </span>
+                                            </span> */}
 
-                                        </div>
-                                        <div className="d-flex flex-row">
-                                            <span id="InputText">
-                                                <span style={{marginLeft:-5}} >  Comprador: </span>
+                                            </div>
+                                            <div className="d-flex flex-row">
+                                                <div id="InputText">
+                                                    <span  >  Comprador: </span>
+                                                    <label id="CompanyName" name="CompanyName"> {datos.CompanyName} </label>
+                                                    {/* <InputText id="CompanyName" name="CompanyName" value={datos.CompanyName} style={{ width: "70%" }} /> */}
+                                                </div>
 
-                                                <InputText id="CompanyName" name="CompanyName" value={datos.CompanyName} style={{ width: "70%" }} />
-                                            </span>
-
-                                            <span>
+                                                {/* <span>
                                                 <Checkbox style={{ marginLeft: 2 }} />
                                                 <span>Contado</span>
-                                            </span>
+                                            </span> */}
 
-                                        </div>
-                                        <div className="d-flex flex-row">
-                                            <span id="InputText">
-                                                <span style={{ marginLeft: 2 }}>Categoria: </span>
-                                                <InputText id="StyleCategory" name="StyleCategory" value={datos.StyleCategory} style={{ width: 90 }} />
-                                            </span>
-                                            <span style={{ marginLeft: 5 }} id="InputText" >
-
-                                                RTN: <InputText id="RTNCustomer" name="RTNCustomer" value={datos.RTNCustomer} style={{ width: 80 }} />
-                                            </span>
-                                        </div>
-                                        <div className="d-flex flex-row" >
-                                            <span id="InputText">
-                                                <span style={{ marginLeft: 20 }}>Tipo:</span>
-                                                <InputText id="TipoD" name="TipoD" value={datos.TipoD} style={{ width:90, marginLeft: 7 }} />
-                                            </span>
-                                            <span style={{ marginLeft: 5 }} id="InputText">
-                                                Reg:<InputText id="Reg" name="Reg" value={datos.Reg} style={{ width: 80, marginLeft: 7 }} />
-                                            </span>
-                                            <span style={{ marginLeft: 5 }}>
+                                            </div>
+                                            <div className="d-flex flex-row">
+                                                <span id="InputText">
+                                                    <span >Categoria: </span>
+                                                    <label id="StyleCategory" name="StyleCategory"> {datos.StyleCategory}</label>
+                                                    {/* <InputText id="StyleCategory" name="StyleCategory" value={datos.StyleCategory} style={{ width: 90 }} /> */}
+                                                </span>
+                                                <span id="InputText" >
+                                                    <span style={{ marginLeft: 15 }}>RTN: </span>
+                                                    <label id="RTNCustomer" name="RTNCustomer">{datos.RTNCustomer}</label>
+                                                    {/* RTN: <InputText id="RTNCustomer" name="RTNCustomer" value={datos.RTNCustomer} style={{ width: 80 }} /> */}
+                                                </span>
+                                            </div>
+                                            <div className="d-flex flex-row" >
+                                                <span id="InputText">
+                                                    <span >Tipo:</span>
+                                                    <label id="TipoD" name="TipoD"> {datos.TipoD}</label>
+                                                    {/* <InputText id="TipoD" name="TipoD" value={datos.TipoD} style={{ width:90, marginLeft: 7 }} /> */}
+                                                </span>
+                                                <span style={{ marginLeft: 20 }} id="InputText">
+                                                    <span> Reg: </span>
+                                                    <label id="Reg" name="Reg"> {datos.Reg}</label>
+                                                    {/* Reg:<InputText id="Reg" name="Reg" value={datos.Reg} style={{ width: 80, marginLeft: 7 }} /> */}
+                                                </span>
+                                                {/* <span style={{ marginLeft: 5 }}>
                                                 <Button id="btnEXO" label="Exonerado" style={{ fontSize: 7, width: 70}} />
-                                            </span>
+                                            </span> */}
+                                            </div>
                                         </div>
-                                    </div>
-                                }
-                            />
-                            <Card
-                                titulo={"Informacion Tipo Factura"}
-                                className="cardContenedorFacturas"
-                                contenido={
-                                    <div className="d-flex flex-column  justify-content-center">
-                                        <div className="InformacionTipoFactura" >
-                                            <span>
-                                                <span style={{ marginLeft: 19 }}>  CAI:  </span>
-                                                <label>{datos.CAI}</label> <br/>
-                                                {/* <InputText id="CAI" name="CAI" value={datos.CAI} style={{ width: 150, marginLeft: 5 }}  className="mb-1"/><br /> */}
-                                            </span>
-                                            <span>
-                                                <span style={{ marginLeft: 16 }}> RTN: </span>
-                                                <label>{datos.RTNEmpresa}</label><br/>
-                                                {/* <InputText id="RTNEmpresa" name="RTNEmpresa" value={datos.RTNEmpresa} style={{ width: 150, marginLeft: 5 }}  className="mb-1"/><br /> */}
-                                            </span>
-                                            <span>
-                                                <span style={{marginLeft: 5}}> No.Exo:  </span>
-                                                <label>{datos.NoExoneracion}</label><br/>
-                                                {/* <InputText id="RTNEmpresa" name="RTNEmpresa" value={datos.NoExoneracion} style={{ width: 150 }}  className="mb-1"/><br /> */}
-                                            </span>
-                                            <span>
-                                                <span style={{marginLeft: 2}} >    Vence el:  </span>
-                                                <InputText id="FechaVencido" name="FechaVencido" value={setDateTimeSQL (datos.FechaVencido)} style={{ width: 200 }}  className="mb-1"/><br />
-                                            </span>
-                                            <span>
+                                    }
+                                />
 
-                                                <span>Remision: </span> <InputText id="NumberInvoice" name="NumberInvoice" value={""} style={{ width: 200}} className="mb-1" /><br />
-                                            </span>
+                                <Card
+                                    titulo={"Direccion"}
+                                    className="cardContenedorFacturas"
+                                    contenido={
+                                        <div className="justify-content-center">
+                                            <div id="IDcontenedorFacturas" >
+                                                <div >
+                                                    <span>  Ship To:
+                                                        <label id="ShipTo" name="ShipTo" className="mx-2"> {datos.AddressShipTo}</label>
+                                                    </span>
+                                                    {/* <InputText id="ShipTo" name="ShipTo" value={datos.AddressShipTo} style={{ width: "75%" }} className="mb-1" /><br /> */}
+                                                </div>
+                                                <div>
+                                                    <span >  Bill To: </span>
+                                                    <label id="BillTo" name="BillTo" className="mx-2"> {datos.AddressBillTo}</label>
+                                                    {/* <InputText id="BillTo" name="BillTo" value={datos.AddressBillTo} style={{ width: "75%", marginLeft: 5 }} className="mb-1" /><br /> */}
+                                                </div>
+                                                <div>
+                                                    <span>Tasa Cambio: </span>
+                                                    <label id="TasaCambio" name="TasaCambio"> {datos.TasaCambio}</label>
+                                                    {/* <InputText id="TasaCambio" name="TasaCambio" value={datos.TasaCambio} style={{ width: 60}} className="mb-1" /> */}
+                                                    <span className="mx-2" >Valor Lps: </span>
+                                                    <label id="ValorLps" name="ValorLps"> {decimalValueTemplate(datos.ValorLps)}</label>
+                                                    {/* <InputText id="ValorLps" name="ValorLps" value={datos.ValorLps} style={{ width: 140 }} className="mb-1" /><br /> */}
+                                                    <span className="mx-2"> Seguro: </span>
+                                                    <label id="Seguro" name="Seguro"> {datos.Seguro}</label>
+                                                </div>
+                                                <span>
+
+                                                    {/* <InputText id="NumberInvoice" name="NumberInvoice" value={datos.Seguro} style={{ width: 60,marginLeft: 3  }} className="mb-1" /> */}
+
+                                                    {/* <InputText id="FechaFactura" name="FechaFactura" value={setDateTimeSQL (datos.FechaFactura)} style={{ width: 140 }} className="mb-1" /><br /> */}
+                                                </span>
+                                            </div>
                                         </div>
-                                    </div>
-                                }
-                            />
-                            <Card
-                                titulo={"Direccion"}
-                                className="cardContenedorFacturas"
-                                contenido={
-                                    <div className="justify-content-center">
-                                        <div id="IDcontenedorFacturas" >
-                                            <span >
-                                                <span style={{ marginLeft: 25 }} >  Ship To: </span>
-                                                <InputText id="ShipTo" name="ShipTo" value={datos.AddressShipTo} style={{ width: "75%" }} className="mb-1" /><br />
-                                            </span>
-                                            <span>
-                                                <span style={{ marginLeft: 25 }}>  Bill To: </span>
-                                                <InputText id="BillTo" name="BillTo" value={datos.AddressBillTo} style={{ width: "75%", marginLeft: 5 }} className="mb-1" /><br />
-                                            </span>
-                                            <span>
-                                                <span>Tasa Cambio: </span>
-                                                <InputText id="TasaCambio" name="TasaCambio" value={datos.TasaCambio} style={{ width: 60}} className="mb-1" />
-                                                <span className="mx-2" >Valor Lps: </span>
-                                                <InputText id="ValorLps" name="ValorLps" value={datos.ValorLps} style={{ width: 140 }} className="mb-1" /><br />
-                                            </span>
-                                            <span>
-                                                <span style={{ marginLeft: 20 }}> Seguro: </span>
-                                                <InputText id="NumberInvoice" name="NumberInvoice" value={datos.Seguro} style={{ width: 60,marginLeft: 3  }} className="mb-1" />
-                                                Fecha Factura:<InputText id="FechaFactura" name="FechaFactura" value={setDateTimeSQL (datos.FechaFactura)} style={{ width: 140 }} className="mb-1" /><br />
-                                            </span>
-                                        </div>
-                                    </div>
-                                }
-                            />
-                        </div>
-                    }
-                />
-                <Card
-                    titulo={"Totales"}
-                    contenido={
-                        <div>
-                            <div className="totalesFactura">
-                                <span>
-                                    <span>Rollos: </span>
-                                    <InputText id="RollosT" name="RollosT" value={decimalValueTemplate(datos.RollosT)} style={{ width: 85, height: 30 }} />
-                                </span>
-                                <span>
-                                    <span>Kgs: </span>
-                                    <InputText id="KgsT" name="KgsT" value={decimalValueTemplate(datos.KgsT)} style={{ width: 85, height: 30 }} />
-                                </span>
-                                <span>
-                                    <span>Yds: </span>
-                                    <InputText id="YdsT" name="YdsT" value={decimalValueTemplate(datos.YdsT)} style={{ width: 85, height: 30 }} />
-                                </span>
-                                <span>
-                                    <span>Lbs: </span>
-                                    <InputText id="LbsT" name="LbsT" value={decimalValueTemplate(datos.LbsT)} style={{ width: 85, height: 30 }} />
-                                </span>
-                                <span>
-                                    <span>Pcs: </span>
-                                    <InputText id="PcsT" name="PcsT" value={decimalValueTemplate(datos.PcsT)} style={{ width: 85, height: 30 }} />
-                                </span>
-                                <span>
-                                    <span>Amount(s): </span>
-                                    <InputText id="Amount" name="Amount" value={decimalValueTemplate(datos.Amount)} style={{ width: 85, height: 30 }} />
-                                </span>
-                                <span>
-                                    <span>Units: </span>
-                                    <InputText id="UnitName" name="UnitName" value={(datos.UnitName)} style={{ width: 85, height: 30 }} />
-                                </span>
+                                    }
+                                />
                             </div>
-                            <div className="my-2">
-                                <span>
-                                    <span>{datos.ValorLetras}</span>
-                                </span>
-                                <span className="mx-5">
-                                    <span>{datos.ValorLetrasLps}</span>
-                                </span>
+                        }
+                    />
+                    <Card
+                        titulo={"Totales"}
+                        contenido={
+                            <div>
+                                <div className=" totalesFactura ">
+
+                                    <div>
+                                        <span>
+                                            <span>Rollos: </span>
+                                            <label id="RollosT" name="RollosT">{decimalValueTemplate(datos.RollosT)}</label>
+                                            {/* <InputText  value={decimalValueTemplate(datos.RollosT)} style={{ width: 100, height: 30 }} /> */}
+                                        </span>
+                                        <span>
+                                            <span>Kgs: </span>
+                                            <label id="KgsT" name="KgsT"> {decimalValueTemplate(datos.KgsT)}</label>
+                                            {/* <InputText id="KgsT" name="KgsT" value={decimalValueTemplate(datos.KgsT)} style={{ width: 100, height: 30 }} /> */}
+                                        </span>
+                                        <span>
+                                            <span>Yds: </span>
+                                            <label id="YdsT" name="YdsT"> {decimalValueTemplate(datos.YdsT)}</label>
+                                            {/* <InputText id="YdsT" name="YdsT" value={decimalValueTemplate(datos.YdsT)} style={{ width: 100, height: 30 }} /> */}
+                                        </span>
+                                        <span>
+                                            <span>Lbs: </span>
+                                            <label id="LbsT" name="LbsT"> {decimalValueTemplate(datos.LbsT)}</label>
+                                            {/* <InputText id="LbsT" name="LbsT" value={decimalValueTemplate(datos.LbsT)} style={{ width: 100, height: 30 }} /> */}
+                                        </span>
+                                        <span>
+                                            <span>Pcs: </span>
+                                            <label id="PcsT" name="PcsT">{decimalValueTemplate(datos.PcsT)}</label>
+                                            {/* <InputText id="PcsT" name="PcsT" value={decimalValueTemplate(datos.PcsT)} style={{ width: 100, height: 30 }} /> */}
+                                        </span>
+                                        <span>
+                                            <span>Units: </span>
+                                            <label id="UnitName" name="UnitName">{(datos.UnitName)}</label>
+                                            {/* <InputText id="UnitName" name="UnitName" value={(datos.UnitName)} style={{ width: 100, height: 30 }} /> */}
+                                        </span>
+                                    </div>
+
+                                    <div className="Amounts" >
+                                        <span>
+                                            <span>Amount $: </span>
+                                            <label id="Amount" name="Amount">{decimalValueTemplate(datos.Amount)}</label>
+                                            {/* <InputText id="Amount" name="Amount" value={decimalValueTemplate(datos.Amount)} style={{ width: 100, height: 30 }} /> */}
+                                        </span>
+                                        <span>
+                                            <span > Amount Lps: </span>
+                                            <label id="ValorLps" name="ValorLps"> {decimalValueTemplate(datos.ValorLps)}</label>
+                                        </span>
+
+                                    </div>
+
+                                </div>
+                                <div className="my-2">
+                                    <span>
+                                        <span>{datos.ValorLetras}</span>
+                                    </span>
+                                    <span className="mx-5">
+                                        <span>{datos.ValorLetrasLps}</span>
+                                    </span>
+                                </div>
                             </div>
-                        </div>
 
 
-                    } />
-                <Card
-                    titulo={"Detalle"}
-                    className="DetalleFactura"
-                    contenido={
-                        <div>
-                            <div className="">
-                                <Button icon="ri-file-excel-2-line" style={{ color: "green", fontSize: 25 }} className="p-button-info p-button-text mx-2" />
-                                <Button icon="ri-file-pdf-line" style={{ color: "black", fontSize: 25 }} className="p-button-info p-button-text" />
+                        } />
+                    <Card
+                        titulo={"Detalle"}
+                        className="DetalleFactura"
+                        contenido={
+                            <div style={{ display: "flex", alignItems: "center" }} >
+                                <Button icon="ri-file-excel-2-line" style={{ color: "green", fontSize: 25 }} className="p-button-info p-button-text mx-2" hidden />
+                                <Button icon="ri-file-pdf-line" style={{ color: "black", fontSize: 25 }} className="p-button-info p-button-text" hidden />
 
-                                <span className="mx-5 text-uppercase" style={{ fontWeight: "bold" }}>{datos.TipoPago}</span>
+                                <span className="mx-5 text-uppercase" style={{ fontWeight: "bold", color: "red" }}>{datos.TipoPago}</span>
                                 <span>
-                                    <span style={{ fontWeight: "bold" }} >Comments:</span>
-                                    <InputText id="Comment" name="Comment" value={datos.Comment} className="mx-3" style={{ width: 700 }} />
+                                    <span style={{ fontWeight: "bold" }} >Comments:  </span>
+                                    <label id="Comment" name="Comment">{datos.Comment}</label>
+                                    {/* <InputText id="Comment" name="Comment" value={datos.Comment} className="mx-3" style={{ width: 700 }} /> */}
                                 </span>
 
                             </div>
-
-                        </div>
-
-
-                    }
-                />
+                        }
+                    />
 
 
-                 <div className="pt-1" style={{ height: '35vh' }}>
-                            {/* <Toast position="bottom-right" ref={toast} /> */}
+                    <div className="pt-1" style={{ height: '40vh' }}>
+                        {/* <Toast position="bottom-right" ref={toast} /> */}
 
 
-                            <AgGrid table={table} />
-                        </div>
+                        <AgGrid table={table} />
+                    </div>
 
 
+                </div>
             </Dialog>
         </Fragment>
     )

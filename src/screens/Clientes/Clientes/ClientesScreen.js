@@ -154,7 +154,7 @@ const ClientesScreen = () => {
                     getListadoClientes={getListadoClientes}
                 />
                 <ModalClientesDetails IdCustomer={rowData.IdCustomer} />
-                <ModalFacturasCliente IdCustomer={rowData.IdCustomer}/>
+                <ModalFacturasCliente IdCustomer={rowData.IdCustomer} NombreCustomer = {rowData.CustomerName}/>
                 {/* <Button label={''} className='p-button-rounded p-button-info p-button-text' icon='ri-close-circle-line' style={{ color: "red" }} /> */}
             </div>
 
@@ -164,24 +164,27 @@ const ClientesScreen = () => {
     const table = {
         Data: data,
         Columns: [
-            {
-                field: 'IdCustomer',
-                header: 'IdCustomer',
-                className: 'colum-width-small',
-            },
+            // {
+            //     field: 'IdCustomer',
+            //     header: 'IdCustomer',
+            //     className: 'colum-width-small',
+            // },
             {
                 field: 'DateCreate',
-                header: 'DateCreate',
+                header: 'Fecha Creado',
                 className: 'colum-width-medium',
-                Format: 'Template',
-                body: (rowData) => fechaTemplate(rowData.DateCreate)
+                // Format: 'Template',
+                Format: 'Date',
+                align:"Center"
+                // body: (rowData) => fechaTemplate(rowData.DateCreate)
             },
             {
                 field: 'StatusName',
                 header: 'Estado',
                 className: 'colum-width-Xsmall',
                 Format: 'Template',
-                body: e => statusBodyTemplate(e)
+                body: e => statusBodyTemplate(e),
+                filter: true
 
             },
             {
@@ -209,69 +212,69 @@ const ClientesScreen = () => {
                 header: 'Compañia',
                 className: 'colum-width-large',
             },
-            {
-                field: 'Porcentaje',
-                header: '% Exportacion',
-                className: 'colum-width-Xsmall',
-            },
-            {
-                field: 'IsShipTo',
-                header: 'IsShipTo',
-                className: 'colum-width-small',
-                Format: "Template",
-                align: "center",
-                body: (rowData) => <Checkbox onChange={(e) => onChangeCheck(1, rowData.IdCustomer, e.checked)} style={{ marginBottom: 5 }} checked={rowData.IsShipTo} />,
-            },
-            {
-                field: 'IsBillTo',
-                header: 'IsBillTo',
-                className: 'colum-width-small',
-                Format: "Template",
-                align: "center",
-                body: (rowData) => <Checkbox onChange={(e) => onChangeCheck(2, rowData.IdCustomer, e.checked)} style={{ marginBottom: 5 }} checked={rowData.IsBillTo} />,
-            },
+            // {
+            //     field: 'Porcentaje',
+            //     header: '% Exportacion',
+            //     className: 'colum-width-Xsmall',
+            // },
+            // {
+            //     field: 'IsShipTo',
+            //     header: 'IsShipTo',
+            //     className: 'colum-width-small',
+            //     Format: "Template",
+            //     align: "center",
+            //     body: (rowData) => <Checkbox onChange={(e) => onChangeCheck(1, rowData.IdCustomer, e.checked)} style={{ marginBottom: 5 }} checked={rowData.IsShipTo} />,
+            // },
+            // {
+            //     field: 'IsBillTo',
+            //     header: 'IsBillTo',
+            //     className: 'colum-width-small',
+            //     Format: "Template",
+            //     align: "center",
+            //     body: (rowData) => <Checkbox onChange={(e) => onChangeCheck(2, rowData.IdCustomer, e.checked)} style={{ marginBottom: 5 }} checked={rowData.IsBillTo} />,
+            // },
             {
                 field: 'NombreTipoPago',
-                header: 'TipoPago',
+                header: 'Tipo Pago',
                 className: 'colum-width-small',
 
             },
             {
                 field: 'CreditLimit',
-                header: 'CreditLimit',
+                header: 'Limite de Credito',
                 className: 'colum-width-large',
 
             },
-            {
-                field: 'Contact',
-                header: 'Contact',
-                className: 'colum-width-medium',
-            },
-            {
-                field: 'Tel',
-                header: 'Tel',
-                className: 'colum-width-medium',
-            },
+            // {
+            //     field: 'Contact',
+            //     header: 'Contacto',
+            //     className: 'colum-width-medium',
+            // },
+            // {
+            //     field: 'Tel',
+            //     header: 'Telefono',
+            //     className: 'colum-width-medium',
+            // },
             {
                 field: 'Email',
-                header: 'Email',
+                header: 'Correo',
                 className: 'colum-width-medium',
             },
-            {
-                field: 'Contact2',
-                header: 'Contact',
-                className: 'colum-width-medium',
-            },
-            {
-                field: 'Tel2',
-                header: 'Tel',
-                className: 'colum-width-medium',
-            },
-            {
-                field: 'Email2',
-                header: 'Email',
-                className: 'colum-width-medium',
-            },
+            // {
+            //     field: 'Contact2',
+            //     header: 'Contacto 2',
+            //     className: 'colum-width-medium',
+            // },
+            // {
+            //     field: 'Tel2',
+            //     header: 'Telelefono 2',
+            //     className: 'colum-width-medium',
+            // },
+            // {
+            //     field: 'Email2',
+            //     header: 'Correo 2',
+            //     className: 'colum-width-medium',
+            // },
 
             {
                 field: 'Address',
@@ -279,51 +282,50 @@ const ClientesScreen = () => {
                 className: 'colum-width-large',
 
             },
-            {
-                field: 'City',
-                header: 'City',
-                className: 'colum-width-small',
-            },
-            {
-                field: 'State',
-                header: 'State',
-                className: 'colum-width-medium',
-            },
+            // {
+            //     field: 'City',
+            //     header: 'Ciudad',
+            //     className: 'colum-width-small',
+            // },
+            // {
+            //     field: 'State',
+            //     header: 'Estado',
+            //     className: 'colum-width-medium',
+            // },
             {
                 field: 'Country',
-                header: 'Country',
+                header: 'Pais',
                 className: 'colum-width-medium',
             },
 
-            {
-                field: 'ZipCode',
-                header: 'ZipCode',
-                className: 'colum-width-medium',
-            },
+            // {
+            //     field: 'ZipCode',
+            //     header: 'Codigo Postal',
+            //     className: 'colum-width-medium',
+            // },
+            // {
+            //     field: 'UnitName',
+            //     header: 'Unidad Orden',
+            //     className: 'colum-width-medium',
+            // },
 
-            {
-                field: 'UnitName',
-                header: 'Unidad Orden',
-                className: 'colum-width-medium',
-            },
+            // {
+            //     field: 'TermName',
+            //     header: 'Terminos',
+            //     className: 'colum-width-medium',
+            // },
 
-            {
-                field: 'TermName',
-                header: 'Terminos',
-                className: 'colum-width-medium',
-            },
+            // {
+            //     field: 'TermFreightName',
+            //     header: 'Terminos Flete',
+            //     className: 'colum-width-medium',
+            // },
 
-            {
-                field: 'TermFreightName',
-                header: 'Terminos Flete',
-                className: 'colum-width-medium',
-            },
-
-            {
-                field: 'Comments',
-                header: 'Comentario',
-                className: 'colum-width-medium',
-            },
+            // {
+            //     field: 'Comments',
+            //     header: 'Comentario',
+            //     className: 'colum-width-medium',
+            // },
             {
                 field: 'IsContado',
                 header: 'IsContado',

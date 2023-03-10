@@ -26,7 +26,7 @@ import { getInvoicesCustomer } from "../../../../Api/Ventas/FacturasRequest";
 
 import ModalFacturas from "../../../Ventas/Facturas/ModalFacturas/ModalFacturas";
 
-const ModalFacturasCliente = ({ IdCustomer }) => {
+const ModalFacturasCliente = ({ IdCustomer, NombreCustomer}) => {
 
     const [clienteFacturasDialog, setClienteFacturasDialog] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -41,14 +41,14 @@ const ModalFacturasCliente = ({ IdCustomer }) => {
     const table = {
         Data: data,
         Columns: [
-            {
-                field: 'IdInvoiceIPS',
-                header: 'IdInvoiceIPS',
-                className: 'colum-width-Xsmall',
-                frozen: 'true',
-                alignFrozen: 'left'
+            // {
+            //     field: 'IdInvoiceIPS',
+            //     header: 'IdInvoiceIPS',
+            //     className: 'colum-width-Xsmall',
+            //     frozen: 'true',
+            //     alignFrozen: 'left'
 
-            },
+            // },
             {
                 field: 'NumberInvoice',
                 header: 'NumberInvoice',
@@ -56,7 +56,8 @@ const ModalFacturasCliente = ({ IdCustomer }) => {
                 body: (rowData) => NumberInvoiceTemplate(rowData),
                 Format: "Template",
                 frozen: 'true',
-                alignFrozen: 'left'
+                alignFrozen: 'left',
+                Sumary: 'count'
             },
             {
                 field: 'FechaFactura',
@@ -68,19 +69,19 @@ const ModalFacturasCliente = ({ IdCustomer }) => {
             },
             {
                 field: 'StatusName',
-                header: 'StatusName',
+                header: 'Estado',
                 className: 'colum-width-medium',
                 // Format: 'Template',
                 // body: e => statusBodyTemplate(e)
             },
             {
                 field: 'StyleCategory',
-                header: 'StyleCategory',
+                header: 'Categoria',
                 className: 'colum-width-medium',
             },
             {
                 field: 'CustomerName',
-                header: 'CustomerName',
+                header: 'Cliente',
                 className: 'colum-width-large',
                 // Format: 'Template',
                 // body: e => statusBodyTemplate(e)
@@ -88,7 +89,7 @@ const ModalFacturasCliente = ({ IdCustomer }) => {
             },
             {
                 field: 'UnitName',
-                header: 'UnitName',
+                header: 'Unidad',
                 className: 'colum-width-small',
                 // Format: 'Template',
                 // body: e => statusBodyTemplate(e)
@@ -96,68 +97,67 @@ const ModalFacturasCliente = ({ IdCustomer }) => {
             },
             {
                 field: 'RollosT',
-                header: 'RollosT',
+                header: 'Rollos',
                 className: 'colum-width-Xsmall',
                 Sumary: 'sum',
-                Format: "Template",
-                body: (rowData) => decimalValueTemplate(rowData.RollosT)
+                Format: "Decimal"
             }, {
                 field: 'KgsT',
-                header: 'KgsT',
+                header: 'Kgs',
                 className: 'colum-width-Xsmall',
-                Format: "Template",
-                body: (rowData) => decimalValueTemplate(rowData.KgsT),
+                Format: "Decimal",
+              
                 Sumary: 'sum'
             },
             {
                 field: 'YdsT',
-                header: 'YdsT',
+                header: 'Yds',
                 className: 'colum-width-Xsmall',
-                Format: "Template",
-                body: (rowData) => decimalValueTemplate(rowData.YdsT),
+                Format: "Decimal",
+              
                 Sumary: 'sum'
             }, {
                 field: 'LbsT',
-                header: 'LbsT',
+                header: 'Lbs',
                 className: 'colum-width-Xsmall',
-                Format: "Template",
-                body: (rowData) => decimalValueTemplate(rowData.LbsT),
+                Format: "Decimal",
                 Sumary: 'sum'
             },
             {
                 field: 'PcsT',
-                header: 'PcsT',
+                header: 'Pcs',
                 className: 'colum-width-Xsmall',
-                Format: "Template",
-                body: (rowData) => decimalValueTemplate(rowData.PcsT),
+                Format: "Decimal",
                 Sumary: 'sum'
             },
             {
                 field: 'TotalISV',
-                header: 'TotalISV',
+                header: 'Total ISV',
                 className: 'colum-width-Xsmall',
-                Format: "Template",
-                body: (rowData) => decimalValueTemplate(rowData.TotalISV),
-                frozen: 'true',
-                alignFrozen: 'right',
+                Format: "Decimal",
                 Sumary: 'sum'
             },
             {
                 field: 'DescuentoRebajas',
                 header: 'DescuentoRebajas',
                 className: 'colum-width-Xsmall',
-                Format: "Template",
-                body: (rowData) => decimalValueTemplate(rowData.DescuentoRebajas),
+                Format: "Decimal",
+                Sumary: 'sum'
+            },
+            {
+                field: 'Amount',
+                header: 'Total $',
+                className: 'small',
+                Format: "Decimal",
                 frozen: 'true',
                 alignFrozen: 'right',
                 Sumary: 'sum'
             },
             {
-                field: 'Amount',
-                header: 'Amount',
-                className: 'colum-width-Xsmall',
-                Format: "Template",
-                body: (rowData) => decimalValueTemplate(rowData.Amount),
+                field: 'ValorLps',
+                header: 'Total L',
+                className: 'small',
+                Format: "Decimal",
                 frozen: 'true',
                 alignFrozen: 'right',
                 Sumary: 'sum'
@@ -199,9 +199,7 @@ const ModalFacturasCliente = ({ IdCustomer }) => {
             <Button className='p-button-rounded p-button-info p-button-text' icon='ri-wallet-line' onClick={openNew} />
             <Dialog visible={clienteFacturasDialog} breakpoints={{ '960px': '75vw', '640px': '100vw' }} style={{ width: '80vw', height: '80vh' }}
                 onHide={hideDialog} header={<div className="d-flex">
-                    <h3 className="mx-3">Facturas</h3>
-
-
+                    <h3 className="mx-3">Facturas: <strong>{NombreCustomer}</strong></h3>
                     <Button className="p-button-text p-button-rounded mx-2" icon="ri-restart-line" loading={loading} onClick={obtenerFacturasCliente} />
                 </div>} >
                 <Loader loading={loading} />

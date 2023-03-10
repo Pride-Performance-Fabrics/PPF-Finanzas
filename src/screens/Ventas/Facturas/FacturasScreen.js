@@ -44,26 +44,29 @@ const FacturasScreen = () => {
             //     header: 'IdInvoice',
             //     className: 'colum-width-small',
             // },
-            {
-                field: 'IdInvoiceIPS',
-                header: 'IdInvoiceIPS',
-                className: 'colum-width-Xsmall',
-                frozen: 'true',
-                alignFrozen: 'left'
+            // {
+            //     field: 'IdInvoiceIPS',
+            //     header: 'IdInvoiceIPS',
+            //     className: 'colum-width-Xsmall',
+            //     frozen: 'true',
+            //     alignFrozen: 'left'
                
-            },
+            // },
             {
                 field: 'NumberInvoice',
-                header: 'NumberInvoice',
-                className: 'colum-width-medium',
+                header: 'Numero Factura',
+                className: 'colum-width-large',
                 body: (rowData) => NumberInvoiceTemplate(rowData),
                 Format: "Template",
                 frozen: 'true',
-                alignFrozen: 'left'
+                alignFrozen: 'left',
+                Sumary: 'count',
+                // Filter: 'true',
+                filter: true
             },
             {
                 field: 'InvoiceDate',
-                header: 'InvoiceDate',
+                header: 'Fecha Factura',
                 className: 'colum-width-medium',
                  Format: 'Template',
                 body: (rowData) => fechaTemplate(rowData.InvoiceDate)
@@ -71,7 +74,7 @@ const FacturasScreen = () => {
             },
             {
                 field: 'CustomerName',
-                header: 'CustomerName',
+                header: 'Cliente',
                 className: 'colum-width-large',
                 // Format: 'Template',
                 // body: e => statusBodyTemplate(e)
@@ -79,29 +82,50 @@ const FacturasScreen = () => {
             },
             {
                 field: 'StatusName',
-                header: 'StatusName',
+                header: 'Estado',
                 className: 'colum-width-medium',
                  // Format: 'Template',
                 // body: e => statusBodyTemplate(e)
             },
             {
                 field: 'RTNCustomer',
-                header: 'RTNCustomer',
-                className: 'colum-width-medium',
+                header: 'RTN Cliente',
+                className: 'colum-width-small',
             },
             {
                 field: 'ShipTo',
                 header: 'ShipTo',
-                className: 'colum-width-large',
-            }, {
+                className: 'colum-width-Xlarge',
+            }, 
+            {
                 field: 'BillTo',
                 header: 'BillTo',
-                className: 'colum-width-large',
+                className: 'colum-width-Xlarge',
             },
             {
                 field: 'Comment',
-                header: 'Comment',
+                header: 'Commentario',
                 className: 'colum-width-Xlarge',
+            },
+            {
+                field: 'Amount',
+                header: 'Total $',
+                className: 'colum-width-medium',
+                frozen: 'true',
+                alignFrozen: 'right',
+                Format: "Decimal",
+                Sumary: 'sum'
+
+            },
+            {
+                field: 'ValorLps',
+                header: 'Total L',
+                className: 'colum-width-medium',
+                frozen: 'true',
+                alignFrozen: 'right',
+                Format: "Decimal",
+                Sumary: 'sum'
+
             },
         ]
     }
