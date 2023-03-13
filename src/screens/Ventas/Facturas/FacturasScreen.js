@@ -68,8 +68,8 @@ const FacturasScreen = () => {
                 field: 'InvoiceDate',
                 header: 'Fecha Factura',
                 className: 'colum-width-medium',
-                 Format: 'Template',
-                body: (rowData) => fechaTemplate(rowData.InvoiceDate)
+                 Format: 'DateTime',
+                // body: (rowData) => fechaTemplate(rowData.InvoiceDate)
                
             },
             {
