@@ -410,7 +410,7 @@ function AgGrid({ table }) {
                 break;
         }
         if (col.Format === 'DateTime') {
-            width = 200;
+            // width = 200;
         }
         return width;
     }
@@ -422,7 +422,9 @@ function AgGrid({ table }) {
             if (col.Sumary === 'sum') {
                 let sum = 0;
                 tableRef.current.api.forEachNodeAfterFilter((w) => {
-                    sum += w.data[col.field];
+                    // console.log([col.field] ,w.data[col.field]);
+                    sum += w.data[col.field] ? w.data[col.field] : 0;
+                    // sum += w.data[col.field];
                 })
                 sumary += `"${col.field}": ${sum},`;
             }
