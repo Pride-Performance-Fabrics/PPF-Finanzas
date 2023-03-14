@@ -1,4 +1,5 @@
 import { PrivateInterceptor } from "../../interceptors/PrivateInterceptor";
+import { PrivateInterceptorIPS } from "../../interceptors/PrivateInterceptorIPS";
 
 
 export const getCustomers = async () => {
@@ -7,8 +8,6 @@ export const getCustomers = async () => {
     return result;
 
 }
-
-
 
 
 export const getUltimoIdCustomer = async() =>{
@@ -64,5 +63,12 @@ export const putChecksCustomerDetails = async (body) =>{
 
 export const putStatusCustomerDetails = async (data) =>{
     const result = await PrivateInterceptor(`clientes/cambiarEstadoCustomerDetails`, 'PUT', data);
+    return result;
+}
+
+
+export const BlockCustomerIPS = async (data) => {
+    console.log(data)
+    const result = await  PrivateInterceptorIPS(`Customers/BlockCustomer`, 'POST', data);
     return result;
 }

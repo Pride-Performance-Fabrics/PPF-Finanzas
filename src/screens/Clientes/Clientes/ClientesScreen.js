@@ -8,6 +8,7 @@ import { Toast } from 'primereact/toast';
 import { Tag } from 'primereact/tag';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 
+import { decodeToken } from "react-jwt";
 
 //************** Componentes generales **************/
 import Card from "../../../components/Card/Card";
@@ -17,7 +18,7 @@ import IconApp from "../../../components/icon/IconApp";
 import AgGrid from "../../../components/Tables/AgGrid";
 
 //************** Consultas API **************/
-import { getCustomers, putChecksCustomer } from "../../../Api/Clientes/ClientesRequest";
+import { getCustomers, putChecksCustomer, BlockCustomerIPS } from "../../../Api/Clientes/ClientesRequest";
 
 //************** Servicios **************/
 import { fechaLocalStringTemplate, fechaTemplate } from '../../../services/TemplatesServices';
@@ -78,6 +79,9 @@ const ClientesScreen = () => {
     };
 
     const cambiarEstado = async (checkValores, IdCustomer) => {
+        const userInformation = decodeToken(localStorage.getItem(`ppfToken`));
+        let user = userInformation.idUser
+
         setLoading(true)
         const result = await putChecksCustomer(checkValores)
         const temporal = result.map((item) => {
@@ -87,6 +91,13 @@ const ClientesScreen = () => {
             }
             return item
         })
+
+        let datosBlock = {
+            IdCustomer: checkValores.IdCustomer,
+            Block: checkValores.Activo === true ? 1 : 0,
+            isFin: true
+        }
+        const resultado = await BlockCustomerIPS(datosBlock)
 
         setData(temporal)
         setLoading(false)
