@@ -304,7 +304,7 @@ const ModalAEClientesDetalle = ({ toast, datos, icono, nombre, className,  obten
                                 </div>)}
                         />
                          <div className="p-dialog-footer">
-                            <Button label="Cancelar" icon="pi pi-times" className="p-button-text" onClick={hideDialogCliente} />
+                            <Button label="Cancelar"  type="button" icon="pi pi-times" className="p-button-text" onClick={hideDialogCliente} />
                             <Button type='submit' label="Guardar" icon="pi pi-check" className="p-button-text" />
                         </div>
                     </div>

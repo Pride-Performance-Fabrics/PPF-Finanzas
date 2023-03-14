@@ -354,7 +354,7 @@ export const ModalAgregarUsuario = ({ usuarios }) => {
                                 </div>
                             </div>
                             <div className="p-dialog-footer">
-                                <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
+                                <Button label="Cancel"  type="button" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
                                 <Button type='submit' label="Save" icon="pi pi-check" className="p-button-text" />
                             </div>
                             {/* <div className ="divContenedor" style={{width: "50%"}}>

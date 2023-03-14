@@ -155,7 +155,7 @@ const ModalAccesos = ({ toast, datos, icono, nombre,className, getListadoAccesos
                         </div>
 
                         <div className="p-dialog-footer">
-                            <Button label="Cancelar" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
+                            <Button label="Cancelar"  type="button" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
                             <Button type='submit' label="Guardar" icon="pi pi-check" className="p-button-text" />
                         </div>
                     </form>
