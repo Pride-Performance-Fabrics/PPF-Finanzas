@@ -26,8 +26,8 @@ import { fechaLocalStringTemplate, fechaTemplate } from '../../../services/Templ
 //************** Componentes Especificos **************/
 
 import ModalClientesDetails from "./ModalClientesDetalle/ModalClientesDetails";
-import ModalClientes from "./ModalClientes.js/ModalClientes";
-import ModalFacturasCliente from "./ModalClientes.js/ModalFacturasCliente";
+import ModalClientes from "./ModalClientes/ModalClientes";
+import ModalFacturasCliente from "./ModalClientes/ModalFacturasCliente";
 
 
 const ClientesScreen = () => {
@@ -51,9 +51,15 @@ const ClientesScreen = () => {
             Nombre: "",
             Icono: "pi pi-pencil",
             className: "p-button-rounded p-button-info p-button-text"
+        },
+        {
+            Id: 3,
+            Nombre: "",
+            Icono: "ri-wallet-line",
+            className: "p-button-rounded p-button-info p-button-text"
         }
     ]
-    
+
     const accept = () => {
         toast.current.show({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted', life: 3000 });
     }
@@ -71,7 +77,7 @@ const ClientesScreen = () => {
         });
     };
 
-    const cambiarEstado = async (checkValores, IdCustomer) =>{
+    const cambiarEstado = async (checkValores, IdCustomer) => {
         setLoading(true)
         const result = await putChecksCustomer(checkValores)
         const temporal = result.map((item) => {
@@ -86,14 +92,14 @@ const ClientesScreen = () => {
         setLoading(false)
 
     }
-    
+
 
 
     const onChangeCheck = async (valor, IdCustomer, e) => {
 
-        console.log(valor)
+        // console.log(valor)
 
-        console.log(valor, IdCustomer, e)
+        // console.log(valor, IdCustomer, e)
 
         let checkValores = {
             Valor: valor,
@@ -101,21 +107,21 @@ const ClientesScreen = () => {
             IdCustomer: IdCustomer
         }
 
-        if(valor === 3 || valor === 4){
+        if (valor === 3 || valor === 4) {
             confirmDialog({
                 message: '¿Está seguro que desea cambiar el estado del cliente?',
                 header: 'Confirmation',
                 icon: 'pi pi-exclamation-triangle',
-                accept : () => cambiarEstado(checkValores, IdCustomer),
-                reject:  reject
+                accept: () => cambiarEstado(checkValores, IdCustomer),
+                reject: reject
             });
         }
-        else{
+        else {
             cambiarEstado(checkValores, IdCustomer)
         }
 
 
-      
+
 
     }
 
@@ -141,6 +147,9 @@ const ClientesScreen = () => {
 
     }
 
+
+
+
     const botones = (rowData) => {
         // console.log(rowData)
         return (
@@ -154,7 +163,13 @@ const ClientesScreen = () => {
                     getListadoClientes={getListadoClientes}
                 />
                 <ModalClientesDetails IdCustomer={rowData.IdCustomer} />
-                <ModalFacturasCliente IdCustomer={rowData.IdCustomer} NombreCustomer = {rowData.CustomerName}/>
+                <ModalFacturasCliente
+                    icono={aspectoBoton[2].Icono}
+                    nombre={""}
+                    className={aspectoBoton[2].className}
+                    IdCustomer={rowData.IdCustomer}
+                    NombreCustomer={rowData.CustomerName}
+                />
                 {/* <Button label={''} className='p-button-rounded p-button-info p-button-text' icon='ri-close-circle-line' style={{ color: "red" }} /> */}
             </div>
 
@@ -175,7 +190,7 @@ const ClientesScreen = () => {
                 className: 'colum-width-medium',
                 // Format: 'Template',
                 Format: 'Date',
-                align:"Center"
+                align: "Center"
                 // body: (rowData) => fechaTemplate(rowData.DateCreate)
             },
             {
@@ -364,7 +379,7 @@ const ClientesScreen = () => {
     const getListadoClientes = async () => {
         setLoading(true)
         const result = await getCustomers();
-        console.log(result)
+        // console.log(result)
         setData(result)
         setLoading(false)
         setChecked(result.ActivoWeb)
@@ -379,7 +394,7 @@ const ClientesScreen = () => {
     return (
         <div>
             <Loader loading={loading} />
-            <ConfirmDialog  />
+            <ConfirmDialog />
             <Card
                 titulo={<div className="d-flex">
                     <h3 className="mx-3">Clientes</h3>

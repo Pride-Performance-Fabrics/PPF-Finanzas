@@ -28,8 +28,10 @@ import { setDateTimeSQL, getDate } from "../../../../services/FechasService";
 
 import { decimalValueTemplate } from "../../../../services/TemplatesServices";
 
+import ModalFacturasCliente from "../../../Clientes/Clientes/ModalClientes/ModalFacturasCliente";
+
 const ModalFacturas = ({ datos }) => {
-    console.log(datos)
+    // console.log(datos)
 
     const [facturaDialog, setFacturaDialog] = useState(false);
     const [data, setData] = useState([]);
@@ -48,6 +50,14 @@ const ModalFacturas = ({ datos }) => {
 
     }
 
+    let aspectoBoton = [
+        {
+            Id: 1,
+            Icono: "",
+            className: "p-button-text"
+        }
+    ]
+
     const openNew = () => {
         setLoading(true)
         setFacturaDialog(true)
@@ -64,7 +74,7 @@ const ModalFacturas = ({ datos }) => {
         datos.IdInvoiceType === 2 ? setMostrar(true) : setMostrar(false)
     }, [])
 
-    const ColumnsFacturasImexDetails  =[
+    const ColumnsFacturasImexDetails = [
         {
             field: 'StatusName',
             header: 'Estado',
@@ -156,7 +166,7 @@ const ModalFacturas = ({ datos }) => {
 
     ]
 
-    const ColumnsFacturasProduccion =  [
+    const ColumnsFacturasProduccion = [
         // {
         //     field: 'IsSelected',
         //     header: 'Selected',
@@ -342,8 +352,8 @@ const ModalFacturas = ({ datos }) => {
 
     const table = {
         Data: data,
-        Columns : datos.IdInvoiceType === 1 ? ColumnsFacturasProduccion : ColumnsFacturasImexDetails
-       
+        Columns: datos.IdInvoiceType === 1 ? ColumnsFacturasProduccion : ColumnsFacturasImexDetails
+
     }
     return (
         <Fragment>
@@ -432,8 +442,15 @@ const ModalFacturas = ({ datos }) => {
                                         <div className="justify-content-center">
                                             <div className="d-flex flex-row" >
                                                 <div id="InputText">
-                                                    <span > Cliente: </span>
-                                                    <label id="CustomerName" name="CustomerName"> {datos.CustomerName}</label>
+                                                    <span id="ClienteFactura" > Cliente: </span>
+                                                    {/* <label id="CustomerName" name="CustomerName"> {datos.CustomerName}</label> */}
+                                                    <ModalFacturasCliente
+                                                        icono={aspectoBoton[0].Icono}
+                                                        className={aspectoBoton[0].className}
+                                                        nombre={datos.CustomerName}
+                                                        IdCustomer={datos.IdCustomer}
+                                                        NombreCustomer={datos.CustomerName}
+                                                    />
                                                     {/* <InputText id="CustomerName" name="CustomerName" value={datos.CustomerName} style={{ width: "70%" }} /> */}
                                                 </div>
 
