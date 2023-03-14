@@ -118,11 +118,11 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast, icono, nombre, class
         const tempo2 = await getCurrency();
         setCurrency(tempo2)
 
-        // console.log('Currency', tempo2)
+        console.log('Currency', tempo2)
 
         const tempo3 = await getCuentasExistentes()
         setCuentasExistentes(tempo3)
-        // console.log(tempo3)
+        console.log("CuentasExistentes",tempo3)
 
         if (typeof datos === 'object') {
             datos.IdContenedorAccount > 0 ? setChecked(true) : setChecked(false)
@@ -285,14 +285,14 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast, icono, nombre, class
         CodigoAccount: 0,
         Account: '',
         Codigo: 0,
-        IdCurrency: 1,
+        IdCurrency: 2,
         IdTipoCuenta: 0,
         IdType: 0,
         IdCategoria: 0,
         IdSubCategoria: 0,
         SubCategoriaDescription: '',
         DescriptionCharAccount: '',
-        IdCurrency: 1,
+        IdCurrency: 2,
         Saldo: 0,
         Fecha: '',
         IdContenedorAccount: 0,
@@ -522,7 +522,7 @@ export const ModalAgregarCuenta = ({ datos, cuentas, toast, icono, nombre, class
                                 </span>
                                 <span className="p-float-label" style={{ marginTop: 20 }}>
                                     <Dropdown id="IdContenedorAccount" name="IdContenedorAccount" value={formik.values.IdContenedorAccount} optionValue="IdAccount"
-                                        onChange={formik.handleChange} options={filterCuentas} optionLabel="Account"
+                                        onChange={formik.handleChange} options={filterCuentas} optionLabel="Cuenta"
                                         disabled={habilitado} />
                                 </span>
                             </div>
