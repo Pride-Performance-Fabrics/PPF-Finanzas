@@ -91,13 +91,24 @@ const ClientesScreen = () => {
             }
             return item
         })
+       
+        if(checkValores.Valor === 4) {
+            let datosBlock = {
+                IdCustomer: checkValores.IdCustomer,
+                Block: checkValores.Activo === true ? 1 : 0,
+                isFin: true
+            }
 
-        let datosBlock = {
-            IdCustomer: checkValores.IdCustomer,
-            Block: checkValores.Activo === true ? 1 : 0,
-            isFin: true
+            
+            const resultado = await BlockCustomerIPS(datosBlock)
         }
-        const resultado = await BlockCustomerIPS(datosBlock)
+
+        // let datosBlock = {
+        //     IdCustomer: checkValores.IdCustomer,
+        //     Block: checkValores.Activo === true ? 1 : 0,
+        //     isFin: true
+        // }
+        // const resultado = await BlockCustomerIPS(datosBlock)
 
         setData(temporal)
         setLoading(false)
